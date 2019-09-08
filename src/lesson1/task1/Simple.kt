@@ -115,9 +115,9 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double
 {
-    var a:Double=((initial*percent+initial)/percent)
-    var b:Double=(a+(a/percent))
-    var c:Double=(b+(b/percent))
+    var year_1:Double=((initial*percent+initial)/percent)
+    var year_2:Double=(year_1+(year_1/percent))
+    var year_3:Double=(year_2+(year_2/percent))
 }
 
 /**
