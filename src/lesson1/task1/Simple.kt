@@ -76,7 +76,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (sagenes
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(deg: Int, min: Int, sec: Int): Double = 180/(deg+min*60+sec*3600);
+fun angleInRadian(deg: Int, min: Int, sec: Int): Int = 180/(deg+min*60+sec*3600);
 
 /**
  * Тривиальная
@@ -101,10 +101,8 @@ fun thirdDigit(number: Int): Int = number/100%10;
  * прибыл на станцию назначения в h2 часов m2 минут того же дня (например в 13:01).
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
-fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int
-{
-    (hoursArrive*60+minutesArrive)-(hoursDepart*60+minutesDepart)
-}
+fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int) {
+    (hoursArrive*60+minutesArrive)-(hoursDepart*60+minutesDepart) }
 
 /**
  * Простая
@@ -113,11 +111,10 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double
-{
-    var year_1:Double=((initial*percent+initial)/percent)
-    var year_2:Double=(year_1+(year_1/percent))
-    var year_3:Double=(year_2+(year_2/percent))
+fun accountInThreeYears(initial: Int, percent: Int) {
+    var year_1: Int =((initial*percent+initial)/percent)
+    var year_2: Int =(year_1+(year_1/percent))
+    var year_3: Int =(year_2+(year_2/percent))
 }
 
 /**
@@ -126,9 +123,8 @@ fun accountInThreeYears(initial: Int, percent: Int): Double
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int
-{
-    var x=number%10
+fun numberRevert(number: Int) {
+    val x=number%10
     var y=number/100
     var c=number%100
     var d=c/10
