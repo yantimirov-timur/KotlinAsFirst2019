@@ -31,13 +31,15 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-
+//Переделать "x1" -> 1 "x2" -> 5 "y1" -> 3 "y2" -> 1
     if ((x1 == y1 && x2 != y2) || (x1 != y1 && x2 == y2))
         return true
     else if (((x1 - x2) % 2 != 0 && ((y1 - y2) % 2 != 0)) || ((x1 - x2) % 2 == 0 && (y1 - y2) % 2 == 0))
         return true
+    else if (((x1 - x2) % 2 != 0 && ((y1 - y2) % 2 != 0) && (x1 > x2 && y1 > y2)) || ((x1 - x2) % 2 == 0 && (y1 - y2) % 2 == 0) && (x1 > x2 && y1 > y2))
+        return false
 
-    return false//выполнен
+    return false//Исправлен
 }
 
 
@@ -48,18 +50,18 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    if (month == 2 && year % 4 == 0 && year % 100 != 0) return 29
-    else if (month == 2 && year % 400 == 0) return 29
+    if ((month == 2 && year % 4 == 0 && year % 100 != 0) || (month == 2 && year % 400 == 0)) return 29
     else if (month == 2) return 28
     else if (month % 2 != 0) return 31
     else if (month == 8) return 31
     else if (month > 8) {
-        if (month % 2 != 0) return 31
-        else if (month % 2 == 0) return 30
+        if (month % 2 != 0) return 30
+        else if (month % 2 == 0) return 31
     } else if (month % 2 == 0) return 30
 
-    return -1//Выполнен
+    return -1//Исправлен
 }
+
 
 /**
  * Средняя
@@ -82,12 +84,6 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+    (a >= r && b >= s) || (a>=r && c >= s) || (b >=r && c >= s)
 
-    if ((a * b <= r * s) || (a * c <= r * s) || (b * c <= r * s)) return true
-
-    else if ((a * b > r * s) || (a * c > r * s) || (b * c > r * s)) return false
-
-    else
-        return false
-}

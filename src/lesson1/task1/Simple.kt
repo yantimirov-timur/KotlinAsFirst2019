@@ -69,7 +69,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minute
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
-    ((sagenes * 4.445 * 16 * 3) + (arshins * 16*4.445) + (vershoks * 4.445))/100
+    ((sagenes * 4.445 * 16 * 3) + (arshins * 16 * 4.445) + (vershoks * 4.445)) / 100
 
 /**
  * Тривиальная
@@ -85,7 +85,7 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg + (min + sec / 60
  * Найти длину отрезка, соединяющего точки на плоскости с координатами (x1, y1) и (x2, y2).
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
-fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = Math.sqrt(sqr(x1 - x2) + sqr(y1 - y2))
+fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x1 - x2) + sqr(y1 - y2))
 
 /**
  * Простая
@@ -103,7 +103,7 @@ fun thirdDigit(number: Int): Int = number / 100 % 10;
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
-    var m = (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
+    val m = (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
     return m
 }
 
@@ -115,7 +115,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double = initial*(1.0+(percent/100.0)).pow(3)
+fun accountInThreeYears(initial: Int, percent: Int): Double = initial * (1.0 + (percent / 100.0)).pow(3)
 
 
 /**
@@ -124,11 +124,4 @@ fun accountInThreeYears(initial: Int, percent: Int): Double = initial*(1.0+(perc
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): String {
-
-    val x=number%10
-    var y=number/100
-    var c=number%100
-    var d=c/10
-    return ("$x$d$y")
-}
+fun numberRevert(number: Int): Int = (number % 10 * 100 + number % 100 / 10 * 10 + number / 10 / 10)
