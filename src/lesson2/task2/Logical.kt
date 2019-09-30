@@ -22,7 +22,6 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
 fun isNumberHappy(number: Int): Boolean =
     ((number / 100 % 10 + number / 100 / 10) == (number % 100 % 10 + number % 100 / 10))//Выполнен
 
-
 /**
  * Простая
  *
@@ -31,15 +30,15 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-//Переделать "x1" -> 1 "x2" -> 5 "y1" -> 3 "y2" -> 1
+//Исправлен
     if ((x1 == y1 && x2 != y2) || (x1 != y1 && x2 == y2))
         return true
-    else if (((x1 - x2) % 2 != 0 && ((y1 - y2) % 2 != 0)) || ((x1 - x2) % 2 == 0 && (y1 - y2) % 2 == 0))
+    else if (((x1 - y1) % 2 != 0 && ((x2 - y2) % 2 != 0)) || ((x1 - y1) % 2 == 0 && (x2 - y2) % 2 == 0))
         return true
-    else if (((x1 - x2) % 2 != 0 && ((y1 - y2) % 2 != 0) && (x1 > x2 && y1 > y2)) || ((x1 - x2) % 2 == 0 && (y1 - y2) % 2 == 0) && (x1 > x2 && y1 > y2))
+    else if (((x1 - y1) % 2 != 0 && ((x2 - y2) % 2 != 0) && (x1 > x2 && y1 > y2)) || ((x1 - y1) % 2 == 0 && (x2 - y2) % 2 == 0) && (x1 > x2 && y1 > y2))
         return false
 
-    return false//Исправлен
+    return false
 }
 
 
@@ -49,17 +48,17 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int {
+fun daysInMonth(month: Int, year: Int): Int {//исправил
     if ((month == 2 && year % 4 == 0 && year % 100 != 0) || (month == 2 && year % 400 == 0)) return 29
     else if (month == 2) return 28
     else if (month % 2 != 0) return 31
     else if (month == 8) return 31
-    else if (month > 8) {
+    else if (month >= 8) {
         if (month % 2 != 0) return 30
         else if (month % 2 == 0) return 31
     } else if (month % 2 == 0) return 30
 
-    return -1//Исправлен
+    return -1
 }
 
 
@@ -84,6 +83,10 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
-    (a >= r && b >= s) || (a>=r && c >= s) || (b >=r && c >= s)
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    //"a" -> 1 "b" -> 1 "c" -> 1 "r" -> 1 "s" -> 2 out false exp true
+    return if ((a <= r && b <= s) || (a <= r && c <= s) || (b <= r && c <= s)) true
+    else (a <= s && b <= r) || (a <= s && c <= r) || (b <= s && c <= r)
+}
+
 

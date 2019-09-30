@@ -64,12 +64,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String =
-    when {
-        (age != 111) && (age % 10 == 1) || (age == 1) -> "$age год"
+    when {//Исправлено
+        (age != 111) && (age != 11) && (age % 10 == 1) || (age == 1) -> "$age год"
         (age > 20) && (age % 10 in 2..4) || (age in 2..4) -> "$age года"
         (age in 100..120) -> "$age лет"
         else -> "$age лет"
-        //Выполнен
+
     }
 
 /**
@@ -83,7 +83,7 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double {
+): Double {//ТЕСТ ПРОШЕЛ
 
     val s = (t1 * v1 + t2 * v2 + t3 * v3) / 2
     return when {
@@ -103,7 +103,7 @@ fun timeForHalfWay(
  * Считать, что ладьи не могут загораживать друг друга
  */
 fun whichRookThreatens(
-    kingX: Int,
+    kingX: Int,//ТЕСТ ПРОШЕЛ
     kingY: Int,
     rookX1: Int,
     rookY1: Int,
@@ -133,14 +133,15 @@ fun whichRookThreatens(
 fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
-    bishopX: Int, bishopY: Int//Сделать меньше if
+    bishopX: Int, bishopY: Int
 ): Int {
-
     if ((kingX != rookY && rookX != rookY) && (kingX - kingY) % 2 != 0 && (bishopX - bishopY) % 2 == 0)
         return 0
     else if ((kingX != rookX) && (kingY == rookY) && ((kingX - kingY) % 2 == 0) && (bishopX - bishopY) % 2 != 0 && (kingX - kingY != 0) || (rookX - rookY != 0))
         return 1
     else if ((kingX == rookX) && (kingY != rookY) && ((kingX - kingY) % 2 != 0) && (bishopX - bishopY) % 2 == 0 && (kingX - kingY != 0) || (rookX - rookY != 0))
+        return 1
+    else if ((kingX == rookX) && (kingY != rookY) && ((kingX - kingY) % 2 == 0) && (bishopX - bishopY) % 2 != 0 && (kingX - kingY != 0) || (rookX - rookY != 0))
         return 1
     else if ((kingX != rookX && kingY != rookY) && ((kingX - kingY) % 2 == 0 && (bishopX - bishopY) % 2 == 0))
         return 2
@@ -150,7 +151,7 @@ fun rookOrBishopThreatens(
         return 3
     else if ((kingX != rookX) && (kingY == rookY) || ((kingX == rookX) && (kingY != rookY)) && ((kingX - kingY) % 2 != 0 && (bishopX - bishopY) % 2 != 0) || ((kingX - kingY) % 2 == 0 && (bishopX - bishopY) % 2 == 0))
         return 3
-    return -1//Исправлен
+    return -1//Исправил
 }
 
 
@@ -163,19 +164,13 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int =
-
-    when {
-
+    when {//Тест прошел
         (a >= b + c || b >= a + c || c >= b + a) -> -1
-
         (a.pow(2) == b.pow(2) + c.pow(2) || b.pow(2) == a.pow(2) + c.pow(2) || c.pow(2) == b.pow(2) + a.pow(2)) -> 1
-
         (a.pow(2) > b.pow(2) + c.pow(2) || b.pow(2) > a.pow(2) + c.pow(2) || c.pow(2) > b.pow(2) + a.pow(2)) -> 2
-
         (a.pow(2) < b.pow(2) + c.pow(2) || b.pow(2) < a.pow(2) + c.pow(2) || c.pow(2) < b.pow(2) + a.pow(2)) -> 0
-
         else -> -2
-    }//Выполнен
+    }
 
 
 /**
@@ -186,12 +181,19 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+fun segmentLength(
+    a: Int,
+    b: Int,
+    c: Int,
+    d: Int
+): Int {//Исправил
 
     return if ((a < b && a < c && a < d) && (b > a && b > c && b > d)) maxOf(a, d) - minOf(b, c)
     else if (a < b && a < c && a < d) maxOf(a, b) - minOf(c, d)
+    else if ((a < b && a < c && a < d) && ((maxOf(a, b) - minOf(c, d) < 0))) -1
     else if (b >= c && d >= a && b < d) maxOf(b, c) - minOf(a, d)
-    else if ((c < d && c < b && c < a && b > d) && ((maxOf(c, d) - minOf(a, b)) <= 0)) -1
+    else if ((b >= c && d >= a && b < d)&& ((maxOf(b, c) - minOf(a, d)<0)))-1
+    else if ((c < d && c < b && c < a && b > d) && ((maxOf(c, d) - minOf(a, b)) < 0)) -1
     else if (c < d && c < b && c < a && b > d) maxOf(c, d) - minOf(a, b)
     else if ((c < d && c < b && c < a && b < d) && ((maxOf(c, d) - minOf(a, b)) < 0)) -1
     else if (c < d && c < b && c < a && b < d) (maxOf(c, d) - minOf(a, b))

@@ -67,15 +67,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int {
+fun digitNumber(n: Int): Int {//Выполнен
     var count = 0
     var number = n
     do {
         count++
         number /= 10
-    } while (number > 0)
+    } while (number > 0 || number < 0)
     return count
-}//Выполнен
+}
 
 /**
  * Простая
@@ -83,7 +83,7 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int {
+fun fib(n: Int): Int {//Выполнен
     var fib1 = 0
     var fib2 = 1
     for (i in 2..n) {
@@ -101,7 +101,20 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int =TODO()
+fun lcm(m: Int, n: Int): Int {//Выполнен
+
+    var mult1 = 1//Множитель 1
+    var mult2 = 1//Множитель 2
+    if (m % n == 0) return m
+    else if (n % m == 0) return n
+    do {
+        if (m * mult1 < n * mult2)
+            mult1 += 1
+        else
+            mult2 += 1
+    } while (m * mult1 != n * mult2)
+    return m * mult1
+}
 
 
 /**
@@ -109,27 +122,33 @@ fun lcm(m: Int, n: Int): Int =TODO()
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int {
-    var div = 2//Оптимизировать
-    for (i in 2..n) {
-        if (n % div != 0 && n % 2 == 0)
+fun minDivisor(n: Int): Int {//Сделан
+    var div = 3
+    do {
+        if (n % 2 == 0) return 2
+        if (n % div != 0)
             div += 2
-        else if (n % div != 0 && n % 2 != 0) {
-            div += 1
-        } else
-            return div
-    }
+        else return div
+    } while (n % div != 0)
+
     return div
 }
-
-
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {//Сделан
+    var del = 3
+    do {
+        if (n % 2 == 0)
+            del = 2
+        else if (n % del != 0)
+            del += 2
+    } while (n % del != 0)
+    return n / del
+}
 
 /**
  * Простая
@@ -138,7 +157,19 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var del1 = m
+    var del2 = n
+    do {
+        if (del1 > del2)
+            del1 -= del2
+        else
+            del2 -= del1
+        if (del1 ==1) return true
+    } while (del1!=del2)
+    return false//Выполнен
+}
+
 
 /**
  * Простая
@@ -148,6 +179,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+
 
 /**
  * Средняя
@@ -196,7 +228,8 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int=TODO()
+
 
 /**
  * Средняя
