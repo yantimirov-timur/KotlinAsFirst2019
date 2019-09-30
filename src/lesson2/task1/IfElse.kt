@@ -151,7 +151,7 @@ fun rookOrBishopThreatens(
         return 3
     else if ((kingX != rookX) && (kingY == rookY) || ((kingX == rookX) && (kingY != rookY)) && ((kingX - kingY) % 2 != 0 && (bishopX - bishopY) % 2 != 0) || ((kingX - kingY) % 2 == 0 && (bishopX - bishopY) % 2 == 0))
         return 3
-    return -1//Исправил
+    return -1
 }
 
 

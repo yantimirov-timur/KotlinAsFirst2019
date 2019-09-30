@@ -167,7 +167,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
             del2 -= del1
         if (del1 ==1) return true
     } while (del1!=del2)
-    return false//Выполнен
+    return false
 }
 
 
