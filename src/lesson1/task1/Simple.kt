@@ -59,7 +59,7 @@ fun main() {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minutes * 60 + seconds;
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minutes * 60 + seconds
 
 /**
  * Тривиальная
@@ -77,7 +77,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg + (min + sec / 60.0) / 60) * (PI / 180);
+fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg + (min + sec / 60.0) / 60) * (PI / 180)
 
 /**
  * Тривиальная
@@ -93,7 +93,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(s
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int = number / 100 % 10;
+fun thirdDigit(number: Int): Int = number / 100 % 10
 
 /**
  * Простая
@@ -102,10 +102,8 @@ fun thirdDigit(number: Int): Int = number / 100 % 10;
  * прибыл на станцию назначения в h2 часов m2 минут того же дня (например в 13:01).
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
-fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
-    val m = (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
-    return m
-}
+fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int =
+    (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
 
 
 /**

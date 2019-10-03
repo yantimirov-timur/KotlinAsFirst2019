@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import kotlin.math.sqrt
+import kotlin.math.sqrt as sqrt1
 
 /**
  * Пример
@@ -139,16 +140,8 @@ fun minDivisor(n: Int): Int {//Сделан
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {//Сделан
-    var del = 3
-    do {
-        if (n % 2 == 0)
-            del = 2
-        else if (n % del != 0)
-            del += 2
-    } while (n % del != 0)
-    return n / del
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
+
 
 /**
  * Простая
@@ -161,12 +154,15 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     var del1 = m
     var del2 = n
     do {
+
+        if ((del1 == del2) && isPrime(del1)) return true
+
         if (del1 > del2)
             del1 -= del2
         else
             del2 -= del1
-        if (del1 ==1) return true
-    } while (del1!=del2)
+        if ((del1 == 1) || (del2 == 1)) return true
+    } while (del1 != del2)
     return false
 }
 
@@ -178,7 +174,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    for (i in m..n)
+        if (sqrt(i.toDouble()) % 1 == 0.0)
+            return true
+    return false
+}
 
 
 /**
@@ -197,7 +198,21 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var step = 0
+    var number = x
+    if (number == 1) return 0
+    do {
+        if (number % 2 == 0) {
+            number /= 2
+            step += 1
+        } else if (number % 2 != 0) {
+            number = 3 * number + 1
+            step += 1
+        }
+    } while (number != 1)
+    return step
+}
 
 /**
  * Средняя
@@ -228,8 +243,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int=TODO()
-
+fun revert(n: Int): Int {
+    var x = 0
+    var y = n
+    while (y > 0) {
+        x = x * 10 + (y % 10)
+        y /= 10
+    }
+    return x
+}
 
 /**
  * Средняя
@@ -240,7 +262,10 @@ fun revert(n: Int): Int=TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    if (n == revert(n)) return false
+    return false
+}
 
 /**
  * Средняя
@@ -250,7 +275,7 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean =TODO()
 
 /**
  * Сложная

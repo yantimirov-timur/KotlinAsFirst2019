@@ -3,7 +3,6 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
-import lesson1.task1.sqr
 import kotlin.math.*
 
 /**
@@ -65,11 +64,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String =
     when {//Исправлено
-        (age != 111) && (age != 11) && (age % 10 == 1) || (age == 1) -> "$age год"
-        (age > 20) && (age % 10 in 2..4) || (age in 2..4) -> "$age года"
         (age in 100..120) -> "$age лет"
+        (age % 10 == 1) || (age == 1) -> "$age год"
+        (age > 20) && (age % 10 in 2..4) || (age in 2..4) -> "$age года"
         else -> "$age лет"
-
     }
 
 /**
@@ -103,21 +101,24 @@ fun timeForHalfWay(
  * Считать, что ладьи не могут загораживать друг друга
  */
 fun whichRookThreatens(
-    kingX: Int,//ТЕСТ ПРОШЕЛ
+    kingX: Int,//Сделал более читабельно
     kingY: Int,
     rookX1: Int,
     rookY1: Int,
     rookX2: Int,
     rookY2: Int
-): Int =
-    when {
-        ((kingX != rookX1) && (kingY != rookY1)) && ((kingX != rookX2) && (kingY != rookY2)) -> 0
-        (((kingX != rookX1) && (kingY == rookY1) || (kingX == rookX1) && (kingY != rookY1)) && ((kingX != rookX2) && (kingY != rookY2))) -> 1
-        ((kingX != rookX1) && (kingY != rookY1)) && ((kingX == rookX2) && (kingY != rookY2) || (kingX != rookX2) && (kingY == rookY2)) -> 2
-        ((kingX != rookX1) && (kingY == rookY1)) && ((kingX == rookX2) && (kingY != rookY2)) -> 3
-        ((kingX == rookX1) && (kingY != rookY1)) && ((kingX != rookX2) && (kingY == rookY2)) -> 3
-        else -> -1
-    }
+): Int {
+    val rookFalse1 = (kingX != rookX1) && (kingY != rookY1)
+    val rookFalse2 = (kingX != rookX2) && (kingY != rookY2)
+    val rookTrue1 = (kingX != rookX1) && (kingY == rookY1) || (kingX == rookX1) && (kingY != rookY1)
+    val rookTrue2 = (kingX == rookX2) && (kingY != rookY2) || (kingX != rookX2) && (kingY == rookY2)
+
+    if ((rookFalse1) && (rookFalse2)) return 0
+    else if ((rookTrue1) && (rookFalse2)) return 1
+    else if ((rookFalse1) && (rookTrue2)) return 2
+    else if ((rookTrue1 && rookTrue2)) return 3
+    return -1
+}
 
 
 /**
@@ -134,23 +135,25 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int {
-    if ((kingX != rookY && rookX != rookY) && (kingX - kingY) % 2 != 0 && (bishopX - bishopY) % 2 == 0)
+): Int {//Добавить несколько условий
+    val bishopFalse = ((kingX == bishopX) || (kingY == bishopY))
+    val rookFalse = (kingX != rookX && kingY != rookY)
+    val rookTrue1 = (kingX != rookX) && (kingY == rookY)
+    val rookTrue2 = (kingX == rookX) && (kingY != rookY)
+    val bishopTrue1 = (abs(kingX - kingY) % 2 == 0 && abs(bishopX - bishopY) % 2 == 0) && !bishopFalse
+    val bishopTrue2 = (abs(kingX - kingY) % 2 != 0 && abs(bishopX - bishopY) % 2 != 0) && !bishopFalse
+    val bishopFalse1 = abs(kingX - kingY) % 2 != 0 && abs(bishopX - bishopY) % 2 == 0 || bishopFalse
+    val bishopFalse2 = abs(kingX - kingY) % 2 == 0 && abs(bishopX - bishopY) % 2 != 0 || bishopFalse
+
+    if ((rookFalse) && (bishopFalse1) || (rookFalse) && (bishopFalse2))
         return 0
-    else if ((kingX != rookX) && (kingY == rookY) && ((kingX - kingY) % 2 == 0) && (bishopX - bishopY) % 2 != 0 && (kingX - kingY != 0) || (rookX - rookY != 0))
+    else if ((rookTrue1 || rookTrue2) && (bishopFalse1 || bishopFalse2))
         return 1
-    else if ((kingX == rookX) && (kingY != rookY) && ((kingX - kingY) % 2 != 0) && (bishopX - bishopY) % 2 == 0 && (kingX - kingY != 0) || (rookX - rookY != 0))
-        return 1
-    else if ((kingX == rookX) && (kingY != rookY) && ((kingX - kingY) % 2 == 0) && (bishopX - bishopY) % 2 != 0 && (kingX - kingY != 0) || (rookX - rookY != 0))
-        return 1
-    else if ((kingX != rookX && kingY != rookY) && ((kingX - kingY) % 2 == 0 && (bishopX - bishopY) % 2 == 0))
+    else if ((rookFalse && bishopTrue1) || (rookFalse && bishopTrue2))
         return 2
-    else if ((kingX != rookX && kingY != rookY) && ((kingX - kingY) % 2 != 0 && (bishopX - bishopY) % 2 != 0))
-        return 2
-    else if (((kingX != rookX) && (kingY == rookY) || (kingX == rookX) && (kingY != rookY)) && ((kingX - kingY) % 2 == 0 && (bishopX - bishopY) % 2 == 0) || (kingX - kingY) % 2 != 0 && (bishopX - bishopY) % 2 != 0)
+    else if ((rookTrue1 || rookTrue2) && (bishopTrue1 || bishopTrue2))
         return 3
-    else if ((kingX != rookX) && (kingY == rookY) || ((kingX == rookX) && (kingY != rookY)) && ((kingX - kingY) % 2 != 0 && (bishopX - bishopY) % 2 != 0) || ((kingX - kingY) % 2 == 0 && (bishopX - bishopY) % 2 == 0))
-        return 3
+
     return -1
 }
 
@@ -172,7 +175,6 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
         else -> -2
     }
 
-
 /**
  * Средняя
  *
@@ -190,12 +192,12 @@ fun segmentLength(
 
     return if ((a < b && a < c && a < d) && (b > a && b > c && b > d)) maxOf(a, d) - minOf(b, c)
     else if (a < b && a < c && a < d) maxOf(a, b) - minOf(c, d)
-    else if ((a < b && a < c && a < d) && ((maxOf(a, b) - minOf(c, d) < 0))) -1
+    else if ((a < b && a < c && a < d) && ((maxOf(a, b) - minOf(c, d) <= 0))) -1
     else if (b >= c && d >= a && b < d) maxOf(b, c) - minOf(a, d)
-    else if ((b >= c && d >= a && b < d)&& ((maxOf(b, c) - minOf(a, d)<0)))-1
-    else if ((c < d && c < b && c < a && b > d) && ((maxOf(c, d) - minOf(a, b)) < 0)) -1
+    else if ((b >= c && d >= a && b < d) && ((maxOf(b, c) - minOf(a, d) <= 0))) -1
+    else if ((c < d && c < b && c < a && b > d) && ((maxOf(c, d) - minOf(a, b)) <= 0)) -1
     else if (c < d && c < b && c < a && b > d) maxOf(c, d) - minOf(a, b)
-    else if ((c < d && c < b && c < a && b < d) && ((maxOf(c, d) - minOf(a, b)) < 0)) -1
+    else if ((c < d && c < b && c < a && b < d) && ((maxOf(c, d) - minOf(a, b)) <= 0)) -1
     else if (c < d && c < b && c < a && b < d) (maxOf(c, d) - minOf(a, b))
     else
         0

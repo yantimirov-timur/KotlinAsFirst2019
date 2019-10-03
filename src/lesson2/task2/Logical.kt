@@ -30,8 +30,8 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-//Исправлен
-    if ((x1 == y1 && x2 != y2) || (x1 != y1 && x2 == y2))
+//Исправлено
+    if ((x1 == x2 && y1 != y2) || (x1 != x2 && y1 == y2))
         return true
     else if (((x1 - y1) % 2 != 0 && ((x2 - y2) % 2 != 0)) || ((x1 - y1) % 2 == 0 && (x2 - y2) % 2 == 0))
         return true
@@ -48,12 +48,12 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int {//исправил
+fun daysInMonth(month: Int, year: Int): Int {//Исправил
     if ((month == 2 && year % 4 == 0 && year % 100 != 0) || (month == 2 && year % 400 == 0)) return 29
     else if (month == 2) return 28
-    else if (month % 2 != 0) return 31
+    else if ((month % 2 != 0) && (month < 8)) return 31
     else if (month == 8) return 31
-    else if (month >= 8) {
+    else if (month > 8) {
         if (month % 2 != 0) return 30
         else if (month % 2 == 0) return 31
     } else if (month % 2 == 0) return 30
@@ -72,7 +72,7 @@ fun daysInMonth(month: Int, year: Int): Int {//исправил
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = kotlin.math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) <= r2 - r1
+): Boolean = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) <= r2 - r1
 
 /**
  * Средняя
