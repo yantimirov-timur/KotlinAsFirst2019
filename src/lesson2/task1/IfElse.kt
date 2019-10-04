@@ -64,7 +64,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String =
     when {//Исправлено
-        (age in 100..120) -> "$age лет"
+        (age in 100..120) || (age in 5..20) -> "$age лет"
         (age % 10 == 1) || (age == 1) -> "$age год"
         (age > 20) && (age % 10 in 2..4) || (age in 2..4) -> "$age года"
         else -> "$age лет"
@@ -81,7 +81,7 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double {//ТЕСТ ПРОШЕЛ
+): Double {
 
     val s = (t1 * v1 + t2 * v2 + t3 * v3) / 2
     return when {
@@ -101,23 +101,23 @@ fun timeForHalfWay(
  * Считать, что ладьи не могут загораживать друг друга
  */
 fun whichRookThreatens(
-    kingX: Int,//Сделал более читабельно
+    kingX: Int,
     kingY: Int,
     rookX1: Int,
     rookY1: Int,
     rookX2: Int,
     rookY2: Int
 ): Int {
-    val rookFalse1 = (kingX != rookX1) && (kingY != rookY1)
-    val rookFalse2 = (kingX != rookX2) && (kingY != rookY2)
     val rookTrue1 = (kingX != rookX1) && (kingY == rookY1) || (kingX == rookX1) && (kingY != rookY1)
     val rookTrue2 = (kingX == rookX2) && (kingY != rookY2) || (kingX != rookX2) && (kingY == rookY2)
+    val rookFalse1 = !rookTrue1
+    val rookFalse2 = !rookTrue2
 
-    if ((rookFalse1) && (rookFalse2)) return 0
-    else if ((rookTrue1) && (rookFalse2)) return 1
-    else if ((rookFalse1) && (rookTrue2)) return 2
-    else if ((rookTrue1 && rookTrue2)) return 3
-    return -1
+    return if ((rookFalse1) && (rookFalse2)) 0
+    else if ((rookTrue1) && (rookFalse2)) 1
+    else if ((rookFalse1) && (rookTrue2)) 2
+    else if ((rookTrue1 && rookTrue2)) 3
+    else -1
 }
 
 
@@ -135,26 +135,20 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int {//Добавить несколько условий
-    val bishopFalse = ((kingX == bishopX) || (kingY == bishopY))
-    val rookFalse = (kingX != rookX && kingY != rookY)
-    val rookTrue1 = (kingX != rookX) && (kingY == rookY)
-    val rookTrue2 = (kingX == rookX) && (kingY != rookY)
-    val bishopTrue1 = (abs(kingX - kingY) % 2 == 0 && abs(bishopX - bishopY) % 2 == 0) && !bishopFalse
-    val bishopTrue2 = (abs(kingX - kingY) % 2 != 0 && abs(bishopX - bishopY) % 2 != 0) && !bishopFalse
-    val bishopFalse1 = abs(kingX - kingY) % 2 != 0 && abs(bishopX - bishopY) % 2 == 0 || bishopFalse
-    val bishopFalse2 = abs(kingX - kingY) % 2 == 0 && abs(bishopX - bishopY) % 2 != 0 || bishopFalse
-
-    if ((rookFalse) && (bishopFalse1) || (rookFalse) && (bishopFalse2))
-        return 0
-    else if ((rookTrue1 || rookTrue2) && (bishopFalse1 || bishopFalse2))
-        return 1
-    else if ((rookFalse && bishopTrue1) || (rookFalse && bishopTrue2))
-        return 2
-    else if ((rookTrue1 || rookTrue2) && (bishopTrue1 || bishopTrue2))
-        return 3
-
-    return -1
+): Int {
+    val bishopTrue = (abs(bishopX - kingX) == abs(bishopY - kingY))
+    val bishopFalse = !bishopTrue
+    val rookTrue = ((kingX != rookX) && (kingY == rookY) || (kingX == rookX) && (kingY != rookY))
+    val rookFalse = !rookTrue
+    return if (rookFalse && bishopFalse)
+        0
+    else if (rookTrue && bishopFalse)
+        1
+    else if (rookFalse && bishopTrue)
+        2
+    else if (rookTrue && bishopTrue)
+        3
+    else -1
 }
 
 
@@ -167,7 +161,7 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int =
-    when {//Тест прошел
+    when {
         (a >= b + c || b >= a + c || c >= b + a) -> -1
         (a.pow(2) == b.pow(2) + c.pow(2) || b.pow(2) == a.pow(2) + c.pow(2) || c.pow(2) == b.pow(2) + a.pow(2)) -> 1
         (a.pow(2) > b.pow(2) + c.pow(2) || b.pow(2) > a.pow(2) + c.pow(2) || c.pow(2) > b.pow(2) + a.pow(2)) -> 2
@@ -188,19 +182,10 @@ fun segmentLength(
     b: Int,
     c: Int,
     d: Int
-): Int {//Исправил
-
-    return if ((a < b && a < c && a < d) && (b > a && b > c && b > d)) maxOf(a, d) - minOf(b, c)
-    else if (a < b && a < c && a < d) maxOf(a, b) - minOf(c, d)
-    else if ((a < b && a < c && a < d) && ((maxOf(a, b) - minOf(c, d) <= 0))) -1
-    else if (b >= c && d >= a && b < d) maxOf(b, c) - minOf(a, d)
-    else if ((b >= c && d >= a && b < d) && ((maxOf(b, c) - minOf(a, d) <= 0))) -1
-    else if ((c < d && c < b && c < a && b > d) && ((maxOf(c, d) - minOf(a, b)) <= 0)) -1
-    else if (c < d && c < b && c < a && b > d) maxOf(c, d) - minOf(a, b)
-    else if ((c < d && c < b && c < a && b < d) && ((maxOf(c, d) - minOf(a, b)) <= 0)) -1
-    else if (c < d && c < b && c < a && b < d) (maxOf(c, d) - minOf(a, b))
-    else
-        0
+): Int {
+    var l = minOf(b, d) - max(a, c)
+    return if (l < 0) -1
+    else l
 }
 
 

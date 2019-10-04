@@ -74,7 +74,7 @@ fun digitNumber(n: Int): Int {//Выполнен
     do {
         count++
         number /= 10
-    } while (number > 0 || number < 0)
+    } while (number != 0)
     return count
 }
 
@@ -201,18 +201,17 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
 fun collatzSteps(x: Int): Int {
     var step = 0
     var number = x
-    if (number == 1) return 0
-    do {
+    while (number != 1) {
         if (number % 2 == 0) {
             number /= 2
-            step += 1
         } else if (number % 2 != 0) {
             number = 3 * number + 1
-            step += 1
         }
-    } while (number != 1)
+        step += 1
+    }
     return step
 }
+
 
 /**
  * Средняя
@@ -262,10 +261,8 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    if (n == revert(n)) return false
-    return false
-}
+fun isPalindrome(n: Int): Boolean = (n == revert(n))
+
 
 /**
  * Средняя
@@ -275,7 +272,7 @@ fun isPalindrome(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean =TODO()
+fun hasDifferentDigits(n: Int): Boolean = TODO()
 
 /**
  * Сложная
