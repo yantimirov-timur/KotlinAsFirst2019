@@ -162,6 +162,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     }
     val minDiv = num1
     return if (minDiv == 1) true
+    else if (minDiv%2==0) return false
     else minDiv == m && minDiv == n
 }
 
