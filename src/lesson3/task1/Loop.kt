@@ -298,34 +298,10 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
+fun squareSequenceDigit(n: Int): Int =TODO()
 
-    var num = n
-    var num2 = 0
-    var num1 = 0
-    var x1 = 0
-    var x2 = 0
-    for (i in 1..n) {
-        num1 = i * i
-        if (n % 2 != 0 && n < 15) {
-            x2 = num1 % 10
-        } else if (n % 2 == 0 && n < 15) {
-            x1 = num1 / 10
-        }
-    }
-    if (n % 2 != 0) return x2
-    else (n % 2 == 0)
-    return x1
 
-    // if (i < 3) {
-    //            num1 = i * i
-    //        } else if (i >= 4) {
-    //            num2 = i * i
-    //            x1 = num2 / 10
-    //            x2 = num2 % 10
-    //
-    //        }
-}
+
 
 /**
  * Сложная
