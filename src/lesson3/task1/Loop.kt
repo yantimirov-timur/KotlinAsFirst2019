@@ -279,13 +279,13 @@ fun hasDifferentDigits(n: Int): Boolean {
     if (n % 10 == n) return false
     if (digit1 != digit2) return true
     else if (digit1 == digit2) {
-        while (digit1 == digit2) {
+        for (i in 1..digitNumber(n)) {
             digit2 = n / div % 10
             div *= 10
+            if (digit1 != digit2) return true
         }
     }
-    return if (digit2 == 0) false
-    else digit1 != digit2
+    return false
 }
 
 
@@ -298,9 +298,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int =TODO()
-
-
+fun squareSequenceDigit(n: Int): Int = TODO()
 
 
 /**
