@@ -162,7 +162,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     }
     val minDiv = num1
     return if (minDiv == 1) true
-    else if (minDiv%2==0) return false
+    else if (minDiv % 2 == 0) return false
     else minDiv == m && minDiv == n
 }
 
@@ -271,7 +271,23 @@ fun isPalindrome(n: Int): Boolean = (n == revert(n))
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var div = 1
+    var digit1 = n % 10
+    var digit2 = n / 10 % 10
+
+    if (n % 10 == n) return false
+    if (digit1 != digit2) return true
+    else if (digit1 == digit2) {
+        while (digit1 == digit2) {
+            digit2 = n / div % 10
+            div *= 10
+        }
+    }
+    return if (digit2 == 0) false
+    else digit1 != digit2
+}
+
 
 /**
  * Сложная
@@ -282,7 +298,34 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+
+    var num = n
+    var num2 = 0
+    var num1 = 0
+    var x1 = 0
+    var x2 = 0
+    for (i in 1..n) {
+        num1 = i * i
+        if (n % 2 != 0 && n < 15) {
+            x2 = num1 % 10
+        } else if (n % 2 == 0 && n < 15) {
+            x1 = num1 / 10
+        }
+    }
+    if (n % 2 != 0) return x2
+    else (n % 2 == 0)
+    return x1
+
+    // if (i < 3) {
+    //            num1 = i * i
+    //        } else if (i >= 4) {
+    //            num2 = i * i
+    //            x1 = num2 / 10
+    //            x2 = num2 % 10
+    //
+    //        }
+}
 
 /**
  * Сложная
