@@ -2,6 +2,8 @@
 
 package lesson3.task1
 
+import kotlin.math.abs
+import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.math.sqrt as sqrt1
 
@@ -162,7 +164,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
     }
     val minDiv = num1
     return if (minDiv == 1) true
-    else if (minDiv % 2 == 0) return false
+    else if (minDiv % 2 == 0) false
     else minDiv == m && minDiv == n
 }
 
@@ -223,6 +225,7 @@ fun collatzSteps(x: Int): Int {
  */
 fun sin(x: Double, eps: Double): Double = TODO()
 
+
 /**
  * Средняя
  *
@@ -273,7 +276,7 @@ fun isPalindrome(n: Int): Boolean = (n == revert(n))
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var div = 1
-    var digit1 = n % 10
+    val digit1 = n % 10
     var digit2 = n / 10 % 10
 
     if (n % 10 == n) return false
@@ -310,4 +313,5 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+
 fun fibSequenceDigit(n: Int): Int = TODO()
