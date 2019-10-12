@@ -253,6 +253,8 @@ fun convert(n: Int, base: Int): List<Int> {
     var number = n
     val list = mutableListOf<Int>()
     var ost = 0
+    if (number==0)
+        list.add(number)
     while (number >= 1) {
         ost = number % base
         number /= base
@@ -272,7 +274,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String =TODO()
+fun convertToString(n: Int, base: Int): String = TODO()
 
 
 /**
