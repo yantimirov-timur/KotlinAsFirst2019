@@ -253,7 +253,7 @@ fun convert(n: Int, base: Int): List<Int> {
     var number = n
     val list = mutableListOf<Int>()
     var ost = 0
-    if (number==0)
+    if (number == 0)
         list.add(number)
     while (number >= 1) {
         ost = number % base
@@ -261,6 +261,23 @@ fun convert(n: Int, base: Int): List<Int> {
         list.add(ost)
     }
     return list.reversed()
+}
+
+/**
+ * Средняя
+ *
+ * Перевести число, представленное списком цифр digits от старшей к младшей,
+ * из системы счисления с основанием base в десятичную.
+ * Например: digits = (1, 3, 12), base = 14 -> 250
+ */
+fun decimal(digits: List<Int>, base: Int): Int {
+    var chislo = 0
+    var st = digits.size - 1
+    for (element in digits) {
+        chislo += element * base.toDouble().pow(st).toInt()
+        st -= 1
+    }
+    return chislo
 }
 
 /**
@@ -274,25 +291,40 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
-
-
-/**
- * Средняя
- *
- * Перевести число, представленное списком цифр digits от старшей к младшей,
- * из системы счисления с основанием base в десятичную.
- * Например: digits = (1, 3, 12), base = 14 -> 250
- */
-fun decimal(digits: List<Int>, base: Int): Int {//доделать
-    var chislo = 0
-    var st = digits.size - 1
-    for (element in digits) {
-        chislo += element * base.toDouble().pow(st).toInt()
-        st -= 1
+fun convertToString(n: Int, base: Int): String {
+    //1)попрообовать сделать циклом переприсваивание
+    //2)написать условие когда буква впереди
+    var number = n
+    val list = mutableListOf<Int>()//пустой лист с цифрами
+    val listletters = "abcdefghijklmnopqrstuvwxyz".toCharArray()//Английский алфавит
+    val listdigits = mutableListOf<Int>(10, 11, 12, 13, 14, 15, 16, 17)
+    val emptylist = mutableListOf<Char>()//Пустой лист с буквами
+    var ost = 0
+    if (number == 0)
+        list.add(number)
+    while (number >= 1) {
+        ost = number % base
+        number /= base
+        if (ost >= 10) {
+            when {
+                (ost == 10) -> emptylist.add(listletters[0])
+                (ost == 11) -> emptylist.add(listletters[1])
+                (ost == 12) -> emptylist.add(listletters[2])
+                (ost == 13) -> emptylist.add(listletters[3])
+                (ost == 14) -> emptylist.add(listletters[4])
+                (ost == 15) -> emptylist.add(listletters[5])
+                (ost == n) -> emptylist.add(listletters[25])
+            }
+        } else if (ost < 10)
+            list.add(ost)
     }
-    return chislo
+    if (base <= 11) {
+        return (emptylist.reversed() + list.reversed()).joinToString(separator = "")
+    } else {
+        return (list.reversed() + emptylist.reversed()).joinToString(separator = "")
+    }
 }
+
 
 /**
  * Сложная
