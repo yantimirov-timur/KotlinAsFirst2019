@@ -292,17 +292,16 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    //1)попрообовать сделать циклом переприсваивание
+    //1)попрообовать сделать циклом переприсваивание цифр
     var sumlist = String()
     var number = n
     val list = mutableListOf<Int>()//пустой лист с цифрами
-    val listletters = "abcdefghijklmnopqrstuvwxyz".toCharArray()//Английский алфавит
-    val listdigits = mutableListOf<Int>(10, 11, 12, 13, 14, 15, 16, 17)//лист с цифрами
+    val listletters = "abcdefghijklmnopqrstuvwxyz".toCharArray()
     val emptylist = mutableListOf<Char>()//Пустой лист с буквами
     var ost = 0
     if (number == 0) {
         list.add(number)
-        sumlist += list.joinToString(separator = "")
+        sumlist += list.joinToString()
     }
     while (number >= 1) {
         ost = number % base
@@ -315,7 +314,27 @@ fun convertToString(n: Int, base: Int): String {
                 (ost == 13) -> emptylist.add(listletters[3])
                 (ost == 14) -> emptylist.add(listletters[4])
                 (ost == 15) -> emptylist.add(listletters[5])
-                (ost == n) -> emptylist.add(listletters[25])
+                (ost == 16) -> emptylist.add(listletters[6])
+                (ost == 17) -> emptylist.add(listletters[7])
+                (ost == 18) -> emptylist.add(listletters[8])
+                (ost == 19) -> emptylist.add(listletters[9])
+                (ost == 20) -> emptylist.add(listletters[10])
+                (ost == 21) -> emptylist.add(listletters[11])
+                (ost == 22) -> emptylist.add(listletters[12])
+                (ost == 23) -> emptylist.add(listletters[13])
+                (ost == 24) -> emptylist.add(listletters[14])
+                (ost == 25) -> emptylist.add(listletters[15])
+                (ost == 26) -> emptylist.add(listletters[16])
+                (ost == 27) -> emptylist.add(listletters[17])
+                (ost == 28) -> emptylist.add(listletters[18])
+                (ost == 29) -> emptylist.add(listletters[19])
+                (ost == 30) -> emptylist.add(listletters[20])
+                (ost == 31) -> emptylist.add(listletters[21])
+                (ost == 32) -> emptylist.add(listletters[22])
+                (ost == 33) -> emptylist.add(listletters[23])
+                (ost == 34) -> emptylist.add(listletters[24])
+                (ost == 35) -> emptylist.add(listletters[25])
+                (ost == 36) -> emptylist.add(listletters[25])
             }
             sumlist += emptylist.joinToString(separator = "")
         } else if (ost < 10) {
@@ -327,6 +346,8 @@ fun convertToString(n: Int, base: Int): String {
     }
     return sumlist.reversed()
 }
+
+
 
 
 /**
