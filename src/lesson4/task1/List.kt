@@ -337,7 +337,7 @@ fun convertToString(n: Int, base: Int): String {
                 (ost == 36) -> emptylist.add(listletters[25])
             }
             sumlist += emptylist.joinToString(separator = "")
-        } else if (ost < 10) {
+        }  else if (ost < 10) {
             list.add(ost)
             sumlist += list.joinToString(separator = "")
         }
