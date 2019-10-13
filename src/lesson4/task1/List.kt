@@ -293,16 +293,17 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun convertToString(n: Int, base: Int): String {
     //1)попрообовать сделать циклом переприсваивание
-    //2)написать условие когда буква впереди
     var sumlist = String()
     var number = n
     val list = mutableListOf<Int>()//пустой лист с цифрами
     val listletters = "abcdefghijklmnopqrstuvwxyz".toCharArray()//Английский алфавит
-    val listdigits = mutableListOf<Int>(10, 11, 12, 13, 14, 15, 16, 17)
+    val listdigits = mutableListOf<Int>(10, 11, 12, 13, 14, 15, 16, 17)//лист с цифрами
     val emptylist = mutableListOf<Char>()//Пустой лист с буквами
     var ost = 0
-    if (number == 0)
+    if (number == 0) {
         list.add(number)
+        sumlist += list.joinToString(separator = "")
+    }
     while (number >= 1) {
         ost = number % base
         number /= base
