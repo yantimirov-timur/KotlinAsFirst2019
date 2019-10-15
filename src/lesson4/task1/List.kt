@@ -361,6 +361,7 @@ fun russian(n: Int): String {
     val listwordsthousand =
         listOf<String>("одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")//для тысяч
     val listwords2 = listOf<String>(//Десятки
+        "десять",
         "двадцать",
         "тридцать",
         "сорок",
@@ -415,7 +416,7 @@ fun russian(n: Int): String {
         //Условие для 2значного числа
         else if (number.toString().length == 2 && number !in 11..19) {
             mod1 = number / 10
-            sumlist.add(listwords2[mod1 - 2])
+            sumlist.add(listwords2[mod1 - 1])
             number %= 10
         } else if (number.toString().length == 2 && number in 11..19) {
             sumlist.add(listwords2_1[number - 11])
@@ -453,11 +454,11 @@ fun russian(n: Int): String {
                 else if (thausands.toString().length == 2 && thausands !in 11..19) {
                     if (thausands % 10 == 0) {
                         mod = thausands / 10
-                        sumlist1.add(listwords2[mod - 2] + " тысяч")
+                        sumlist1.add(listwords2[mod - 1] + " тысяч")
                         thausands %= 10
                     } else {
                         mod = thausands / 10
-                        sumlist1.add(listwords2[mod - 2])
+                        sumlist1.add(listwords2[mod - 1])
                         thausands %= 10
                     }
 
