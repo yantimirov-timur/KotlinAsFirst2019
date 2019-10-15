@@ -405,7 +405,7 @@ fun russian(n: Int): String {
                 6 -> (sumlist1 + sumlist).joinToString(separator = " ")
                 else -> sumlist.joinToString(separator = " ")
             }
-            number/=10
+            number /= 10
 
         } else if (number.toString().length == 1 && number in 11..19) {
             sumlist.add(listwords2_1[mod1 - 11])
