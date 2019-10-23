@@ -91,7 +91,14 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val reverse = mutableMapOf<Int, List<String>>()
+    for ((name, grade) in grades) {
+        reverse[grade] = reverse.getOrDefault(grade, listOf()) + name
+    }
+    return reverse
+}
+
 
 /**
  * Простая
@@ -103,7 +110,13 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((x1, x2) in b) {
+        if (b[x1] == a[x1] && a[x2] == b[x2])
+            return true
+    }
+    return false
+}
 
 /**
  * Простая
@@ -119,7 +132,16 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+    val equalstoremove = mutableListOf<String>()
+    for ((x1, x2) in a) {
+        if (a[x1] == b[x1] && a[x2] == b[x2])
+            equalstoremove.add(x1)
+    }
+    for (x1 in equalstoremove) {
+        a.remove(x1)
+    }
+}
 
 /**
  * Простая
@@ -128,14 +150,19 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TO
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val result = mutableListOf<String>()
+    a.toMutableSet()
+    b.toMutableSet()
+    return result + a.intersect(b)
+}
 
 /**
  * Средняя
  *
  * Объединить два ассоциативных массива `mapA` и `mapB` с парами
  * "имя"-"номер телефона" в итоговый ассоциативный массив, склеивая
- * значения для повторяющихся ключей через запятую.
+ * значения для *повторяющихся* ключей через запятую.
  * В случае повторяющихся *ключей* значение из mapA должно быть
  * перед значением из mapB.
  *
@@ -147,7 +174,22 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val map = mapA.toMutableMap()
+    val list = mutableListOf<String>()
+    for ((name, number) in mapB) {
+        if (name in map) {
+            if (map[name] != mapB[name]) {
+                map[name]?.let { list.add(it) }
+                mapB[name]?.let { list.add(it) }
+                map[name] = list.joinToString()
+            }
+        } else
+            map[name] = number
+    }
+    return map
+}
+
 
 /**
  * Средняя
@@ -159,7 +201,27 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val mean = mutableListOf<Double>()
+    val map = mutableMapOf<String, Double>()
+    if (stockPrices.isEmpty()) return emptyMap()
+    var name = stockPrices.first()
+    for (names in stockPrices) {
+        if (name.first == names.first) {
+            mean.add(names.second)
+            map.put(name.first, (lesson4.task1.mean(mean)))
+        } else {
+            mean.clear()
+            name = names
+            if (name.first == names.first) {
+                mean.add(names.second)
+                map.put(names.first, (lesson4.task1.mean(mean)))
+            }
+        }
+
+    }
+    return map
+}
 
 /**
  * Средняя
@@ -187,7 +249,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val list1 = word.toCharArray()
+    if (chars.isEmpty()) return false
+    return chars.all { it in list1 }
+}
 
 /**
  * Средняя
@@ -201,7 +267,29 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {//переделать
+    val res = mutableMapOf<String, Int>()
+    var count = 0
+    var y = 0
+    var x = 0
+    while (x != list.size) {
+        for (i in x until list.size) {
+            if (list[y] == list[i])
+                count += 1
+            res.put(list[y], count)
+        }
+        x += 1
+        y += 1
+        count = 0
+        if (list.all { it in res })
+            break
+        else
+            continue
+    }
+    if (res.all { it.value == 1 }) return emptyMap()
+    return res
+}
+
 
 /**
  * Средняя
@@ -212,7 +300,16 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    if (words.isEmpty()) return false
+    val word = words.first().toCharArray()
+    for (i in 1 until words.size) {
+        (words[i]).toCharArray()
+        if (word.all { it in words[i] })
+            return true
+    }
+    return false
+}
 
 /**
  * Сложная

@@ -72,7 +72,7 @@ fun shoppingListCostTest() {
             )
     )
     assertEquals(
-            0.0,
+            0.0,m
             shoppingListCost(
                     listOf("Хлеб", "Молоко", "Кефир"),
                     mapOf()
