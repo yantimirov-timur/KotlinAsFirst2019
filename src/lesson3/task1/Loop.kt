@@ -2,10 +2,7 @@
 
 package lesson3.task1
 
-import kotlin.math.abs
-import kotlin.math.pow
 import kotlin.math.sqrt
-import kotlin.math.sqrt as sqrt1
 
 /**
  * Пример
@@ -301,17 +298,48 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
-
+fun squareSequenceDigit(n: Int): Int {
+    var sqr = 1
+    var sqrlist = 0
+    var count = 0
+    var result = 0
+    while (count < n) {
+        sqrlist = sqr * sqr
+        sqr += 1
+        count += digitNumber(sqrlist)
+    }
+    while (count >= n) {
+        result = sqrlist % 10
+        sqrlist /= 10
+        count -= 1
+    }
+    return result
+}
 
 /**
  * Сложная
  *
  * Найти n-ю цифру последовательности из чисел Фибоначчи (см. функцию fib выше):
- * 1123581321345589144...
+ * 11235813*2*1345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
 
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var fibdigit = 1
+    var fiblist = 0
+    var count = 0
+    var result = 0
+    while (count < n) {
+        fiblist = fib(fibdigit)
+        fibdigit += 1
+        count += digitNumber(fiblist)
+    }
+    while (count >= n) {
+        result = fiblist % 10
+        fiblist /= 10
+        count -= 1
+    }
+    return result
+}
