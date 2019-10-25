@@ -299,19 +299,29 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var sqr = 1
+    var c = 0
+    var k = 0
+    var sqr = 0
     var sqrlist = 0
     var count = 0
     var result = 0
     while (count < n) {
-        sqrlist = sqr * sqr
         sqr += 1
-        count += digitNumber(sqrlist)
+        sqrlist = sqr * sqr
+        c = 1
+        k = 10
+        while (sqrlist / k != 0) {
+            k *= 10
+            c += 1
+        }
+        count += c
     }
-    while (count >= n) {
-        result = sqrlist % 10
-        sqrlist /= 10
-        count -= 1
+    count -= c
+    k /= 10
+    while (count != n) {
+        result = sqrlist / k % 10
+        k /= 10
+        count += 1
     }
     return result
 }
@@ -327,19 +337,30 @@ fun squareSequenceDigit(n: Int): Int {
  */
 
 fun fibSequenceDigit(n: Int): Int {
-    var fibdigit = 1
+    var c = 0
+    var k = 0
+    var sqr = 0
     var fiblist = 0
     var count = 0
     var result = 0
     while (count < n) {
-        fiblist = fib(fibdigit)
-        fibdigit += 1
-        count += digitNumber(fiblist)
+        sqr += 1
+        fiblist = fib(sqr)
+        c = 1
+        k = 10
+        while (fiblist / k != 0) {
+            k *= 10
+            c += 1
+        }
+        count += c
     }
-    while (count >= n) {
-        result = fiblist % 10
-        fiblist /= 10
-        count -= 1
+    count -= c
+    k /= 10
+    while (count != n) {
+        result = fiblist / k % 10
+        k /= 10
+        count += 1
     }
     return result
 }
+

@@ -112,9 +112,9 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     for ((x1, x2) in a) {
-        if (b[x1] != x2) return false
+        if (b[x1] == x2) return true
     }
-    return true
+    return false
 }
 
 
@@ -186,7 +186,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
                 map[name] = list.joinToString()
             }
         } else
-            map[name] = number
+            map.put(name, number)
     }
     return map
 }
@@ -202,7 +202,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "NFLX" to 40.0, "MSFT" to 200.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {//first = "",second 0: first="" second = 1 exp second 0,5 out 1
     var stockPrices1 = stockPrices.toMap()
     val mean = mutableListOf<Double>()
     val map = mutableMapOf<String, Double>()
@@ -249,7 +249,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {//Разобраться с регистром
     val list1 = word.toCharArray()
     return list1.all { it in chars }
 }
@@ -304,7 +304,7 @@ fun hasAnagrams(words: List<String>): Boolean {//words=a "" "" out false exp tru
     val word = words.first().toCharArray()
     for (i in 0 until words.size) {
         (words[i]).toCharArray()
-        if (word.all { it in words[i] }&& !word.contentEquals(words[i].toCharArray()))
+        if (word.all { it in words[i] } && !word.contentEquals(words[i].toCharArray()))
             return true
     }
     return false
