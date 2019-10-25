@@ -299,29 +299,19 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var c = 0
-    var k = 0
-    var sqr = 0
+    var sqr = 1
     var sqrlist = 0
     var count = 0
     var result = 0
     while (count < n) {
-        sqr += 1
         sqrlist = sqr * sqr
-        c = 1
-        k = 10
-        while (sqrlist / k != 0) {
-            k *= 10
-            c += 1
-        }
-        count += c
+        sqr += 1
+        count += digitNumber(sqrlist)
     }
-    count -= c
-    k /= 10
-    while (count != n) {
-        result = sqrlist / k % 10
-        k /= 10
-        count += 1
+    while (count >= n) {
+        result = sqrlist % 10
+        sqrlist /= 10
+        count -= 1
     }
     return result
 }
@@ -330,37 +320,27 @@ fun squareSequenceDigit(n: Int): Int {
  * Сложная
  *
  * Найти n-ю цифру последовательности из чисел Фибоначчи (см. функцию fib выше):
- * 11235813*2*1345589144...
+ * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-
 fun fibSequenceDigit(n: Int): Int {
-    var c = 0
-    var k = 0
-    var sqr = 0
+    var fibdigit = 1
     var fiblist = 0
     var count = 0
     var result = 0
     while (count < n) {
-        sqr += 1
-        fiblist = fib(sqr)
-        c = 1
-        k = 10
-        while (fiblist / k != 0) {
-            k *= 10
-            c += 1
-        }
-        count += c
+        fiblist=fib(fibdigit)
+        fibdigit += 1
+        count += digitNumber(fiblist)
     }
-    count -= c
-    k /= 10
-    while (count != n) {
-        result = fiblist / k % 10
-        k /= 10
-        count += 1
+    while (count >= n) {
+        result = fiblist % 10
+        fiblist /= 10
+        count -= 1
     }
     return result
 }
+
 
