@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.math.min
+
 /**
  * Пример
  *
@@ -21,7 +23,6 @@ fun shoppingListCost(
             totalCost += itemCost
         }
     }
-
     return totalCost
 }
 
@@ -112,9 +113,9 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     for ((x1, x2) in a) {
-        if (b[x1] == x2) return true
+        if (b[x1] != x2) return false
     }
-    return false
+    return true
 }
 
 
@@ -191,7 +192,6 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     return map
 }
 
-
 /**
  * Средняя
  *
@@ -202,23 +202,28 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "NFLX" to 40.0, "MSFT" to 200.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {//first = "",second 0: first="" second = 1 exp second 0,5 out 1
-    var stockPrices1 = stockPrices.toMap()
-    val mean = mutableListOf<Double>()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val meanprice = mutableListOf<Double>()
     val map = mutableMapOf<String, Double>()
     if (stockPrices.isEmpty()) return emptyMap()
-    var name = stockPrices.first()
-    for ((key, value) in stockPrices1) {
-        if (name.first == key) {
-            mean.add(value)
-            map.put(name.first, (lesson4.task1.mean(mean)))
-        } else {
+    var y = 0
+    var name = stockPrices[y]
+    var x = 0
+    while (x != stockPrices.size) {
+        for ((key, value) in stockPrices) {
             if (name.first == key) {
-                mean.add(value)
-                map.put(key, (lesson4.task1.mean(mean)))
+                meanprice.add(value)
+                map.put(name.first, lesson4.task1.mean(meanprice))
             }
+            x += 1
         }
-
+        x = 1
+        y += 1
+        meanprice.clear()
+        if (stockPrices.all { it.first in map })
+            break
+        else
+            name = stockPrices[y]
     }
     return map
 }
@@ -234,11 +239,24 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *
  * Например:
  *   findCheapestStuff(
- *     mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
+ *     mapOf("Любятово" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
  *     "печенье"
- *   ) -> "Мария"
+ *   ) -> "Любятово"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var name = ""
+    var minpr = 100000.0
+    for ((key, value) in stuff) {
+        if (stuff.all { value.first != kind }) {
+            return null
+        }
+        if (value.first == kind && value.second < minpr) {
+            minpr = value.second
+            name = key
+        }
+    }
+    return name
+}
 
 /**
  * Средняя
@@ -249,9 +267,10 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {//Разобраться с регистром
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val list1 = word.toCharArray()
-    return list1.all { it in chars }
+    return if (list1.all { it in chars }) true
+    else list1.map { it.toUpperCase() } == chars.map { it.toUpperCase() }
 }
 
 /**
@@ -266,7 +285,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {//Разобрать
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> {//ожидалось a=2,out b=1
+fun extractRepeats(list: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
     var count = 0
     var y = 0
@@ -286,6 +305,10 @@ fun extractRepeats(list: List<String>): Map<String, Int> {//ожидалось a
             continue
     }
     if (res.all { it.value == 1 }) return emptyMap()
+    for ((key, value) in res) {
+        if (value == 1)
+            res.remove(key)
+    }
     return res
 }
 
@@ -299,13 +322,20 @@ fun extractRepeats(list: List<String>): Map<String, Int> {//ожидалось a
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean {//words=a "" "" out false exp true
+fun hasAnagrams(words: List<String>): Boolean {
     if (words.isEmpty()) return false
-    val word = words.first().toCharArray()
-    for (i in 0 until words.size) {
-        (words[i]).toCharArray()
-        if (word.all { it in words[i] } && !word.contentEquals(words[i].toCharArray()))
-            return true
+    var word = words.first().toCharArray()
+    var x = 1
+    var y = 0
+    while (x != words.size) {
+        for (i in x until words.size) {
+            (words[i]).toCharArray()
+            if (word.all { it in words[i] })
+                return true
+        }
+        x += 1
+        y += 1
+        word = words[y].toCharArray()
     }
     return false
 }
