@@ -239,22 +239,23 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *
  * Например:
  *   findCheapestStuff(
- *     mapOf("Любятово" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
+ *     mapOf("Любятово" to ("печенье" to 20.0), "Орео" to ("торт" to 100.0)),
  *     "печенье"
  *   ) -> "Любятово"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var name = ""
-    var minpr = 100000.0
+    var count = 0
+    val minprice = stuff.values.first().second
     for ((key, value) in stuff) {
-        if (stuff.all { value.first != kind }) {
-            return null
-        }
-        if (value.first == kind && value.second < minpr) {
-            minpr = value.second
-            name = key
+        if (value.first != kind) {
+            count += 1
+        } else {
+            if (value.second <= minprice)
+                name = key
         }
     }
+    if (count == stuff.size) return null
     return name
 }
 
@@ -285,13 +286,13 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> {
+fun extractRepeats(list: List<String>): Map<String, Int> {//
     val res = mutableMapOf<String, Int>()
     var count = 0
     var y = 0
     var x = 0
     while (x != list.size) {
-        for (i in x until list.size) {
+        for (i in 0 until list.size) {
             if (list[y] == list[i])
                 count += 1
             res.put(list[y], count)
@@ -299,7 +300,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
         x += 1
         y += 1
         count = 0
-        if (list.all { it in res })
+        if (list.all { it in res.keys })
             break
         else
             continue
