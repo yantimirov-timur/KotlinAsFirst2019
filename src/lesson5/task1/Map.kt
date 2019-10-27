@@ -234,7 +234,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  * Входными данными является ассоциативный массив
  * "название товара"-"пара (тип товара, цена товара)"
  * и тип интересующего нас товара.
- * Необходимо вернуть название товара заданного типа с минимальной стоимостью
+ * Необходимо вернуть **название товара-заданного типа с минимальной стоимостью**
  * или null в случае, если товаров такого типа нет.
  *
  * Например:
@@ -245,17 +245,18 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var name = ""
-    var count = 0
-    val minprice = stuff.values.first().second
+    var minprice = stuff.values.first().second
+    if (stuff.all { it.value.first != kind }) return null
     for ((key, value) in stuff) {
-        if (value.first != kind) {
-            count += 1
-        } else {
-            if (value.second <= minprice)
-                name = key
+        if (value.first == kind && value.second <= minprice) {
+            minprice = value.second
+            name = key
+        } else if (value.first != kind)
+            minprice = value.second
+        else {
+            continue
         }
     }
-    if (count == stuff.size) return null
     return name
 }
 
@@ -291,25 +292,26 @@ fun extractRepeats(list: List<String>): Map<String, Int> {//
     var count = 0
     var y = 0
     var x = 0
-    while (x != list.size) {
-        for (i in 0 until list.size) {
+    while (x != list.size + 1) {
+        for (i in x until list.size) {
             if (list[y] == list[i])
                 count += 1
-            res.put(list[y], count)
         }
-        x += 1
-        y += 1
-        count = 0
+        if (count > 1) {
+            res.put(list[y], count)
+            x += 1
+            y += 1
+            count = 0
+        } else {
+            x += 1
+            continue
+        }
         if (list.all { it in res.keys })
             break
         else
             continue
     }
     if (res.all { it.value == 1 }) return emptyMap()
-    for ((key, value) in res) {
-        if (value == 1)
-            res.remove(key)
-    }
     return res
 }
 
