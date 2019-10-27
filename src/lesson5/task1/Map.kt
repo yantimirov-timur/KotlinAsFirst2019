@@ -248,8 +248,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     if (stuff.all { it.value.first != kind }) return null
     val map = stuff.values.groupBy { it.first == kind }
     for ((key, value) in stuff) {
-        for ((_, value1) in map) {
-            if (value.second <= value1.first().second)
+        for ((key1, value1) in map) {
+            if (key1==true &&value.second <= value1.first().second)
                 name = key
         }
     }
