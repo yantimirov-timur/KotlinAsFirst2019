@@ -245,19 +245,27 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var name = ""
-    var minprice = stuff.values.first().second
     if (stuff.all { it.value.first != kind }) return null
+    val map = stuff.values.groupBy { it.first == kind }
     for ((key, value) in stuff) {
-        if (value.first == kind && value.second <= minprice) {
-            minprice = value.second
-            name = key
-        } else if (value.first != kind)
-            minprice = value.second
-        else {
-            continue
+        for ((_, value1) in map) {
+            if (value.second <= value1.first().second)
+                name = key
         }
     }
     return name
+
+
+    /**for ((key, value) in stuff) {
+    if (value.first == kind && value.second <= minprice) {
+    minprice = value.second
+    name = key
+    } else if (value.first != kind)
+    minprice = value.second
+    else {
+    continue
+    }
+     */
 }
 
 /**
@@ -272,7 +280,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val list1 = word.toCharArray()
     for (i in 0..list1.size - 1) {
-        if (chars.any { it.toUpperCase() == list1[i].toUpperCase()}&&word.length==1)
+        if (chars.any { it.toUpperCase() == list1[i].toUpperCase() } && word.length == 1)
             return true
     }
     return if (list1.all { it in chars }) true
@@ -294,33 +302,13 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
     var count = 0
-    var y = 0
-    var x = 0
-    while (x != list.size) {
-        for (i in x until list.size) {
-            if (list[y] == list[i])
-                count += 1
-        }
-        if (count > 1) {
-            res.put(list[y], count)
-            x += 1
-            y += 1
-            count = 0
-        } else {
-            x += 1
-            y += 1
-            count = 0
-            continue
-        }
-        if (list.all { it in res.keys })
-            break
-        else
-            continue
+    for (i in 1 until list.size) {
+        count = list.count { it == list[i] }
+        if (count != 1)
+            res[list[i]] = count
     }
-    if (res.all { it.value == 1 }) return emptyMap()
     return res
 }
-
 
 /**
  * Средняя
