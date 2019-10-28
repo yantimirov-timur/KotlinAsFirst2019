@@ -298,7 +298,8 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
+//Идею взял - http://www.cyberforum.ru/pascal/thread66588.html
+fun squareSequenceDigit(n: Int): Int {//
     var sqr = 1
     var sqrlist = 0
     var count = 0

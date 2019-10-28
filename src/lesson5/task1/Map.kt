@@ -249,24 +249,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     val map = stuff.values.groupBy { it.first == kind }
     for ((key, value) in stuff) {
         for ((key1, value1) in map) {
-            if (key1==true &&value.second <= value1.first().second)
+            if (key1 && value.second <= value1.first().second && value.first == kind)
                 name = key
         }
     }
-
     return name
-
-
-    /**for ((key, value) in stuff) {
-    if (value.first == kind && value.second <= minprice) {
-    minprice = value.second
-    name = key
-    } else if (value.first != kind)
-    minprice = value.second
-    else {
-    continue
-    }
-     */
 }
 
 /**
@@ -280,8 +267,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val list1 = word.toCharArray()
-    for (i in 0..list1.size - 1) {
-        if (chars.any { it.toUpperCase() == list1[i].toUpperCase() } && word.length == 1)
+    for (element in list1) {
+        if (chars.any { it.toUpperCase() == element.toUpperCase() } && word.length == 1)
             return true
     }
     return if (list1.all { it in chars }) true
@@ -381,7 +368,33 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    var res1 = 0
+    var res2 = 0
+    var x = 0
+    var y = 0
+    var count = 0
+    while (count != list.size) {
+        for (i in x until list.size) {
+            if (list[y] + list[x] == number && x != y) {
+                res1 = y
+                res2 = x
+            }
+            x += 1
+
+        }
+        if (res1 == 0 && res2 == 0) {
+            y += 1
+            x = 0
+            count++
+            continue
+        } else
+            return res1 to res2
+    }
+    if (list.isEmpty()) return -1 to -1
+    if (res1 == 0 && res2 == 0) return -1 to -1
+    return res1 to res2
+}
 
 /**
  * Очень сложная
