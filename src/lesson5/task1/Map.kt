@@ -177,17 +177,21 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    var res = mutableMapOf<String, String>()
     val map = mapA.toMutableMap()
     val list = mutableListOf<String>()
     for ((name, number) in mapB) {
         if (name in map) {
-            if (map[name] != mapB[name]) {
+            if (map[name] == mapB[name]) {
+                continue
+            } else {
                 map[name]?.let { list.add(it) }
                 mapB[name]?.let { list.add(it) }
                 map[name] = list.joinToString()
             }
         } else
-            map.put(name, number)
+            map[name] = number
+
     }
     return map
 }
@@ -381,7 +385,6 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
                 res2 = x
             }
             x += 1
-
         }
         if (res1 == 0 && res2 == 0) {
             y += 1
@@ -417,4 +420,15 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val res = mutableSetOf<String>()
+    //val table: Array<Int> = Array(capacity, {0})
+    //var n = treasures.keys.count()
+    for ((key, value) in treasures) {
+        if (value.first <= capacity)
+            res += key
+
+    }
+    return res
+
+}
