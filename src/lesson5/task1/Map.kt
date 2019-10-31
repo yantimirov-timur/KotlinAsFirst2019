@@ -327,6 +327,7 @@ fun hasAnagrams(words: List<String>): Boolean {
         y += 1
         word = words[y].toCharArray()
     }
+
     return false
 }
 
