@@ -308,16 +308,18 @@ fun squareSequenceDigit(n: Int): Int {
     var sqr = 1
     var sqrList = 0
     var count = 0
-    val result: Int
+    var result: Int
     while (count < n) {
         sqrList = sqr * sqr
         sqr += 1
         count += digitNumber(sqrList)
     }
-    result = if (count > n)
-        sqrList / 10 % 10
-    else
-        sqrList % 10
+    if (count > n) {
+        result = sqrList / (10.toDouble().pow(digitNumber(sqrList) - 1)).toInt()
+        if ((10.toDouble().pow(digitNumber(sqrList) - 1)).toInt() == sqrList)
+            result = sqrList / (10.toDouble().pow(digitNumber(sqrList))).toInt()
+    } else
+        result = sqrList % 10
     return result
 
 }
@@ -343,7 +345,7 @@ fun fibSequenceDigit(n: Int): Int {
     }
 
     result = if (count > n)
-        (fibList / (10.toDouble().pow(digitNumber(n - 1))) % 10).toInt()
+        fibList / (10.toDouble().pow(digitNumber(fibList) - 1)).toInt()
     else
         fibList % 10
     return result

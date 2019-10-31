@@ -320,7 +320,7 @@ fun hasAnagrams(words: List<String>): Boolean {
     while (x != words.size) {
         for (i in x until words.size) {
             (words[i]).toCharArray()
-            if (word.all { it in words[i] })
+            if (words[i].all { it in word })
                 return true
         }
         x += 1
@@ -360,7 +360,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> =TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
 
 /**
  * Сложная
