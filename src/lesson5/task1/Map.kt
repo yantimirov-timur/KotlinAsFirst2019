@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -343,9 +344,15 @@ fun hasAnagrams(words: List<String>): Boolean {
  * Например:
  *   propagateHandshakes(
  *     mapOf(
+ *       "Mikhail" to setOf("Sveta")
+ *       "Marat" to setOf("Mikhail", "Sveta"),
+ *       "Sveta" to setOf("Marat"),
+ *
+ *
  *       "Marat" to setOf("Mikhail", "Sveta"),
  *       "Sveta" to setOf("Marat"),
  *       "Mikhail" to setOf("Sveta")
+ *
  *     )
  *   ) -> mapOf(
  *          "Marat" to setOf("Mikhail", "Sveta"),
@@ -353,7 +360,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> =TODO()
 
 /**
  * Сложная
@@ -422,13 +429,32 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     val res = mutableSetOf<String>()
-    //val table: Array<Int> = Array(capacity, {0})
-    //var n = treasures.keys.count()
-    for ((key, value) in treasures) {
-        if (value.first <= capacity)
-            res += key
+    var x = 0
+    var cap = capacity
+    var n = treasures.keys.count()
+    val table = Array(n, { Array(n, { 0 }) })
 
+
+    var mass = mutableListOf<Int>()
+    var price = mutableListOf<Int>()
+
+    for ((key, value) in treasures) {
+        treasures[key]?.first?.let { mass.add(it) }
     }
+    for ((key, value) in treasures) {
+        treasures[key]?.second?.let { price.add(it) }
+    }
+
+    for (i in 1..n) {
+        for (n in 1..n) {
+            if (cap >= mass[i]) {
+                table[i][n] = max(table[i - 1][n], table[i - 1][n - mass[i]] + price[i])
+            } else
+                table[i][n] = table[i - 1][n]
+        }
+    }
+
+
     return res
 
 }

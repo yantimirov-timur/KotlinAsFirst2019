@@ -108,16 +108,15 @@ fun whichRookThreatens(
     rookX2: Int,
     rookY2: Int
 ): Int {
-    val rookTrue1 = (kingX != rookX1) && (kingY == rookY1) || (kingX == rookX1) && (kingY != rookY1)
-    val rookTrue2 = (kingX == rookX2) && (kingY != rookY2) || (kingX != rookX2) && (kingY == rookY2)
+    val rookTrue1 = (kingY == rookY1) || (kingX == rookX1)
+    val rookTrue2 = (kingX == rookX2) || (kingY == rookY2)
     val rookFalse1 = !rookTrue1
     val rookFalse2 = !rookTrue2
 
     return if ((rookFalse1) && (rookFalse2)) 0
-    else if ((rookTrue1) && (rookFalse2)) 1
     else if ((rookFalse1) && (rookTrue2)) 2
     else if ((rookTrue1 && rookTrue2)) 3
-    else -1
+    else 1
 }
 
 
@@ -142,13 +141,11 @@ fun rookOrBishopThreatens(
     val rookFalse = !rookTrue
     return if (rookFalse && bishopFalse)
         0
-    else if (rookTrue && bishopFalse)
-        1
     else if (rookFalse && bishopTrue)
         2
     else if (rookTrue && bishopTrue)
         3
-    else -1
+    else 1
 }
 
 
@@ -163,7 +160,7 @@ fun rookOrBishopThreatens(
 fun triangleKind(a: Double, b: Double, c: Double): Int =
     when {
         (a >= b + c || b >= a + c || c >= b + a) -> -1
-        (a.pow(2) == b.pow(2) + c.pow(2) || b.pow(2) == a.pow(2) + c.pow(2) || c.pow(2) == b.pow(2) + a.pow(2)) -> 1
+        (a.pow(2) == b.pow(2) + c.pow(2)) -> 1
         (a.pow(2) > b.pow(2) + c.pow(2) || b.pow(2) > a.pow(2) + c.pow(2) || c.pow(2) > b.pow(2) + a.pow(2)) -> 2
         (a.pow(2) < b.pow(2) + c.pow(2) || b.pow(2) < a.pow(2) + c.pow(2) || c.pow(2) < b.pow(2) + a.pow(2)) -> 0
         else -> -2

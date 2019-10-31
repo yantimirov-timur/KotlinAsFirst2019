@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -67,7 +68,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int {//Выполнен
+fun digitNumber(n: Int): Int {
     var count = 0
     var number = n
     do {
@@ -83,7 +84,7 @@ fun digitNumber(n: Int): Int {//Выполнен
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int {//Выполнен
+fun fib(n: Int): Int {
     var fib1 = 0
     var fib2 = 1
     for (i in 2..n) {
@@ -101,10 +102,9 @@ fun fib(n: Int): Int {//Выполнен
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {//Выполнен
-
-    var mult1 = 1//Множитель 1
-    var mult2 = 1//Множитель 2
+fun lcm(m: Int, n: Int): Int {
+    var mult1 = 1
+    var mult2 = 1
     if (m % n == 0) return m
     else if (n % m == 0) return n
     do {
@@ -122,15 +122,12 @@ fun lcm(m: Int, n: Int): Int {//Выполнен
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int {//Сделан
+fun minDivisor(n: Int): Int {
     var div = 3
-    do {
-        if (n % 2 == 0) return 2
-        if (n % div != 0)
-            div += 2
-        else return div
-    } while (n % div != 0)
-
+    if (n % 2 == 0) return 2
+    while (n % div != 0) {
+        div += 2
+    }
     return div
 }
 
@@ -152,7 +149,6 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
 fun isCoPrime(m: Int, n: Int): Boolean {
     var num1 = m
     var num2 = n
-
     while (num1 != num2) {
         if (num1 > num2)
             num1 -= num2
@@ -160,10 +156,21 @@ fun isCoPrime(m: Int, n: Int): Boolean {
             num2 -= num1
     }
     val minDiv = num1
-    return if (minDiv == 1) true
-    else if (minDiv % 2 == 0) false
-    else minDiv == m && minDiv == n
+    return when {
+        (minDiv == 1) -> true
+        (minDiv % 2 == 0) -> false
+        else -> minDiv == m && minDiv == n
+    }
 }
+
+/**
+ *  when {
+(minDiv == 1) -> return true
+(minDiv % 2 == 0) -> return false
+else -> minDiv == m && minDiv == n
+}
+return true
+ */
 
 /**
  * Простая
@@ -271,21 +278,18 @@ fun isPalindrome(n: Int): Boolean = (n == revert(n))
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean {
-    var div = 1
-    val digit1 = n % 10
-    var digit2 = n / 10 % 10
 
+fun hasDifferentDigits(n: Int): Boolean {
+    var count = 0
+    var div = 1
+    val digit = n % 10
     if (n % 10 == n) return false
-    if (digit1 != digit2) return true
-    else if (digit1 == digit2) {
-        for (i in 1..digitNumber(n)) {
-            digit2 = n / div % 10
-            div *= 10
-            if (digit1 != digit2) return true
-        }
+    while (digit == n / div % 10) {
+        div *= 10
+        count += 1
     }
-    return false
+    if (count == digitNumber(n)) return false
+    return true
 }
 
 
@@ -299,22 +303,23 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 //Идею взял - http://www.cyberforum.ru/pascal/thread66588.html
-fun squareSequenceDigit(n: Int): Int {//
+
+fun squareSequenceDigit(n: Int): Int {
     var sqr = 1
-    var sqrlist = 0
+    var sqrList = 0
     var count = 0
-    var result = 0
+    val result: Int
     while (count < n) {
-        sqrlist = sqr * sqr
+        sqrList = sqr * sqr
         sqr += 1
-        count += digitNumber(sqrlist)
+        count += digitNumber(sqrList)
     }
-    while (count >= n) {
-        result = sqrlist % 10
-        sqrlist /= 10
-        count -= 1
-    }
+    result = if (count > n)
+        sqrList / 10 % 10
+    else
+        sqrList % 10
     return result
+
 }
 
 /**
@@ -327,21 +332,23 @@ fun squareSequenceDigit(n: Int): Int {//
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var fibdigit = 1
-    var fiblist = 0
+    var fibDigit = 1
+    var fibList = 0
     var count = 0
-    var result = 0
+    val result: Int
     while (count < n) {
-        fiblist=fib(fibdigit)
-        fibdigit += 1
-        count += digitNumber(fiblist)
+        fibList = fib(fibDigit)
+        fibDigit += 1
+        count += digitNumber(fibList)
     }
-    while (count >= n) {
-        result = fiblist % 10
-        fiblist /= 10
-        count -= 1
-    }
+
+    result = if (count > n)
+        (fibList / (10.toDouble().pow(digitNumber(n - 1))) % 10).toInt()
+    else
+        fibList % 10
     return result
+
+
 }
 
 
