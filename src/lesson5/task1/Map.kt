@@ -3,7 +3,6 @@
 package lesson5.task1
 
 import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Пример
@@ -178,7 +177,6 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    var res = mutableMapOf<String, String>()
     val map = mapA.toMutableMap()
     val list = mutableListOf<String>()
     for ((name, number) in mapB) {
@@ -208,7 +206,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    val meanprice = mutableListOf<Double>()
+    val meanPrice = mutableListOf<Double>()
     val map = mutableMapOf<String, Double>()
     if (stockPrices.isEmpty()) return emptyMap()
     var y = 0
@@ -217,14 +215,14 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
     while (x != stockPrices.size) {
         for ((key, value) in stockPrices) {
             if (name.first == key) {
-                meanprice.add(value)
-                map.put(name.first, lesson4.task1.mean(meanprice))
+                meanPrice.add(value)
+                map.put(name.first, lesson4.task1.mean(meanPrice))
             }
             x += 1
         }
         x = 1
         y += 1
-        meanprice.clear()
+        meanPrice.clear()
         if (stockPrices.all { it.first in map })
             break
         else
@@ -252,10 +250,15 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var name = ""
     if (stuff.all { it.value.first != kind }) return null
     val map = stuff.values.groupBy { it.first == kind }
+    val list = mutableListOf<Double>()
+    for ((key, value) in map) {
+        value.all { key && list.addAll(listOf(it.second)) }
+    }
     for ((key, value) in stuff) {
-        for ((key1, value1) in map) {
-            if (key1 && value.second <= value1.first().second && value.first == kind)
+        if (list.min() != null) {
+            if (list.min() == value.second && value.first == kind) {
                 name = key
+            }
         }
     }
     return name
@@ -320,7 +323,7 @@ fun hasAnagrams(words: List<String>): Boolean {
     while (x != words.size) {
         for (i in x until words.size) {
             (words[i]).toCharArray()
-            if (words[i].all { it in word })
+            if (words[i].all { it in word } && words[i].length == word.size)
                 return true
         }
         x += 1
