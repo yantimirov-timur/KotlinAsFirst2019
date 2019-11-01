@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import kotlin.math.max
-
 /**
  * Пример
  *
@@ -177,22 +175,26 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val map = mapA.toMutableMap()
+    val res = mutableMapOf<String, String>()
     val list = mutableListOf<String>()
     for ((name, number) in mapB) {
-        if (name in map) {
-            if (map[name] == mapB[name]) {
-                continue
+        if (name in mapA) {
+            if (mapA[name] == mapB[name]) {
+                res[name] = number
             } else {
-                map[name]?.let { list.add(it) }
+                mapA[name]?.let { list.add(it) }
                 mapB[name]?.let { list.add(it) }
-                map[name] = list.joinToString()
+                res[name] = list.joinToString()
             }
         } else
-            map[name] = number
-
+            res[name] = number
     }
-    return map
+    for ((name, number) in mapA) {
+        if (name !in mapB) {
+            res[name] = number
+        }
+    }
+    return res
 }
 
 /**
@@ -431,34 +433,31 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, cap: Int): Set<String> {
     val res = mutableSetOf<String>()
     var x = 0
-    var cap = capacity
+    var cap = cap
     var n = treasures.keys.count()
-    val table = Array(n, { Array(n, { 0 }) })
-
-
-    var mass = mutableListOf<Int>()
-    var price = mutableListOf<Int>()
-
-    for ((key, value) in treasures) {
-        treasures[key]?.first?.let { mass.add(it) }
+    val table = Array(n) { Array(n) { 0 } }
+    var mass = 0
+    var price = 0
+    var currentItems = 0
+    var weight = 0
+    val priceList = mutableListOf<Pair<Int, Int>>()
+    for ((_, value) in treasures) {
+        priceList.add(value.first to value.second)
     }
-    for ((key, value) in treasures) {
-        treasures[key]?.second?.let { price.add(it) }
-    }
+    priceList.sortBy { it.second }
 
-    for (i in 1..n) {
-        for (n in 1..n) {
-            if (cap >= mass[i]) {
-                table[i][n] = max(table[i - 1][n], table[i - 1][n - mass[i]] + price[i])
-            } else
-                table[i][n] = table[i - 1][n]
+    for (i in 0 until priceList.size) {
+        if (weight + priceList[i].first <= cap) {
+            weight += priceList[i].first
+            price += priceList[i].second
         }
     }
-
-
+    for ((key, value) in treasures) {
+        if (value.first == weight)
+            res += key
+    }
     return res
-
 }
