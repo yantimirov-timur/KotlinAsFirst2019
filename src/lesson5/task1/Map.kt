@@ -276,14 +276,15 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val list1 = word.toCharArray()
-    for (element in list1) {
-        if (chars.any { it.toUpperCase() == element.toUpperCase() } && word.length == 1)
-            return true
+    val list = word.toCharArray()
+    var count = 0
+    for (i in list.indices) {
+        if (chars.contains(list[i]) || chars.contains(list[i].toUpperCase()))
+            count += 1
     }
-    return if (list1.all { it in chars }) true
-    else list1.any { list1.map { it.toUpperCase() } == chars.map { it.toUpperCase() } }
+    return count == list.size
 }
+
 
 /**
  * Средняя
@@ -299,7 +300,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
-    var count = 0
+    var count: Int
     for (i in 1 until list.size) {
         count = list.count { it == list[i] }
         if (count != 1)
@@ -433,7 +434,10 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {//Делал по алгоритму в приложении "Фоксфорд"
+fun bagPacking(
+    treasures: Map<String, Pair<Int, Int>>,
+    capacity: Int
+): Set<String> {//Делал по алгоритму из приложения "Фоксфорд"
     val result = mutableSetOf<String>()
     val table = Array(treasures.size + 1) { Array(capacity + 1) { 0 } }
     val priceList = mutableListOf(0)
