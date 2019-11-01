@@ -254,15 +254,8 @@ fun convert(n: Int, base: Int): List<Int> {
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int {
-    var digit = 0
-    var st = digits.size - 1
-    for (element in digits) {
-        digit += element * base.toDouble().pow(st).toInt()
-        st -= 1
-    }
-    return digit
-}
+fun decimal(digits: List<Int>, base: Int): Int = polynom(digits.reversed(), base)
+
 
 /**
  * Сложная

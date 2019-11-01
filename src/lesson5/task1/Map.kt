@@ -433,31 +433,33 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, cap: Int): Set<String> {
-    val res = mutableSetOf<String>()
-    var x = 0
-    var cap = cap
-    var n = treasures.keys.count()
-    val table = Array(n) { Array(n) { 0 } }
-    var mass = 0
-    var price = 0
-    var currentItems = 0
-    var weight = 0
-    val priceList = mutableListOf<Pair<Int, Int>>()
-    for ((_, value) in treasures) {
-        priceList.add(value.first to value.second)
-    }
-    priceList.sortBy { it.second }
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {//Делал по алгоритму в приложении "Фоксфорд"
+    val result = mutableSetOf<String>()
+    val table = Array(treasures.size + 1) { Array(capacity + 1) { 0 } }
+    val priceList = mutableListOf(0)
+    val weightList = mutableListOf(0)
+    val nameList = mutableListOf<String>()
 
-    for (i in 0 until priceList.size) {
-        if (weight + priceList[i].first <= cap) {
-            weight += priceList[i].first
-            price += priceList[i].second
+    for ((key, value) in treasures) {
+        nameList.add(key)
+        weightList.add(value.first)
+        priceList.add(value.second)
+    }
+    for (i in 1..treasures.size) {
+        for (j in 0..capacity) {
+            if (j >= weightList[i]) {
+                table[i][j] = maxOf(table[i - 1][j], table[i - 1][j - weightList[i]] + priceList[i])
+            } else
+                table[i][j] = table[i - 1][j]
         }
     }
-    for ((key, value) in treasures) {
-        if (value.first == weight)
-            res += key
+    var cap = capacity
+    for (i in treasures.size downTo 1) {
+        if (table[i][cap] != table[i - 1][cap]) {
+            result += (nameList[i - 1])
+            cap -= weightList[i]
+        }
     }
-    return res
+
+    return result
 }
