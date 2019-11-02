@@ -101,6 +101,7 @@ fun dateStrToDigit(str: String): String {
     if (list[0].toInt() < 10 && list[0].first() != '0') {
         list[0] = "0" + list[0]
     }
+
     return if (leapYear(list[2].toInt()) && list[1].toInt()==2 && list[0].toInt() < 29)
         emptyList<String>().joinToString()
     else if (!leapYear(list[2].toInt()) && list[1].toInt() == 2 && list[0].toInt() > 28)
