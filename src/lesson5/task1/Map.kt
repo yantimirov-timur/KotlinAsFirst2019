@@ -285,8 +285,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
     val list = word.toCharArray()
     var count = 0
-    for (i in list.indices) {
-        if (chars.contains(list[i]) || chars.contains(list[i].toUpperCase()))
+    for (i in word.indices) {
+        if (chars.contains(list[i]) || chars.contains(list[i].toUpperCase()) || chars.contains(list[i].toLowerCase()))
             count += 1
     }
     return count == list.size
