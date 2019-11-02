@@ -189,6 +189,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
         } else
             res[name] = number
     }
+
     for ((name, number) in mapB) {
         if (name in mapA) {
             if (mapA[name] == mapB[name]) {

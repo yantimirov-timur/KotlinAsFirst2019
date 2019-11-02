@@ -136,6 +136,7 @@ fun dateDigitToStr(digital: String): String {
     )
     if (list.size != 3 || monthList.all { it.second != list[1] } || list[0].toInt() > 31)
         return emptyList<String>().joinToString()
+    val day = daysInMonth(list[1].toInt(), list[2].toInt())
     for ((key, value) in monthList) {
         list[0].toInt()
         if (value == list[1]) {
@@ -143,7 +144,6 @@ fun dateDigitToStr(digital: String): String {
             break
         }
     }
-    val day = daysInMonth(list[1].toInt(), list[2].toInt())
     if (list[0].toInt() < 10) {
         list[0] = list[0].toInt().toString()
     }
