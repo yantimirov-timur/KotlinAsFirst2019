@@ -177,22 +177,29 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val res = mutableMapOf<String, String>()
     val list = mutableListOf<String>()
+    for ((name, number) in mapA) {
+        if (name in mapB) {
+            if (mapA[name] == mapB[name]) {
+                res[name] = number
+            } else {
+                list.add(number)
+                res[name] = list.joinToString()
+            }
+
+        } else
+            res[name] = number
+    }
     for ((name, number) in mapB) {
         if (name in mapA) {
             if (mapA[name] == mapB[name]) {
                 res[name] = number
             } else {
-                mapA[name]?.let { list.add(it) }
-                mapB[name]?.let { list.add(it) }
+                list.add(number)
                 res[name] = list.joinToString()
             }
+
         } else
             res[name] = number
-    }
-    for ((name, number) in mapA) {
-        if (name !in mapB) {
-            res[name] = number
-        }
     }
     return res
 }
@@ -218,7 +225,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
         for ((key, value) in stockPrices) {
             if (name.first == key) {
                 meanPrice.add(value)
-                map.put(name.first, lesson4.task1.mean(meanPrice))
+                map[name.first] = lesson4.task1.mean(meanPrice)
             }
             x += 1
         }
@@ -351,14 +358,9 @@ fun hasAnagrams(words: List<String>): Boolean {
  * Например:
  *   propagateHandshakes(
  *     mapOf(
- *       "Mikhail" to setOf("Sveta")
- *       "Marat" to setOf("Mikhail", "Sveta"),
- *       "Sveta" to setOf("Marat"),
  *
- *
- *       "Marat" to setOf("Mikhail", "Sveta"),
- *       "Sveta" to setOf("Marat"),
  *       "Mikhail" to setOf("Sveta")
+ *       "Sveta" to setOf("Marat"),
  *
  *     )
  *   ) -> mapOf(
@@ -367,7 +369,12 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> =TODO()
+
+
+
+
+
 
 /**
  * Сложная

@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -57,6 +59,8 @@ fun main() {
     }
 }
 
+fun leapYear(year: Int): Boolean =
+    ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
 
 /**
  * Средняя
@@ -69,7 +73,40 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val list = str.split(" ").toMutableList()
+    val monthList = listOf<Pair<String, String>>(
+        "января" to "01",
+        "февраля" to "02",
+        "марта" to "03",
+        "апреля" to "04",
+        "мая" to "05",
+        "июня" to "06",
+        "июля" to "07",
+        "августа" to "08",
+        "сентября" to "09",
+        "октября" to "10",
+        "ноября" to "11",
+        "декабря" to "12"
+    )
+
+    if (list.size != 3 || monthList.all { it.first != list[1] } || list[0].toInt() > 31)
+        return emptyList<String>().joinToString()
+    for ((key, value) in monthList) {
+        if (key == list[1]) {
+            list[1] = value
+            break
+        }
+    }
+    if (list[0].toInt() < 10) {
+        list[0] = "0" + list[0]
+    }
+    return if (!leapYear(list[2].toInt()) && list[0].toInt() == 29)
+        emptyList<String>().joinToString()
+    else
+        list.joinToString(separator = ".")
+}
+
 
 /**
  * Средняя
@@ -81,7 +118,39 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val list = digital.split(".").toMutableList()
+    val monthList = listOf<Pair<String, String>>(
+        "января" to "01",
+        "февраля" to "02",
+        "марта" to "03",
+        "апреля" to "04",
+        "мая" to "05",
+        "июня" to "06",
+        "июля" to "07",
+        "августа" to "08",
+        "сентября" to "09",
+        "октября" to "10",
+        "ноября" to "11",
+        "декабря" to "12"
+    )
+    if (list.size != 3 || monthList.all { it.second != list[1] } || list[0].toInt() > 31)
+        return emptyList<String>().joinToString()
+    for ((key, value) in monthList) {
+        list[0].toInt()
+        if (value == list[1]) {
+            list[1] = key
+            break
+        }
+    }
+    if (list[0].toInt() < 10) {
+        list[0] = list[0].toInt().toString()
+    }
+    return if (!leapYear(list[2].toInt()) && list[0].toInt() == 29)
+        emptyList<String>().joinToString()
+    else
+        list.joinToString(separator = " ")
+}
 
 /**
  * Средняя
