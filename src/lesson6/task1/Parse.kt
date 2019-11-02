@@ -59,8 +59,6 @@ fun main() {
     }
 }
 
-fun leapYear(year: Int): Boolean =
-    ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
 
 /**
  * Средняя
@@ -75,6 +73,7 @@ fun leapYear(year: Int): Boolean =
  */
 fun dateStrToDigit(str: String): String {
     val list = str.split(" ").toMutableList()
+
     val monthList = listOf<Pair<String, String>>(
         "января" to "01",
         "февраля" to "02",
@@ -98,16 +97,14 @@ fun dateStrToDigit(str: String): String {
             break
         }
     }
+    val day = daysInMonth(list[1].toInt(), list[2].toInt())
     if (list[0].toInt() < 10 && list[0].first() != '0') {
         list[0] = "0" + list[0]
     }
+    if (day < list[0].toInt())
+        return emptyList<String>().joinToString()
 
-    return if (leapYear(list[2].toInt()) && list[1].toInt() == 2 && list[0].toInt() >= 29)
-        emptyList<String>().joinToString()
-    else if (!leapYear(list[2].toInt()) && list[1].toInt() == 2 && list[0].toInt() > 28)
-        emptyList<String>().joinToString()
-    else
-        list.joinToString(separator = ".")
+    return list.joinToString(separator = ".")
 }
 
 
@@ -146,15 +143,13 @@ fun dateDigitToStr(digital: String): String {
             break
         }
     }
+    val day = daysInMonth(list[1].toInt(), list[2].toInt())
     if (list[0].toInt() < 10) {
         list[0] = list[0].toInt().toString()
     }
-    return if (leapYear(list[2].toInt()) && list[1] == "февраля" && list[0].toInt() >= 29)
-        emptyList<String>().joinToString()
-    else if (!leapYear(list[2].toInt()) && list[1] == "февраля" && list[0].toInt() > 28)
-        emptyList<String>().joinToString()
-    else
-        list.joinToString(separator = " ")
+    if (day < list[0].toInt())
+        return emptyList<String>().joinToString()
+    return list.joinToString(separator = " ")
 }
 
 /**
