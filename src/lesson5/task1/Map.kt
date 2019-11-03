@@ -132,13 +132,13 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
-    val equalstoremove = mutableListOf<String>()
+    val equalsToRemove = mutableListOf<String>()
     for ((x1, x2) in a) {
         if (b[x1] == x2) {
-            equalstoremove.add(x1)
+            equalsToRemove.add(x1)
         }
     }
-    for (x1 in equalstoremove) {
+    for (x1 in equalsToRemove) {
         a.remove(x1)
     }
 }
@@ -175,34 +175,19 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
-    val res = mutableMapOf<String, String>()
+    val map = mapA.toMutableMap()
     val list = mutableListOf<String>()
-    for ((name, number) in mapA) {
-        if (name in mapB) {
-            if (mapA[name] == mapB[name]) {
-                res[name] = number
-            } else {
-                list.add(number)
-                res[name] = list.joinToString()
-            }
-
-        } else
-            res[name] = number
-    }
-
     for ((name, number) in mapB) {
-        if (name in mapA) {
-            if (mapA[name] == mapB[name]) {
-                res[name] = number
-            } else {
-                list.add(number)
-                res[name] = list.joinToString()
+        if (name in map) {
+            if (map[name] != mapB[name]) {
+                map[name]?.let { list.add(it) }
+                mapB[name]?.let { list.add(it) }
+                map[name] = list.joinToString()
             }
-
         } else
-            res[name] = number
+            map[name] = number
     }
-    return res
+    return map
 }
 
 /**
@@ -370,11 +355,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> =TODO()
-
-
-
-
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
 
 
 /**
