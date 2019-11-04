@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import lesson7.task1.markdownToHtml
 
 /**
  * Пример
@@ -166,7 +167,22 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val matchedResults = Regex("""[+?\d]+""").findAll(phone)
+    val bracket = Regex("""\([^)]*\)""").find(phone)?.value
+    val anySymbols = Regex("""[^(\d[+]\s[-])]""").find(phone)?.value
+    var res = ""
+    for (i in matchedResults) {
+        res += i.value
+    }
+    if (bracket == "()")
+        return ""
+    else if (anySymbols != null)
+        return ""
+
+    return res
+}
+
 
 /**
  * Средняя
