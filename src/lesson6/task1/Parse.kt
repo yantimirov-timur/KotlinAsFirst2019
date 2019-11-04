@@ -170,7 +170,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val matchedResults = Regex("""[+?\d]+""").findAll(phone)
     val bracket = Regex("""\([^)]*\)""").find(phone)?.value
-    val anySymbols = Regex("""[^(\d[+]\s[-])]""").find(phone)?.value
+    val anySymbols = Regex("""[^\d([+]\s[-])]""").find(phone)?.value
     var res = ""
     for (i in matchedResults) {
         res += i.value
