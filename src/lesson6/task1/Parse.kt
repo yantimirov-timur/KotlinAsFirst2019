@@ -4,6 +4,7 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 import lesson7.task1.markdownToHtml
+import kotlin.math.max
 
 /**
  * Пример
@@ -170,7 +171,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val matchedResults = Regex("""[+?\d]+""").findAll(phone)
     val bracket = Regex("""\([^)]*\)""").find(phone)?.value
-    val anySymbols = Regex("""[^\d([+]\s[-])]""").find(phone)?.value
+    val anySymbols = Regex("""[^\d([+]\s[-]]+""").find(phone)?.value
     var res = ""
     for (i in matchedResults) {
         res += i.value
@@ -194,7 +195,19 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var res = 0
+    val matchedResults = Regex("""[\d]+""").findAll(jumps)
+    val anySymbols = Regex("""[^\d([%]\s[-]]+""").find(jumps)?.value
+
+    for (results in matchedResults) {
+        if (results.value.toInt() > res)
+            res = results.value.toInt()
+    }
+    if (res == 0 || anySymbols != null)
+        return -1
+    return res
+}
 
 /**
  * Сложная
@@ -207,7 +220,7 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int =TODO()
 
 /**
  * Сложная
