@@ -206,6 +206,7 @@ fun bestLongJump(jumps: String): Int {
     }
     if (res == 0 || anySymbols != null)
         return -1
+
     return res
 }
 
