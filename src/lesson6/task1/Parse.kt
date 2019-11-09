@@ -250,7 +250,7 @@ fun plusMinus(expression: String): Int {
     var res = list[0].toInt()
     var x = 1
     var y = 2
-    require(!Regex("""([-+]\d+|\d+[-+])""").containsMatchIn(list.toString()))
+    require(!(!Regex("""([-+]\d+|\d+[-+])""").containsMatchIn(list.toString()) || expression.isEmpty()))
     while (x != list.size) {
         when (list[x]) {
             "+" -> res += list[y].toInt()
@@ -271,7 +271,7 @@ fun plusMinus(expression: String): Int {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Яблоко упало на ветку с ветки оно упало на на землю" => результат 40 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int =TODO()
+fun firstDuplicateIndex(str: String): Int=TODO()
 
 
 /**
@@ -287,7 +287,7 @@ fun firstDuplicateIndex(str: String): Int =TODO()
  */
 fun mostExpensive(description: String): String {
     val listOfPair = mutableListOf<Pair<String, Double>>()
-    val name = Regex("""[а-яА-ЯёЁ]+""").findAll(description)
+    val name = Regex("""[а-яА-ЯёЁa-zA-Z]+""").findAll(description)
     val prices = Regex(""" [\d.]+""").findAll(description)
     val listOfNames = mutableListOf<String>()
     val listOfPrices = mutableListOf<Double>()
@@ -328,7 +328,7 @@ fun fromRoman(roman: String): Int {
     val simpleElement = Regex("""IX|XL|XC|CD|CM|IV""").split(roman).toString().toCharArray()
     val exception = Regex("""[^XCIVDLM]""").findAll(roman).toList()
     val list = mutableListOf<String>()
-    if (exception.isNotEmpty())
+    if (exception.isNotEmpty() || roman.isEmpty())
         return -1
     for (i in difElement) {
         list.add(i.value)
