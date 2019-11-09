@@ -3,8 +3,6 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import lesson7.task1.markdownToHtml
-import kotlin.math.max
 
 /**
  * Пример
@@ -171,7 +169,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String {
     val matchedResults = Regex("""[+?\d]+""").findAll(phone)
     val bracket = Regex("""\([^)]*\)""").find(phone)?.value
-    val anySymbols = Regex("""[^\d([+]\s[-]]+""").find(phone)?.value
+    val anySymbols = Regex("""[^\d([+]\s[-])]+""").find(phone)?.value
     var res = ""
     for (i in matchedResults) {
         res += i.value
@@ -199,14 +197,12 @@ fun bestLongJump(jumps: String): Int {
     var res = 0
     val matchedResults = Regex("""[\d]+""").findAll(jumps)
     val anySymbols = Regex("""[^\d([%]\s[-]]+""").find(jumps)?.value
-
     for (results in matchedResults) {
         if (results.value.toInt() > res)
             res = results.value.toInt()
     }
     if (res == 0 || anySymbols != null)
         return -1
-
     return res
 }
 
@@ -221,7 +217,24 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int =TODO()
+fun bestHighJump(jumps: String): Int {
+    var res = 0
+    val matchedResults = Regex("""[\d]+[\s][%]*[+]""").findAll(jumps)
+    val anySymbols = Regex("""[^\d([%]\s[-][+]]+""").find(jumps)?.value
+    var correctDigits = ""
+    for (result in matchedResults) {
+        correctDigits += result.value
+    }
+    val digits = Regex("""[\d]+""").findAll(correctDigits)
+    for (result in digits) {
+        if (res < result.value.toInt())
+            res = result.value.toInt()
+
+    }
+    if (anySymbols != null)
+        return -1
+    return res
+}
 
 /**
  * Сложная
@@ -232,7 +245,22 @@ fun bestHighJump(jumps: String): Int =TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val list = expression.split(" ")
+    var res = list[0].toInt()
+    var x = 1
+    var y = 2
+    require(!Regex("""([-+]\d+|\d+[-+])""").containsMatchIn(list.toString()))
+    while (x != list.size) {
+        when (list[x]) {
+            "+" -> res += list[y].toInt()
+            "-" -> res -= list[y].toInt()
+        }
+        x += 2
+        y += 2
+    }
+    return res
+}
 
 /**
  * Сложная
@@ -241,9 +269,10 @@ fun plusMinus(expression: String): Int = TODO()
  * Определить, имеются ли в строке повторяющиеся слова, идущие друг за другом.
  * Слова, отличающиеся только регистром, считать совпадающими.
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
- * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
+ * Пример: "Яблоко упало на ветку с ветки оно упало на на землю" => результат 40 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int =TODO()
+
 
 /**
  * Сложная
@@ -256,7 +285,31 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val listOfPair = mutableListOf<Pair<String, Double>>()
+    val name = Regex("""[а-яА-ЯёЁ]+""").findAll(description)
+    val prices = Regex(""" [\d.]+""").findAll(description)
+    val listOfNames = mutableListOf<String>()
+    val listOfPrices = mutableListOf<Double>()
+    for (i in name) {
+        listOfNames.add(i.value)
+    }
+    for (i in prices) {
+        listOfPrices.add(i.value.toDouble())
+    }
+    for (i in 0 until listOfNames.size) {
+        listOfPair.add(listOfNames[i] to listOfPrices[i])
+    }
+    if (listOfNames.isEmpty()) return ""
+    var max = listOfPair.first()
+    for (i in 0 until listOfPair.size) {
+        if (listOfPair[i].second >= max.second)
+            max = listOfPair[i]
+    }
+
+    return max.first
+}
+
 
 /**
  * Сложная
@@ -269,7 +322,41 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    var res = 0
+    val difElement = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
+    val simpleElement = Regex("""IX|XL|XC|CD|CM|IV""").split(roman).toString().toCharArray()
+    val exception = Regex("""[^XCIVDLM]""").findAll(roman).toList()
+    val list = mutableListOf<String>()
+    if (exception.isNotEmpty())
+        return -1
+    for (i in difElement) {
+        list.add(i.value)
+    }
+    for (i in 0 until list.size) {
+        when (list[i]) {
+            "IV" -> res += 4
+            "IX" -> res += 9
+            "XL" -> res += 40
+            "XC" -> res += 90
+            "CD" -> res += 400
+            "CM" -> res += 900
+        }
+    }
+    for (element in simpleElement) {
+        when (element) {
+            'I' -> res += 1
+            'V' -> res += 5
+            'X' -> res += 10
+            'L' -> res += 50
+            'C' -> res += 100
+            'D' -> res += 500
+            'M' -> res += 1000
+
+        }
+    }
+    return res
+}
 
 /**
  * Очень сложная

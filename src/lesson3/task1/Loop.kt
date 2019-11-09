@@ -164,15 +164,6 @@ fun isCoPrime(m: Int, n: Int): Boolean {
 }
 
 /**
- *  when {
-(minDiv == 1) -> return true
-(minDiv % 2 == 0) -> return false
-else -> minDiv == m && minDiv == n
-}
-return true
- */
-
-/**
  * Простая
  *
  * Для заданных чисел m и n, m <= n, определить, имеется ли хотя бы один точный квадрат между m и n,
@@ -288,8 +279,7 @@ fun hasDifferentDigits(n: Int): Boolean {
         div *= 10
         count += 1
     }
-    if (count == digitNumber(n)) return false
-    return true
+    return count < digitNumber(n)
 }
 
 
