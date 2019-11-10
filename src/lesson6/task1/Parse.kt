@@ -175,7 +175,6 @@ fun flattenPhoneNumber(phone: String): String {
     for (i in matchedResults) {
         res += i.value
     }
-
     if (bracket == "()" || anySymbols != null)
         return ""
     return res
@@ -194,8 +193,8 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     var res = 0
-    val matchedResults = Regex("""[\d]+""").findAll(jumps)
-    val anySymbols = Regex("""[^\d([%]\s[-]]+""").find(jumps)?.value
+    val matchedResults = Regex("""([\d]+)""").findAll(jumps)
+    val anySymbols = Regex("""([^\d([%]\s[-]]+)""").find(jumps)?.value
     for (results in matchedResults) {
         if (results.value.toInt() > res)
             res = results.value.toInt()
@@ -218,8 +217,8 @@ fun bestLongJump(jumps: String): Int {
  */
 fun bestHighJump(jumps: String): Int {
     var res = 0
-    val matchedResults = Regex("""[\d]+[\s][%]*[+]""").findAll(jumps)
-    val anySymbols = Regex("""[^\d([%]\s[-][+]]+""").find(jumps)?.value
+    val matchedResults = Regex("""([\d]+[\s][%]*[+])""").findAll(jumps)
+    val anySymbols = Regex("""([^\d([%]\s[-][+]]+)""").find(jumps)?.value
     var correctDigits = ""
     for (result in matchedResults) {
         correctDigits += result.value
@@ -315,7 +314,7 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     val listOfPair = mutableListOf<Pair<String, Double>>()
     val zero = Regex("""\s[0]""").find(description)?.value
-    val any = Regex("""[^0]""").find(description)?.value
+    val any = Regex("""[^0\s]+""").find(description)?.value
     val name = Regex("""[а-яА-ЯёЁa-zA-Z]+""").findAll(description)
     val prices = Regex("""[\s][\d]+""").findAll(description)
     val listOfNames = mutableListOf<String>()
@@ -333,6 +332,8 @@ fun mostExpensive(description: String): String {
             listOfPair.add(listOfNames[i] to listOfPrices[i])
         }
     }
+    if (listOfNames.isEmpty() && any == null)
+        return ""
     var max = listOfPair.first()
     for (i in 0 until listOfPair.size) {
         if (listOfPair[i].second >= max.second)
