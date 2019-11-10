@@ -175,6 +175,7 @@ fun flattenPhoneNumber(phone: String): String {
     for (i in matchedResults) {
         res += i.value
     }
+
     if (bracket == "()" || anySymbols != null)
         return ""
     return res
