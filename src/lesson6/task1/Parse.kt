@@ -260,7 +260,8 @@ fun plusMinus(expression: String): Int {
         }
         return res
 
-    } catch (e: NumberFormatException) {
+    }
+    catch (e: NumberFormatException) {
         throw IllegalArgumentException()
     }
 
