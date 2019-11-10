@@ -277,12 +277,11 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     val list = mutableListOf<String>()
-    var res = -1
     val newString = str.split(" ")
     var repeatWord = ""
     var partString = ""
     var repeatIndex = 0
-    if (newString.size == 1) return res
+    if (newString.size == 1) return -1
     for (i in 1 until newString.size) {
         if ((newString[i - 1] == newString[i]) || (newString[i - 1].toUpperCase() == newString[i].toUpperCase())) {
             repeatWord = newString[i]
@@ -294,9 +293,11 @@ fun firstDuplicateIndex(str: String): Int {
         list.add(newString[i])
     }
     partString = list.joinToString(separator = " ")
-    res = partString.lastIndex - (repeatWord.length - 1)
+    return if (partString.isEmpty())
+        partString.lastIndex
+    else
+        partString.lastIndex - (repeatWord.length - 1)
 
-    return res
 }
 
 /**
@@ -312,37 +313,25 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     val listOfPair = mutableListOf<Pair<String, Double>>()
+    val zero = Regex("""\s[0]""").find(description)?.value
+    val any = Regex("""[^0]""").find(description)?.value
     val name = Regex("""[а-яА-ЯёЁa-zA-Z]+""").findAll(description)
-    val prices = Regex(""" [\d.]+""").findAll(description)
-    val anySymbols = Regex("""[^а-яА-ЯёЁa-zA-Z\d.\s]+""").findAll(description)
+    val prices = Regex("""[\s][\d]+""").findAll(description)
     val listOfNames = mutableListOf<String>()
     val listOfPrices = mutableListOf<Double>()
-    val listOfSymbols = mutableListOf<String>()
-
-    for (i in anySymbols) {
-        listOfSymbols.add(i.value)
-    }
     for (i in prices) {
         listOfPrices.add(i.value.toDouble())
     }
     for (i in name) {
         listOfNames.add(i.value)
     }
-
-    if (listOfNames.isEmpty() && listOfSymbols.isEmpty()) return ""
-
-    for (i in 0 until listOfPrices.size) {
-        if (listOfPrices[i].roundToInt() == 0.0.roundToInt()) {
-            if (listOfSymbols.isEmpty() && listOfNames.isNotEmpty())
-                listOfPair.add((listOfNames[i]) to listOfPrices[i])
-            else if (listOfSymbols.isNotEmpty() && listOfNames.isEmpty())
-                listOfPair.add((listOfSymbols[i]) to listOfPrices[i])
-            else
-                listOfPair.add(listOfSymbols[i] + listOfNames[i] to listOfPrices[i])
-        } else
-            listOfPair.add((listOfNames[i]) to listOfPrices[i])
+    if (zero != null)
+        listOfPair.add(any.toString() to zero.toDouble())
+    else {
+        for (i in 0 until listOfPrices.size) {
+            listOfPair.add(listOfNames[i] to listOfPrices[i])
+        }
     }
-
     var max = listOfPair.first()
     for (i in 0 until listOfPair.size) {
         if (listOfPair[i].second >= max.second)
