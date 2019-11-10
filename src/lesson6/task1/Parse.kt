@@ -275,40 +275,8 @@ fun plusMinus(expression: String): Int {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Яблоко упало на ветку с ветки оно упало на на землю" => результат 40 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int {
-    var timeRes = -1
-    var res = 0
-    //   val a = Regex("""[a-z]""").findAll(str)
-    val list = mutableListOf<String>()
-    var newString = str.split(" ")
+fun firstDuplicateIndex(str: String): Int =TODO()
 
-    var b = ""
-
-
-    if (newString.size == 1) return -1
-
-    list
-
-    var x = 0
-    var y = 0
-
-    for (i in 1..newString.size - 1) {
-        if (newString[i - 1] == newString[i]) {
-            b = newString[i]
-            timeRes = i - 1
-            break
-        }
-    }
-
-    for (i in 0 until str.length) {
-        if (str[i] == b.first())
-            res = i
-
-    }
-
-
-    return res
-}
 
 
 /**
@@ -330,6 +298,8 @@ fun mostExpensive(description: String): String {
     val listOfNames = mutableListOf<String>()
     val listOfPrices = mutableListOf<Double>()
     val listOfSymbols = mutableListOf<String>()
+
+
     for (i in anySymbols) {
         listOfSymbols.add(i.value)
     }
@@ -339,18 +309,22 @@ fun mostExpensive(description: String): String {
     for (i in name) {
         listOfNames.add(i.value)
     }
+
     if (listOfNames.isEmpty() && listOfSymbols.isEmpty()) return ""
+
     for (i in 0 until listOfPrices.size) {
-        if (listOfPrices[i].roundToInt() == 0.0.roundToInt() && listOfNames.isEmpty())
-            listOfPair.add(listOfSymbols[i] to listOfPrices[i])
+        if (listOfPrices[i].roundToInt() == 0.0.roundToInt())
+            listOfPair.add((listOfSymbols[i] + listOfNames[i]) to listOfPrices[i])
         else
             listOfPair.add(listOfNames[i] to listOfPrices[i])
     }
+
     var max = listOfPair.first()
     for (i in 0 until listOfPair.size) {
         if (listOfPair[i].second >= max.second)
             max = listOfPair[i]
     }
+
     return max.first
 }
 
