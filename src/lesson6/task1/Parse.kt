@@ -174,11 +174,8 @@ fun flattenPhoneNumber(phone: String): String {
     for (i in matchedResults) {
         res += i.value
     }
-    if (bracket == "()")
+    if (bracket == "()" || anySymbols != null)
         return ""
-    else if (anySymbols != null)
-        return ""
-
     return res
 }
 
@@ -250,7 +247,7 @@ fun plusMinus(expression: String): Int {
     var res = list[0].toInt()
     var x = 1
     var y = 2
-    require(!(!Regex("""([-+]\d+|\d+[-+])""").containsMatchIn(list.toString()) || expression.isEmpty()))
+    require((!Regex("""([-+]\d+|\d+[-+])""").containsMatchIn(list.toString()) || expression.isEmpty()))
     while (x != list.size) {
         when (list[x]) {
             "+" -> res += list[y].toInt()
@@ -271,7 +268,7 @@ fun plusMinus(expression: String): Int {
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Яблоко упало на ветку с ветки оно упало на на землю" => результат 40 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int=TODO()
+fun firstDuplicateIndex(str: String): Int =TODO()
 
 
 /**
@@ -289,24 +286,31 @@ fun mostExpensive(description: String): String {
     val listOfPair = mutableListOf<Pair<String, Double>>()
     val name = Regex("""[а-яА-ЯёЁa-zA-Z]+""").findAll(description)
     val prices = Regex(""" [\d.]+""").findAll(description)
+    val anySymbols = Regex("""[^а-яА-ЯёЁa-zA-Z\d.\s]+""").findAll(description)
     val listOfNames = mutableListOf<String>()
     val listOfPrices = mutableListOf<Double>()
-    for (i in name) {
-        listOfNames.add(i.value)
+    val listOfSymbols = mutableListOf<String>()
+    for (i in anySymbols) {
+        listOfSymbols.add(i.value)
     }
     for (i in prices) {
         listOfPrices.add(i.value.toDouble())
     }
-    for (i in 0 until listOfNames.size) {
-        listOfPair.add(listOfNames[i] to listOfPrices[i])
+    for (i in name) {
+        listOfNames.add(i.value)
     }
-    if (listOfNames.isEmpty()) return ""
+    for (i in 0 until listOfPrices.size) {
+        if (listOfPrices[i] == 0.0 && listOfNames.isEmpty())
+            listOfPair.add(listOfSymbols[i] to listOfPrices[i])
+        else
+            listOfPair.add(listOfNames[i] to listOfPrices[i])
+    }
+    if (listOfNames.isEmpty() && listOfSymbols.isEmpty()) return ""
     var max = listOfPair.first()
     for (i in 0 until listOfPair.size) {
         if (listOfPair[i].second >= max.second)
             max = listOfPair[i]
     }
-
     return max.first
 }
 
