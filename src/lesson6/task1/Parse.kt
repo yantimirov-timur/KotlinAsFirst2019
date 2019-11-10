@@ -75,7 +75,7 @@ fun main() {
 fun dateStrToDigit(str: String): String {
     val list = str.split(" ").toMutableList()
 
-    val monthList = listOf<Pair<String, String>>(
+    val monthList = listOf(
         "января" to "01",
         "февраля" to "02",
         "марта" to "03",
@@ -121,7 +121,7 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val list = digital.split(".").toMutableList()
-    val monthList = listOf<Pair<String, String>>(
+    val monthList = listOf(
         "января" to "01",
         "февраля" to "02",
         "марта" to "03",
@@ -260,8 +260,7 @@ fun plusMinus(expression: String): Int {
         }
         return res
 
-    }
-    catch (e: NumberFormatException) {
+    } catch (e: NumberFormatException) {
         throw IllegalArgumentException()
     }
 
@@ -274,11 +273,31 @@ fun plusMinus(expression: String): Int {
  * Определить, имеются ли в строке повторяющиеся слова, идущие друг за другом.
  * Слова, отличающиеся только регистром, считать совпадающими.
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
- * Пример: "Яблоко упало на ветку с ветки оно упало на на землю" => результат 40 (индекс первого 'в')
+ * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int =TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val list = mutableListOf<String>()
+    var res = -1
+    val newString = str.split(" ")
+    var repeatWord = ""
+    var partString = ""
+    var repeatIndex = 0
+    if (newString.size == 1) return res
+    for (i in 1 until newString.size) {
+        if ((newString[i - 1] == newString[i]) || (newString[i - 1].toUpperCase() == newString[i].toUpperCase())) {
+            repeatWord = newString[i]
+            repeatIndex = i
+            break
+        }
+    }
+    for (i in 0 until repeatIndex) {
+        list.add(newString[i])
+    }
+    partString = list.joinToString(separator = " ")
+    res = partString.lastIndex - (repeatWord.length - 1)
 
-
+    return res
+}
 
 /**
  * Сложная
@@ -300,7 +319,6 @@ fun mostExpensive(description: String): String {
     val listOfPrices = mutableListOf<Double>()
     val listOfSymbols = mutableListOf<String>()
 
-
     for (i in anySymbols) {
         listOfSymbols.add(i.value)
     }
@@ -314,10 +332,15 @@ fun mostExpensive(description: String): String {
     if (listOfNames.isEmpty() && listOfSymbols.isEmpty()) return ""
 
     for (i in 0 until listOfPrices.size) {
-        if (listOfPrices[i].roundToInt() == 0.0.roundToInt())
-            listOfPair.add((listOfSymbols[i] + listOfNames[i]) to listOfPrices[i])
-        else
-            listOfPair.add(listOfNames[i] to listOfPrices[i])
+        if (listOfPrices[i].roundToInt() == 0.0.roundToInt()) {
+            if (listOfSymbols.isEmpty() && listOfNames.isNotEmpty())
+                listOfPair.add((listOfNames[i]) to listOfPrices[i])
+            else if (listOfSymbols.isNotEmpty() && listOfNames.isEmpty())
+                listOfPair.add((listOfSymbols[i]) to listOfPrices[i])
+            else
+                listOfPair.add(listOfSymbols[i] + listOfNames[i] to listOfPrices[i])
+        } else
+            listOfPair.add((listOfNames[i]) to listOfPrices[i])
     }
 
     var max = listOfPair.first()
