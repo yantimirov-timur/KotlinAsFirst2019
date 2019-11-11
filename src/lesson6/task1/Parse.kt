@@ -168,7 +168,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    val matchedResults = Regex("""[+?\d]+""").findAll(phone)
+    val matchedResults = Regex("""([+?\d]+)""").findAll(phone)
     val bracket = Regex("""\([^)]*\)""").find(phone)?.value
     val anySymbols = Regex("""[^\d([+]\s[-])]+""").find(phone)?.value
     var res = ""
@@ -195,12 +195,14 @@ fun bestLongJump(jumps: String): Int {
     var res = 0
     val matchedResults = Regex("""([\d]+)""").findAll(jumps)
     val anySymbols = Regex("""([^\d([%]\s[-]]+)""").find(jumps)?.value
+
     for (results in matchedResults) {
         if (results.value.toInt() > res)
             res = results.value.toInt()
     }
     if (res == 0 || anySymbols != null)
         return -1
+
     return res
 }
 
@@ -315,8 +317,8 @@ fun mostExpensive(description: String): String {
     val listOfPair = mutableListOf<Pair<String, Double>>()
     val zero = Regex("""\s[0]""").find(description)?.value
     val any = Regex("""[^0\s]+""").find(description)?.value
-    val name = Regex("""[а-яА-ЯёЁa-zA-Z]+""").findAll(description)
-    val prices = Regex("""[\s][\d]+""").findAll(description)
+    val name = Regex("""[а-яА-ЯёЁa-zA-Z]+|[\d][\s]+|['^${'$'}]'""").findAll(description)
+    val prices = Regex("""[\s][\d.]+""").findAll(description)
     val listOfNames = mutableListOf<String>()
     val listOfPrices = mutableListOf<Double>()
     for (i in prices) {
@@ -325,11 +327,15 @@ fun mostExpensive(description: String): String {
     for (i in name) {
         listOfNames.add(i.value)
     }
+
     if (zero != null)
         listOfPair.add(any.toString() to zero.toDouble())
     else {
         for (i in 0 until listOfPrices.size) {
-            listOfPair.add(listOfNames[i] to listOfPrices[i])
+            if (listOfNames.isEmpty() && any == null)
+                return ""
+            else
+                listOfPair.add(listOfNames[i].replace(" ", "") to listOfPrices[i])
         }
     }
     if (listOfNames.isEmpty() && any == null)
