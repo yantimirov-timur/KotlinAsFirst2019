@@ -3,7 +3,6 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
-import kotlin.math.roundToInt
 
 /**
  * Пример
@@ -313,39 +312,27 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String {
+fun mostExpensive(description: String): String {//Переделать под условие,что в имени может быть что угодно
     val listOfPair = mutableListOf<Pair<String, Double>>()
-    val zero = Regex("""\s[0]""").find(description)?.value
-    val any = Regex("""[^0\s]+""").find(description)?.value
-    val name = Regex("""[а-яА-ЯёЁa-zA-Z]+|[\d][\s]+|['^${'$'}]'""").findAll(description)
+    val name = Regex("""[^\s\d.;]+|[\d][\s]""").findAll(description)
     val prices = Regex("""[\s][\d.]+""").findAll(description)
     val listOfNames = mutableListOf<String>()
     val listOfPrices = mutableListOf<Double>()
-    for (i in prices) {
-        listOfPrices.add(i.value.toDouble())
-    }
-    for (i in name) {
+    for (i in name)
         listOfNames.add(i.value)
-    }
-
-    if (zero != null)
-        listOfPair.add(any.toString() to zero.toDouble())
-    else {
+    for (i in prices)
+        listOfPrices.add(i.value.toDouble())
+    if (Regex("""[\da-zA-Zа-яА-я~_!@#$%^&*+-][\s][\d.]+""").containsMatchIn(description)) {
         for (i in 0 until listOfPrices.size) {
-            if (listOfNames.isEmpty() && any == null)
-                return ""
-            else
-                listOfPair.add(listOfNames[i].replace(" ", "") to listOfPrices[i])
+            listOfPair.add(listOfNames[i].replace(" ", "") to listOfPrices[i])
         }
-    }
-    if (listOfNames.isEmpty() && any == null)
+    } else
         return ""
     var max = listOfPair.first()
     for (i in 0 until listOfPair.size) {
         if (listOfPair[i].second >= max.second)
             max = listOfPair[i]
     }
-
     return max.first
 }
 
@@ -366,14 +353,14 @@ fun fromRoman(roman: String): Int {
     val difElement = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
     val simpleElement = Regex("""IX|XL|XC|CD|CM|IV""").split(roman).toString().toCharArray()
     val exception = Regex("""[^XCIVDLM]""").findAll(roman).toList()
-    val list = mutableListOf<String>()
+    val listOfDifElements = mutableListOf<String>()
     if (exception.isNotEmpty() || roman.isEmpty())
         return -1
     for (i in difElement) {
-        list.add(i.value)
+        listOfDifElements.add(i.value)
     }
-    for (i in 0 until list.size) {
-        when (list[i]) {
+    for (i in 0 until listOfDifElements.size) {
+        when (listOfDifElements[i]) {
             "IV" -> res += 4
             "IX" -> res += 9
             "XL" -> res += 40
@@ -433,4 +420,4 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> =TODO()

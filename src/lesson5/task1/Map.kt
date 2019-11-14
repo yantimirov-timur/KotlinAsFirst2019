@@ -180,12 +180,12 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     result.putAll(mapB)
     result.putAll(mapA)
     for ((key, value) in result) {
-        val v = mutableSetOf(value)
+        val valueSet = mutableSetOf(value)
         if (key in mapA && value != mapA[key])
-            mapA[key]?.let { v.add(it) }
+            mapA[key]?.let { valueSet.add(it) }
         else if (key in mapB && value != mapB[key])
-            mapB[key]?.let { v.add(it) }
-        res[key] = v.joinToString(separator = ", ")
+            mapB[key]?.let { valueSet.add(it) }
+        res[key] = valueSet.joinToString(separator = ", ")
     }
     return res
 }
