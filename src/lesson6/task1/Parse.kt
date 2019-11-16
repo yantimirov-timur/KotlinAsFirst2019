@@ -312,9 +312,9 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String {//Переделать под условие,что в имени может быть что угодно
+fun mostExpensive(description: String): String {
     val listOfPair = mutableListOf<Pair<String, Double>>()
-    val name = Regex("""[^\s\d.;]+|[\d][\s]""").findAll(description)
+    val name = Regex("""[^\s\d.;]+|[\d][\s]|[\d][a-zA-Zа-яА-я]+""").findAll(description)
     val prices = Regex("""[\s][\d.]+""").findAll(description)
     val listOfNames = mutableListOf<String>()
     val listOfPrices = mutableListOf<Double>()
