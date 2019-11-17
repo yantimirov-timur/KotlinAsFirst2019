@@ -251,7 +251,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
         if (i.toUpperCase() in word.toUpperCase())
             count++
     }
-    return count == word.toSet().size
+    return count == word.toSet().size || count == word.length
 }
 
 
@@ -355,6 +355,16 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var res2 = 0
     var digit2 = 0
     var digit1 = number
+
+    if (number == 0) {
+        res1 = list.indexOfFirst { it == 0 }
+        for (i in res1 + 1 until list.size) {
+            if (list[i] == 0)
+                res2 = i
+        }
+        return res1 to res2
+    }
+
     for (i in 0..list.size) {
         digit1 -= 1
         digit2 += 1
