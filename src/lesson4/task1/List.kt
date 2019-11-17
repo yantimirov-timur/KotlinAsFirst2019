@@ -172,6 +172,7 @@ fun polynom(p: List<Int>, x: Int): Int {
     var px = 0
     for (i in p.indices) {
         px += p[i] * x.toDouble().pow(i).toInt()
+        i * i
     }
     return px
 }
@@ -362,42 +363,30 @@ fun russian(n: Int): String {
     val listDigits = listOf(100, 200, 300, 400, 500, 600, 700, 800, 900)
     var mod: Int
     while (number > 0) {
-        //Условие для 1значного числа
         if (number.toString().length == 1 && number !in 11..19) {
             mod1 = number % 10
             sumListHundred.add(listWordsUnits[mod1 - 1])
             if (number.toString().length in 4..6) {
                 (sumListThousands + sumListHundred).joinToString(separator = " ")
-
             } else sumListHundred.joinToString(separator = " ")
             number /= 10
-
         } else if (number.toString().length == 1 && number in 11..19) {
             sumListHundred.add(listWordsUnits1[mod1 - 11])
             return sumListHundred.joinToString(separator = " ")
-
-        }
-        //Условие для 2значного числа
-        else if (number.toString().length == 2 && number !in 11..19) {
+        } else if (number.toString().length == 2 && number !in 11..19) {
             mod1 = number / 10
             sumListHundred.add(listWordsDecades[mod1 - 1])
             number %= 10
         } else if (number.toString().length == 2 && number in 11..19) {
             sumListHundred.add(listWordsUnits1[number - 11])
             number /= 100
-        }
-        //Условие для 3 значного числа
-        else if (number.toString().length == 3) {
+        } else if (number.toString().length == 3) {
             mod1 = number / 100
             sumListHundred.add(listWordsHundred[mod1 - 1])
             number %= 100
-        }
-
-        //Услвие при 1000+ числе
-        else if (number.toString().length in 4..6) {
+        } else if (number.toString().length in 4..6) {
             thousand = number / 1000
         }
-        //1-19 тысяч
         while (thousand > 0) {
             if (thousand.toString().length == 1 && thousand !in 11..19) {
                 thousand %= 10
@@ -411,24 +400,19 @@ fun russian(n: Int): String {
                 sumListThousands.add(listWordsUnits1[thousand - 11] + " тысяч")
                 thousand /= 100
             }
-            //для 20-99 тысяч
-
             else if (thousand.toString().length == 2 && thousand !in 11..19) {
+                //одинаковые ветви
                 mod = thousand / 10
                 thousand %= 10
                 if (thousand % 10 == 0) {
                     sumListThousands.add(listWordsDecades[mod - 1] + " тысяч")
                 } else {
                     sumListThousands.add(listWordsDecades[mod - 1])
-
                 }
 
             } else if (thousand.toString().length == 2 && thousand in 11..19) {
                 sumListThousands.add(listWordsUnits1[thousand - 11])
-                //-thousand %= 10
-            }
-            //для 100+ тысяч
-            else if (thousand.toString().length == 3) {
+            } else if (thousand.toString().length == 3) {
                 mod = thousand / 100
                 if (thousand in listDigits) {
                     sumListThousands.add(listWordsHundred[mod - 1] + " тысяч")

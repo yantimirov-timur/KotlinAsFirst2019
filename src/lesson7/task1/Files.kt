@@ -55,12 +55,12 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val map = mutableMapOf<String, Int>()
-    var count=0
+    var count = 0
     val file = File(inputName)
     for (i in substrings.indices) {
         for (line in file.readLines()) {
             count += line.split(substrings[i], ignoreCase = true).size - 1
-            if (line.contains(substrings[i] + substrings[i].first()) && substrings[i].length != 1)
+            if (line.contains(substrings[i] + substrings[i].first(), ignoreCase = true) && substrings[i].length != 1)
                 count *= 2
         }
         map[substrings[i]] = count

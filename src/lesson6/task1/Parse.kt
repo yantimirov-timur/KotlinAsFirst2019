@@ -312,29 +312,8 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String {
-    val listOfPair = mutableListOf<Pair<String, Double>>()
-    val name = Regex("""[^\s\d.;]+|[\d][\s]|[\d][a-zA-Zа-яА-я]+""").findAll(description)
-    val prices = Regex("""[\s][\d.]+""").findAll(description)
-    val listOfNames = mutableListOf<String>()
-    val listOfPrices = mutableListOf<Double>()
-    for (i in name)
-        listOfNames.add(i.value)
-    for (i in prices)
-        listOfPrices.add(i.value.toDouble())
-    if (Regex("""[\da-zA-Zа-яА-я~_!@#$%^&*+-][\s][\d.]+""").containsMatchIn(description)) {
-        for (i in 0 until listOfPrices.size) {
-            listOfPair.add(listOfNames[i].replace(" ", "") to listOfPrices[i])
-        }
-    } else
-        return ""
-    var max = listOfPair.first()
-    for (i in 0 until listOfPair.size) {
-        if (listOfPair[i].second >= max.second)
-            max = listOfPair[i]
-    }
-    return max.first
-}
+fun mostExpensive(description: String): String =TODO()
+
 
 
 /**
@@ -420,4 +399,4 @@ fun fromRoman(roman: String): Int {
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> =TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()

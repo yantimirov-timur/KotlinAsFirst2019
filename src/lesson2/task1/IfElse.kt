@@ -114,9 +114,13 @@ fun whichRookThreatens(
     val rookFalse2 = !rookTrue2
 
     return if ((rookFalse1) && (rookFalse2)) 0
-    else if ((rookFalse1)) 2
-    else if ((rookTrue1 && rookTrue2)) 3
-    else 1
+    else
+        return when {
+            (rookFalse1) -> 2
+            (rookTrue2) -> 3
+            else -> 1
+        }
+
 }
 
 
@@ -140,10 +144,12 @@ fun rookOrBishopThreatens(
     val rookTrue = ((kingX != rookX) && (kingY == rookY) || (kingX == rookX) && (kingY != rookY))
     val rookFalse = !rookTrue
     return if (rookFalse && bishopFalse) 0
-    else if (rookFalse) 2
-    else if (rookTrue && bishopTrue) 3
-    else 1
-
+    else
+        return when {
+            (rookFalse) -> 2
+            (bishopTrue) -> 3
+            else -> 1
+        }
 }
 
 
@@ -155,7 +161,7 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {
+fun triangleKind(a: Double, b: Double, c: Double): Int {//одинаковые величины несколько раз
     val aSumB = b.pow(2) + a.pow(2)
     val bSumC = b.pow(2) + c.pow(2)
     val aSumC = a.pow(2) + c.pow(2)
