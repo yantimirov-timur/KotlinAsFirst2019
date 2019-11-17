@@ -355,7 +355,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var res2 = 0
     var digit2 = 0
     var digit1 = number
-
+    if (list.isEmpty()) return -1 to -1
     if (number == 0) {
         res1 = list.indexOfFirst { it == 0 }
         for (i in res1 + 1 until list.size) {
@@ -374,7 +374,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
             break
         }
     }
-    if (list.isEmpty() || res1 == res2) return -1 to -1
+    if ( res1 == res2) return -1 to -1
     return res1 to res2
 }
 
