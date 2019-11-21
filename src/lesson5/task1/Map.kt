@@ -224,6 +224,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
         list.add(element.second)
         min = list.min()!!
     }
+    if (map.isEmpty())
+        return null
     for ((key, value) in stuff) {
         if (value.second == min)
             return key
@@ -248,7 +250,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
         if (count == word.toSet().size)
             break
     }
-    return count == word.toSet().size
+    return word.all { it in chars }
 }
 
 
@@ -338,6 +340,8 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var digit1 = number
     if (list.size < 2) return -1 to -1
     if (number == 0) {
+        if (list.count { it == 0 } < 2)
+            return -1 to -1
         res1 = list.indexOfFirst { it == 0 }
         for (i in res1 + 1 until list.size) {
             if (list[i] == 0)
