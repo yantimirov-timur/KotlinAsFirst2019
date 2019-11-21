@@ -112,15 +112,12 @@ fun whichRookThreatens(
     val rookTrue2 = (kingX == rookX2) || (kingY == rookY2)
     val rookFalse1 = !rookTrue1
     val rookFalse2 = !rookTrue2
-
-    return if ((rookFalse1) && (rookFalse2)) 0
-    else
-        return when {
-            (rookFalse1) -> 2
-            (rookTrue2) -> 3
-            else -> 1
-        }
-
+    return when {
+        (rookFalse1) && (rookFalse2) -> 0
+        (rookFalse1) -> 2
+        (rookTrue2) -> 3
+        else -> 1
+    }
 }
 
 
@@ -143,13 +140,12 @@ fun rookOrBishopThreatens(
     val bishopFalse = !bishopTrue
     val rookTrue = ((kingX != rookX) && (kingY == rookY) || (kingX == rookX) && (kingY != rookY))
     val rookFalse = !rookTrue
-    return if (rookFalse && bishopFalse) 0
-    else
-        return when {
-            (rookFalse) -> 2
-            (bishopTrue) -> 3
-            else -> 1
-        }
+    return when {
+        (rookFalse && bishopFalse) -> 0
+        (rookFalse) -> 2
+        (bishopTrue) -> 3
+        else -> 1
+    }
 }
 
 
