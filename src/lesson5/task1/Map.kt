@@ -258,7 +258,6 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean =
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-
     val res = mutableMapOf<String, Int>()
     for (i in list) {
         if (list.count { it == i } != 1)
@@ -332,7 +331,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
         val difference = number - list[i]
         if (list.contains(difference) && i != list.indexOf(difference)) {
             res1 = i
-            res2 = list.indexOf(number - list[i])
+            res2 = list.indexOf(difference)
             break
         }
     }

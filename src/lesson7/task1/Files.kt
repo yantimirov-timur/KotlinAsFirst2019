@@ -53,7 +53,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {//доделать
     val map = mutableMapOf<String, Int>()
     var count = 0
     val file = File(inputName)
@@ -84,8 +84,34 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            var newLine = line
+            for (word in line.split(" ")) {
+                if (Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").containsMatchIn(word)) {
+                    var newWord = word
+                    if (Regex("""[ЖЩШЧжшщч]""").containsMatchIn(word)) {
+                        when {
+                            word.contains("ы") -> newWord = word.replace('ы', 'и')
+                            word.contains("Ы") -> newWord = word.replace('Ы', 'И')
+                            word.contains("я") -> newWord = word.replace('я', 'а')
+                            word.contains("Я") -> newWord = word.replace('Я', 'А')
+                            word.contains("ю") -> newWord = word.replace('ю', 'у')
+                            word.contains("Ю") -> newWord = word.replace('Ю', 'У')
+                        }
+                    }
+                    newLine = newLine.replace(word, newWord)
+                }
+            }
+            if (newLine == line)
+                it.write(line)
+            else
+                it.write(newLine)
+            it.newLine()
+        }
+    }
 }
+
 
 /**
  * Средняя
