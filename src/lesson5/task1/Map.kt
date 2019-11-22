@@ -242,17 +242,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    var count = 0
-    for (i in chars) {
-        if (chars.any { it.toUpperCase() in word.toUpperCase() })
-            count++
-        if (count == word.toSet().size)
-            break
-    }
-    return word.all { it in chars }
-}
-
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    word.toUpperCase().toSet().all { it -> it in chars.toSet().map { it.toUpperCase() } }
 
 /**
  * Средняя
@@ -267,6 +258,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
+
     val res = mutableMapOf<String, Int>()
     for (i in list) {
         if (list.count { it == i } != 1)
@@ -336,38 +328,16 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var res1 = 0
     var res2 = 0
-    var digit2 = 0
-    var digit1 = number
-    if (list.size < 2) return -1 to -1
-    if (number == 0) {
-        if (list.count { it == 0 } < 2)
-            return -1 to -1
-        res1 = list.indexOfFirst { it == 0 }
-        for (i in res1 + 1 until list.size) {
-            if (list[i] == 0)
-                res2 = i
-        }
-    } else {
-        while (digit1 !in list) {
-            digit1 -= 1
-            digit2 += 1
-        }
-        if (digit1 in list && digit2 in list) {
-            res1 = list.indexOf(digit2)
-            res2 = list.indexOf(digit1)
-        } else {
-            for (i in 0..list.size) {
-                digit1 -= 1
-                digit2 += 1
-                if (digit1 in list) {
-                    res1 = list.indexOf(digit2)
-                    res2 = list.indexOf(digit1)
-                    break
-                }
-            }
+    for (i in list.indices) {
+        val difference = number - list[i]
+        if (list.contains(difference) && i != list.indexOf(difference)) {
+            res1 = i
+            res2 = list.indexOf(number - list[i])
+            break
         }
     }
     if (res1 == res2) return -1 to -1
+    else if (number == 0) return res2 to res1
     return res1 to res2
 }
 
