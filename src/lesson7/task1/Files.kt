@@ -53,21 +53,21 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {//доделать
-    val map = mutableMapOf<String, Int>()
-    var count = 0
-    val file = File(inputName)
-    for (i in substrings.indices) {
-        for (line in file.readLines()) {
-            count += line.split(substrings[i], ignoreCase = true).size - 1
-            if (line.contains(substrings[i] + substrings[i].first(), ignoreCase = true) && substrings[i].length != 1)
-                count *= 2
-        }
-        map[substrings[i]] = count
-        count = 0
-    }
-    return map
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()//доделать
+/**   val map = mutableMapOf<String, Int>()
+var count = 0
+val file = File(inputName)
+for (i in substrings.indices) {
+for (line in file.readLines()) {
+count += line.split(substrings[i], ignoreCase = true).size - 1
+if (line.contains(substrings[i] + substrings[i].first(), ignoreCase = true) && substrings[i].length != 1)
+count *= 2
 }
+map[substrings[i]] = count
+count = 0
+}
+return map
+ */
 
 
 /**
@@ -137,8 +137,26 @@ fun sibilants(inputName: String, outputName: String) {
  * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
  *
  */
+
+
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    var maxLength = 0
+    var newLine = ""
+    var l = ""
+    File(outputName).bufferedWriter().use {
+        //Самая длинная строка
+        for (line in File(inputName).readLines()) {
+            if (line.length > maxLength)
+                maxLength = line.length
+        }
+        for (line in File(inputName).readLines()) {
+            val l1 = line.trimStart()
+            val r = maxLength - l1.length
+            l = newLine.padStart(r / 2, ' ')
+            it.write(l + l1)
+            it.newLine()
+        }
+    }
 }
 
 /**
