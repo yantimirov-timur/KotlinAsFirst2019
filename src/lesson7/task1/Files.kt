@@ -89,17 +89,20 @@ fun sibilants(inputName: String, outputName: String) {
             var newLine = line
             for (word in line.split(" ")) {
                 if (Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").containsMatchIn(word)) {
-                    var newWord = word
-                    if (Regex("""[ЖЩШЧжшщч]""").containsMatchIn(word)) {
+                    val matchRes = Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").find(word)?.value
+                    var newWord: String
+                    var newMatch = ""
+                    if (matchRes != null) {
                         when {
-                            word.contains("ы") -> newWord = word.replace('ы', 'и')
-                            word.contains("Ы") -> newWord = word.replace('Ы', 'И')
-                            word.contains("я") -> newWord = word.replace('я', 'а')
-                            word.contains("Я") -> newWord = word.replace('Я', 'А')
-                            word.contains("ю") -> newWord = word.replace('ю', 'у')
-                            word.contains("Ю") -> newWord = word.replace('Ю', 'У')
+                            matchRes.contains('я') -> newMatch = matchRes.replace("я", "а")
+                            matchRes.contains('Я') -> newMatch = matchRes.replace("Я", "А")
+                            matchRes.contains('ю') -> newMatch = matchRes.replace("ю", "у")
+                            matchRes.contains('Ю') -> newMatch = matchRes.replace("Ю", "У")
+                            matchRes.contains('ы') -> newMatch = matchRes.replace("ы", "и")
+                            matchRes.contains('Ы') -> newMatch = matchRes.replace("Ы", "И")
                         }
                     }
+                    newWord = matchRes?.let { it1 -> word.replace(it1, newMatch) }.toString()
                     newLine = newLine.replace(word, newWord)
                 }
             }
