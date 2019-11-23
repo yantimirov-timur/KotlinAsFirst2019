@@ -107,6 +107,7 @@ fun sibilants(inputName: String, outputName: String) {
                     }
                     newWord = newWord.replace(match, newMatch)
                     newLine = newLine.replace(word, newWord)
+
                 }
             }
             if (newLine == line)
