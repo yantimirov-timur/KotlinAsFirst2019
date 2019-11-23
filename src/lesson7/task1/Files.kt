@@ -89,20 +89,23 @@ fun sibilants(inputName: String, outputName: String) {
             var newLine = line
             for (word in line.split(" ")) {
                 if (Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").containsMatchIn(word)) {
-                    val matchRes = Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").find(word)?.value
-                    var newWord: String
+                    val matchRes = Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").findAll(word)
+                    var newWord = word
                     var newMatch = ""
-                    if (matchRes != null) {
+                    var match = ""
+                    for (i in matchRes) {
+                        match = i.value
                         when {
-                            matchRes.contains('я') -> newMatch = matchRes.replace("я", "а")
-                            matchRes.contains('Я') -> newMatch = matchRes.replace("Я", "А")
-                            matchRes.contains('ю') -> newMatch = matchRes.replace("ю", "у")
-                            matchRes.contains('Ю') -> newMatch = matchRes.replace("Ю", "У")
-                            matchRes.contains('ы') -> newMatch = matchRes.replace("ы", "и")
-                            matchRes.contains('Ы') -> newMatch = matchRes.replace("Ы", "И")
+                            match.contains('я') -> newMatch = match.replace("я", "а")
+                            match.contains('Я') -> newMatch = match.replace("Я", "А")
+                            match.contains('ю') -> newMatch = match.replace("ю", "у")
+                            match.contains('Ю') -> newMatch = match.replace("Ю", "У")
+                            match.contains('ы') -> newMatch = match.replace("ы", "и")
+                            match.contains('Ы') -> newMatch = match.replace("Ы", "И")
                         }
+                        newWord = newWord.replace(match, newMatch)
                     }
-                    newWord = matchRes?.let { it1 -> word.replace(it1, newMatch) }.toString()
+                    newWord = newWord.replace(match, newMatch)
                     newLine = newLine.replace(word, newWord)
                 }
             }
