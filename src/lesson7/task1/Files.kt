@@ -141,7 +141,7 @@ fun sibilants(inputName: String, outputName: String) {
 
 fun centerFile(inputName: String, outputName: String) {
     var maxLength = 0
-    var newLine = ""
+    val newLine = ""
     var l = ""
     File(outputName).bufferedWriter().use {
         //Самая длинная строка
