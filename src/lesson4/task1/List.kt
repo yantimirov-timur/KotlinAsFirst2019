@@ -426,6 +426,5 @@ fun russian(n: Int): String {
             number %= 1000
         }
     }
-
     return (sumListThousands + sumListHundred).joinToString(separator = " ")
 }

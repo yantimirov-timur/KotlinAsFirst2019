@@ -157,7 +157,7 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {//одинаковые величины несколько раз
+fun triangleKind(a: Double, b: Double, c: Double): Int {
     val aSumB = b.pow(2) + a.pow(2)
     val bSumC = b.pow(2) + c.pow(2)
     val aSumC = a.pow(2) + c.pow(2)

@@ -335,9 +335,11 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
             break
         }
     }
-    if (res1 == res2) return -1 to -1
-    else if (number == 0) return res2 to res1
-    return res1 to res2
+    return when {
+        res1 == res2 -> -1 to -1
+        number == 0 -> res2 to res1
+        else -> res1 to res2
+    }
 }
 
 /**
