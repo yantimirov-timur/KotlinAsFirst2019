@@ -383,6 +383,7 @@ fun russian(n: Int): String {
             thousand = number / 1000
         }
         while (thousand > 0) {
+            //длина 1
             if (thousand.toString().length == 1 && thousand !in 11..19) {
                 thousand %= 10
                 when {
@@ -394,7 +395,8 @@ fun russian(n: Int): String {
             } else if (mod1.toString().length == 1 && thousand in 11..19) {
                 sumListThousands.add(listWordsUnits1[thousand - 11] + " тысяч")
                 thousand /= 100
-            } else if (thousand.toString().length in 2..3 && thousand !in 11..19) {
+                //длина 2-3
+            } else if (thousand.toString().length in 2..3 && thousand !in 11..19) {//ошибка(?)
 
                 if (thousand.toString().length == 2) {
                     mod = thousand / 10
@@ -414,14 +416,6 @@ fun russian(n: Int): String {
                 }
             } else if (thousand.toString().length == 2 && thousand in 11..19) {
                 sumListThousands.add(listWordsUnits1[thousand - 11])
-            } else if (thousand.toString().length == 3) {
-                mod = thousand / 100
-                if (thousand in listDigits) {
-                    sumListThousands.add(listWordsHundred[mod - 1] + " тысяч")
-                } else {
-                    sumListThousands.add(listWordsHundred[mod - 1])
-                }
-                thousand %= 100
             }
             number %= 1000
         }

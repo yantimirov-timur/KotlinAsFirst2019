@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import lesson5.task1.canBuildFrom
 import java.io.File
 
 /**
@@ -142,20 +143,27 @@ fun sibilants(inputName: String, outputName: String) {
 fun centerFile(inputName: String, outputName: String) {
     var maxLength = 0
     val newLine = ""
-    var l = ""
+    var lenght = ""
+    var a = ""
     File(outputName).bufferedWriter().use {
         //Самая длинная строка
         for (line in File(inputName).readLines()) {
-            if (line.length > maxLength)
-                maxLength = line.length
+            var regLine = Regex("""[a-zA-Zа-яА-Я]+""").findAll(line)
+            for (line in File(inputName).readLines()) {
+                if (line.length > maxLength)
+                    maxLength = line.trimStart().length
+            }
+
+            for (i in regLine) {
+                a = i.value
+                val newLength = line.trimStart()
+                val difference = maxLength - a.length
+                lenght = newLine.padStart(difference / 2, ' ')
+                it.write(lenght + newLength)
+                it.newLine()
+            }
         }
-        for (line in File(inputName).readLines()) {
-            val l1 = line.trimStart()
-            val r = maxLength - l1.length
-            l = newLine.padStart(r / 2, ' ')
-            it.write(l + l1)
-            it.newLine()
-        }
+
     }
 }
 
@@ -187,7 +195,37 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    var maxLength = 0
+    var countWords = 0
+    var newLine = ""
+
+    //15 - 3 пробела
+    //11 - 3 пробела 11-5 пробелов
+    //33 разница 11 слов--> +3 пробела между словами
+    var a =
+        "2) Пустые строки или строки из пробелов во входном файле должны превратиться в пустые строки в выходном файле.".length
+    var b = "1) Каждая строка входного и выходного файла не должна заканчиваться пробелом.".length
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            if (line.length > maxLength)
+                maxLength = line.trimStart().length
+            countWords = line.trimStart().split(" ").count()
+        }
+        for (line in File(inputName).readLines()) {
+            for (word in line.split(" "))
+                countWords++
+        }
+        for (line in File(inputName).readLines()) {
+            newLine = line.trimStart().split(" ").joinToString(separator = "  ")
+
+
+            it.write(newLine)
+            it.newLine()
+
+        }
+
+
+    }
 }
 
 /**

@@ -148,10 +148,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    b.toMutableSet()
-    return a.intersect(b).toList()
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
 
 /**
  * Средняя
@@ -190,13 +187,13 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    //за один проход по stockPrice.
     val map = mutableMapOf<String, Double>()
-    val newStockPrices = stockPrices.groupBy { it.first }
-    val meanPrice = mutableListOf<Double>()
-    for (value in newStockPrices.values) {
+    val groupedStockPrices = stockPrices.groupBy { it.first }
+    for (value in groupedStockPrices.values) {
+        val meanPrice = mutableListOf<Double>()
         value.all { meanPrice.add(it.second) }
         map[value.first().first] = mean(meanPrice)
-        meanPrice.clear()
     }
     return map
 }
@@ -217,18 +214,13 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Любятово"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var min = 0.0
     val map = stuff.values.filter { it.first == kind }
-    val list = mutableListOf<Double>()
-    for (element in map) {
-        list.add(element.second)
-        min = list.min()!!
-    }
-    if (map.isEmpty())
-        return null
+    val min = map.minBy { it.second }
     for ((key, value) in stuff) {
-        if (value.second == min)
-            return key
+        if (min != null) {
+            if (value.second == min.second)
+                return key
+        }
     }
     return null
 }
@@ -242,8 +234,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean =
-    word.toUpperCase().toSet().all { it -> it in chars.toSet().map { it.toUpperCase() } }
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val newChars = chars.toSet().map { it.toUpperCase() }
+    return word.toUpperCase().toSet().all { it in newChars }
+}
+
 
 /**
  * Средняя
@@ -260,10 +255,12 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean =
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val res = mutableMapOf<String, Int>()
     for (i in list) {
-        if (list.count { it == i } != 1)
-            res[i] = list.count { it == i }
+        if (i in res)
+            res[i] = res[i]!! + 1
+        else
+            res[i] = 1
     }
-    return res
+    return res.filter { it.value > 1 }
 }
 
 /**
@@ -330,6 +327,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     for (i in list.indices) {
         val difference = number - list[i]
         if (list.contains(difference) && i != list.indexOf(difference)) {
+            //if difference in list
             res1 = i
             res2 = list.indexOf(difference)
             break
