@@ -55,20 +55,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()//доделать
-/**   val map = mutableMapOf<String, Int>()
-var count = 0
-val file = File(inputName)
-for (i in substrings.indices) {
-for (line in file.readLines()) {
-count += line.split(substrings[i], ignoreCase = true).size - 1
-if (line.contains(substrings[i] + substrings[i].first(), ignoreCase = true) && substrings[i].length != 1)
-count *= 2
-}
-map[substrings[i]] = count
-count = 0
-}
-return map
- */
+
 
 
 /**
@@ -143,30 +130,22 @@ fun sibilants(inputName: String, outputName: String) {
 fun centerFile(inputName: String, outputName: String) {
     var maxLength = 0
     val newLine = ""
-    var lenght = ""
-    var a = ""
+    var l = ""
     File(outputName).bufferedWriter().use {
         //Самая длинная строка
         for (line in File(inputName).readLines()) {
-            var regLine = Regex("""[a-zA-Zа-яА-Я]+""").findAll(line)
-            for (line in File(inputName).readLines()) {
-                if (line.length > maxLength)
-                    maxLength = line.trimStart().length
-            }
-
-            for (i in regLine) {
-                a = i.value
-                val newLength = line.trimStart()
-                val difference = maxLength - a.length
-                lenght = newLine.padStart(difference / 2, ' ')
-                it.write(lenght + newLength)
-                it.newLine()
-            }
+            if (line.length > maxLength)
+                maxLength = line.length
         }
-
+        for (line in File(inputName).readLines()) {
+            val l1 = line.trimStart()
+            val r = maxLength - l1.length
+            l = newLine.padStart(r / 2, ' ')
+            it.write(l + l1)
+            it.newLine()
+        }
     }
 }
-
 /**
  * Сложная
  *
@@ -194,38 +173,8 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
-fun alignFileByWidth(inputName: String, outputName: String) {
-    var maxLength = 0
-    var countWords = 0
-    var newLine = ""
-
-    //15 - 3 пробела
-    //11 - 3 пробела 11-5 пробелов
-    //33 разница 11 слов--> +3 пробела между словами
-    var a =
-        "2) Пустые строки или строки из пробелов во входном файле должны превратиться в пустые строки в выходном файле.".length
-    var b = "1) Каждая строка входного и выходного файла не должна заканчиваться пробелом.".length
-    File(outputName).bufferedWriter().use {
-        for (line in File(inputName).readLines()) {
-            if (line.length > maxLength)
-                maxLength = line.trimStart().length
-            countWords = line.trimStart().split(" ").count()
-        }
-        for (line in File(inputName).readLines()) {
-            for (word in line.split(" "))
-                countWords++
-        }
-        for (line in File(inputName).readLines()) {
-            newLine = line.trimStart().split(" ").joinToString(separator = "  ")
-
-
-            it.write(newLine)
-            it.newLine()
-
-        }
-
-
-    }
+fun alignFileByWidth(inputName: String, outputName: String){
+    TODO()
 }
 
 /**

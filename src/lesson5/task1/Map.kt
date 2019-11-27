@@ -187,15 +187,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    //за один проход по stockPrice.
-    val map = mutableMapOf<String, Double>()
-    val groupedStockPrices = stockPrices.groupBy { it.first }
-    for (value in groupedStockPrices.values) {
-        val meanPrice = mutableListOf<Double>()
-        value.all { meanPrice.add(it.second) }
-        map[value.first().first] = mean(meanPrice)
+    val prices = mutableMapOf<String, MutableList<Double>>()
+    val res = mutableMapOf<String, Double>()
+    for ((name, price) in stockPrices) {
+        prices.getOrPut(name, { mutableListOf() }).add(price)
     }
-    return map
+    for ((name, price) in prices) {
+        res[name] = mean(price)
+    }
+    return res
 }
 
 /**
@@ -326,8 +326,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var res2 = 0
     for (i in list.indices) {
         val difference = number - list[i]
-        if (list.contains(difference) && i != list.indexOf(difference)) {
-            //if difference in list
+        if (list.any { it == difference } && i != list.indexOf(difference)) {
             res1 = i
             res2 = list.indexOf(difference)
             break
