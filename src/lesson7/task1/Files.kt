@@ -54,8 +54,23 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()//доделать
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val res = mutableMapOf<String, Int>()
+    var count = 0
+    File(inputName).bufferedReader().use {
+        for (line in File(inputName).readLines()) {
+            for (i in 0..substrings.size - 1) {
+                for (word in line.split(" ")) {
+                    count += substrings[i].count { it in word }
+                }
+                res.put(substrings[i], count)
+                count = 0
+            }
+        }
 
+    }
+    return res
+}
 
 
 /**
@@ -146,6 +161,7 @@ fun centerFile(inputName: String, outputName: String) {
         }
     }
 }
+
 /**
  * Сложная
  *
@@ -173,7 +189,7 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
-fun alignFileByWidth(inputName: String, outputName: String){
+fun alignFileByWidth(inputName: String, outputName: String) {
     TODO()
 }
 
