@@ -55,20 +55,20 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
 /**    val res = mutableMapOf<String, Int>()
-    var count = 0
-    File(inputName).bufferedReader().use {
-        for (line in File(inputName).readLines()) {
-            for (i in 0..substrings.size - 1) {
-                for (word in line.split(" ")) {
-                    count += substrings[i].count { it in word }
-                }
-                res.put(substrings[i], count)
-                count = 0
-            }
-        }
+var count = 0
+File(inputName).bufferedReader().use {
+for (line in File(inputName).readLines()) {
+for (i in 0..substrings.size - 1) {
+for (word in line.split(" ")) {
+count += substrings[i].count { it in word }
+}
+res.put(substrings[i], count)
+count = 0
+}
+}
 
-    }
-    return res
+}
+return res
 }*/
 
 
@@ -147,9 +147,10 @@ fun centerFile(inputName: String, outputName: String) {
     File(outputName).bufferedWriter().use {
         //Самая длинная строка
         for (line in File(inputName).readLines()) {
-            if (line.length > maxLength)
-                maxLength = line.length
+            if (line.trim().length > maxLength)
+                maxLength = line.trim().length
         }
+        // Выравнивание
         for (line in File(inputName).readLines()) {
             val newLength = line.trimStart()
             val difference = maxLength - newLength.length
@@ -279,13 +280,12 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var maxLine = 0
     File(outputName).bufferedWriter().use {
         for (line in File(inputName).readLines()) {
-            if (line.toUpperCase().toSet().size > maxLine)
-                maxLine = line.toUpperCase().toSet().size
+            if (line.toSet().size > maxLine && line.toSet().size == line.length)
+                maxLine = line.toSet().size
         }
         for (line in File(inputName).readLines()) {
-            if (line.toUpperCase().toSet().size == line.length && line.length == maxLine) {
+            if (line.toUpperCase().toSet().size == line.length && line.toUpperCase().toSet().size == maxLine)
                 overallLine += ("$line ")
-            }
         }
         overallLine = overallLine.split(", ").joinToString().trimEnd().replace(" ", ", ")
         it.write(overallLine)
