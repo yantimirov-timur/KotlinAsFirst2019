@@ -3,8 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson2.task1.timeForHalfWay
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 
@@ -314,7 +312,7 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
     var number = n
-    var mod1 = 0
+    var modOfHundreds = 0
     var thousand = 0
     val sumListThousands = mutableListOf<String>()
     val sumListHundred = mutableListOf<String>()
@@ -355,35 +353,37 @@ fun russian(n: Int): String {
         "восемнадцать",
         "девятнадцать"
     )
-    val listDigits = listOf(100, 200, 300, 400, 500, 600, 700, 800, 900)
-    var mod: Int
+    var modOfThousand: Int
     while (number > 0) {
         if (number.toString().length == 1 && number !in 11..19) {
-            mod1 = number % 10
-            sumListHundred.add(listWordsUnits[mod1 - 1])
+            modOfHundreds = number % 10
+            sumListHundred.add(listWordsUnits[modOfHundreds - 1])
             if (number.toString().length in 4..6) {
                 (sumListThousands + sumListHundred).joinToString(separator = " ")
             } else sumListHundred.joinToString(separator = " ")
             number /= 10
         } else if (number.toString().length == 1 && number in 11..19) {
-            sumListHundred.add(listWordsUnits1[mod1 - 11])
+            sumListHundred.add(listWordsUnits1[modOfHundreds - 11])
             return sumListHundred.joinToString(separator = " ")
+
         } else if (number.toString().length == 2 && number !in 11..19) {
-            mod1 = number / 10
-            sumListHundred.add(listWordsDecades[mod1 - 1])
+            modOfHundreds = number / 10
+            sumListHundred.add(listWordsDecades[modOfHundreds - 1])
             number %= 10
+
         } else if (number.toString().length == 2 && number in 11..19) {
             sumListHundred.add(listWordsUnits1[number - 11])
             number /= 100
+
         } else if (number.toString().length == 3) {
-            mod1 = number / 100
-            sumListHundred.add(listWordsHundred[mod1 - 1])
+            modOfHundreds = number / 100
+            sumListHundred.add(listWordsHundred[modOfHundreds - 1])
             number %= 100
+
         } else if (number.toString().length in 4..6) {
             thousand = number / 1000
         }
         while (thousand > 0) {
-            //длина 1
             if (thousand.toString().length == 1 && thousand !in 11..19) {
                 thousand %= 10
                 when {
@@ -392,27 +392,26 @@ fun russian(n: Int): String {
                     thousand in 5..10 -> sumListThousands.add(listWordsUnits[thousand - 1] + " тысяч")
                 }
                 thousand /= 10
-            } else if (mod1.toString().length == 1 && thousand in 11..19) {
+            } else if (modOfHundreds.toString().length == 1 && thousand in 11..19) {
                 sumListThousands.add(listWordsUnits1[thousand - 11] + " тысяч")
                 thousand /= 100
-                //длина 2-3
-            } else if (thousand.toString().length in 2..3 && thousand !in 11..19) {//ошибка(?)
 
+            } else if (thousand.toString().length in 2..3 && thousand !in 11..19) {
                 if (thousand.toString().length == 2) {
-                    mod = thousand / 10
+                    modOfThousand = thousand / 10
                     thousand %= 10
                     if (thousand % 10 == 0)
-                        sumListThousands.add(listWordsDecades[mod - 1] + " тысяч")
+                        sumListThousands.add(listWordsDecades[modOfThousand - 1] + " тысяч")
                     else
-                        sumListThousands.add(listWordsDecades[mod - 1])
+                        sumListThousands.add(listWordsDecades[modOfThousand - 1])
                 }
                 if (thousand.toString().length == 3) {
-                    mod = thousand / 100
+                    modOfThousand = thousand / 100
                     thousand %= 100
                     if (thousand % 100 == 0) {
-                        sumListThousands.add(listWordsHundred[mod - 1] + " тысяч")
+                        sumListThousands.add(listWordsHundred[modOfThousand - 1] + " тысяч")
                     } else
-                        sumListThousands.add(listWordsHundred[mod - 1])
+                        sumListThousands.add(listWordsHundred[modOfThousand - 1])
                 }
             } else if (thousand.toString().length == 2 && thousand in 11..19) {
                 sumListThousands.add(listWordsUnits1[thousand - 11])

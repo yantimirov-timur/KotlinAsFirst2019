@@ -2,7 +2,6 @@
 
 package lesson7.task1
 
-import lesson5.task1.canBuildFrom
 import java.io.File
 
 /**
@@ -54,8 +53,8 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val res = mutableMapOf<String, Int>()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+/**    val res = mutableMapOf<String, Int>()
     var count = 0
     File(inputName).bufferedReader().use {
         for (line in File(inputName).readLines()) {
@@ -70,7 +69,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 
     }
     return res
-}
+}*/
 
 
 /**
@@ -108,7 +107,6 @@ fun sibilants(inputName: String, outputName: String) {
                         }
                         newWord = newWord.replace(match, newMatch)
                     }
-                    newWord = newWord.replace(match, newMatch)
                     newLine = newLine.replace(word, newWord)
 
                 }
@@ -145,7 +143,7 @@ fun sibilants(inputName: String, outputName: String) {
 fun centerFile(inputName: String, outputName: String) {
     var maxLength = 0
     val newLine = ""
-    var l = ""
+    var length = ""
     File(outputName).bufferedWriter().use {
         //Самая длинная строка
         for (line in File(inputName).readLines()) {
@@ -153,10 +151,10 @@ fun centerFile(inputName: String, outputName: String) {
                 maxLength = line.length
         }
         for (line in File(inputName).readLines()) {
-            val l1 = line.trimStart()
-            val r = maxLength - l1.length
-            l = newLine.padStart(r / 2, ' ')
-            it.write(l + l1)
+            val newLength = line.trimStart()
+            val difference = maxLength - newLength.length
+            length = newLine.padStart(difference / 2, ' ')
+            it.write(length + newLength)
             it.newLine()
         }
     }
@@ -277,7 +275,21 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    var overallLine = ""
+    var maxLine = 0
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            if (line.length > maxLine)
+                maxLine = line.length
+        }
+        for (line in File(inputName).readLines()) {
+            if (line.toUpperCase().toSet().size == line.length && line.length == maxLine) {
+                overallLine += ("$line ")
+            }
+        }
+        overallLine = overallLine.split(", ").joinToString().trimEnd().replace(" ", ", ")
+        it.write(overallLine)
+    }
 }
 
 /**
