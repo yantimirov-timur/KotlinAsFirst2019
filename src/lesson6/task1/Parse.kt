@@ -74,7 +74,7 @@ fun main() {
 fun dateStrToDigit(str: String): String {
     val list = str.split(" ").toMutableList()
 
-    val monthList = listOf(
+    val monthList = mapOf(
         "января" to "01",
         "февраля" to "02",
         "марта" to "03",
@@ -88,21 +88,19 @@ fun dateStrToDigit(str: String): String {
         "ноября" to "11",
         "декабря" to "12"
     )
-
-    if (list.size != 3 || monthList.all { it.first != list[1] } || list[0].toInt() > 31)
-        return emptyList<String>().joinToString()
+    if (list.size != 3 || monthList.all { it.key != list[1] })
+        return ""
     for ((key, value) in monthList) {
         if (key == list[1]) {
             list[1] = value
             break
         }
     }
-    val day = daysInMonth(list[1].toInt(), list[2].toInt())
     if (list[0].toInt() < 10 && list[0].first() != '0') {
         list[0] = "0" + list[0]
     }
-    if (day < list[0].toInt())
-        return emptyList<String>().joinToString()
+    if (daysInMonth(list[1].toInt(), list[2].toInt()) < list[0].toInt())
+        return ""
 
     return list.joinToString(separator = ".")
 }
@@ -120,7 +118,7 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val list = digital.split(".").toMutableList()
-    val monthList = listOf(
+    val monthList = mapOf(
         "января" to "01",
         "февраля" to "02",
         "марта" to "03",
@@ -134,9 +132,8 @@ fun dateDigitToStr(digital: String): String {
         "ноября" to "11",
         "декабря" to "12"
     )
-    if (list.size != 3 || monthList.all { it.second != list[1] } || list[0].toInt() > 31)
-        return emptyList<String>().joinToString()
-    val day = daysInMonth(list[1].toInt(), list[2].toInt())
+    if (list.size != 3 || monthList.all { it.value != list[1] } || list[0].toInt() > 31)
+        return ""
     for ((key, value) in monthList) {
         list[0].toInt()
         if (value == list[1]) {
@@ -147,8 +144,8 @@ fun dateDigitToStr(digital: String): String {
     if (list[0].toInt() < 10) {
         list[0] = list[0].toInt().toString()
     }
-    if (day < list[0].toInt())
-        return emptyList<String>().joinToString()
+    if (daysInMonth(list[1].toInt(), list[2].toInt()) < list[0].toInt())
+        return ""
     return list.joinToString(separator = " ")
 }
 
@@ -167,15 +164,16 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    val matchedResults = Regex("""([+?\d]+)""").findAll(phone)
+    val anySymbols = Regex("""[^\d()\s+-]+""").find(phone)?.value
     val bracket = Regex("""\([^)]*\)""").find(phone)?.value
-    val anySymbols = Regex("""[^\d([+]\s[-])]+""").find(phone)?.value
+    if (bracket == "()" || anySymbols != null)
+        return ""
+
+    val matchedResults = Regex("""([+?\d]+)""").findAll(phone)
     var res = ""
     for (i in matchedResults) {
         res += i.value
     }
-    if (bracket == "()" || anySymbols != null)
-        return ""
     return res
 }
 
@@ -191,17 +189,15 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    var res = 0
+    var res = -1
     val matchedResults = Regex("""([\d]+)""").findAll(jumps)
-    val anySymbols = Regex("""([^\d([%]\s[-]]+)""").find(jumps)?.value
-
+    val anySymbols = Regex("""[^\d%\s-]+""").find(jumps)?.value
+    if (anySymbols != null)
+        return res
     for (results in matchedResults) {
         if (results.value.toInt() > res)
             res = results.value.toInt()
     }
-    if (res == 0 || anySymbols != null)
-        return -1
-
     return res
 }
 
@@ -217,21 +213,21 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    var res = 0
+    var res = -1
     val matchedResults = Regex("""([\d]+[\s][%]*[+])""").findAll(jumps)
-    val anySymbols = Regex("""([^\d([%]\s[-][+]]+)""").find(jumps)?.value
+    val anySymbols = Regex("""[^\d\s%+-]""").find(jumps)?.value
+    if (anySymbols != null)
+        return res
+
     var correctDigits = ""
-    for (result in matchedResults) {
+    for (result in matchedResults)
         correctDigits += result.value
-    }
+
     val digits = Regex("""[\d]+""").findAll(correctDigits)
     for (result in digits) {
         if (res < result.value.toInt())
             res = result.value.toInt()
-
     }
-    if (anySymbols != null)
-        return -1
     return res
 }
 
@@ -245,26 +241,22 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    val list = expression.split(" ")
-    try {
-        var res = list[0].toInt()
-        var x = 1
-        var y = 2
-        require((!Regex("""([-+]\d+|\d+[-+])""").containsMatchIn(list.toString()) || expression.isEmpty()))
-        while (x != list.size) {
-            when (list[x]) {
-                "+" -> res += list[y].toInt()
-                "-" -> res -= list[y].toInt()
-            }
-            x += 2
-            y += 2
-        }
-        return res
-
-    } catch (e: NumberFormatException) {
+    if (!Regex("""(\d+\s[+|-]\s)*\d+""").matches(expression))
         throw IllegalArgumentException()
+
+    val list = expression.split(" ")
+    var res = list[0].toInt()
+    var y = 2
+
+    for (i in 1 until list.size step 2) {
+        when (list[i]) {
+            "+" -> res += list[y].toInt()
+            "-" -> res -= list[y].toInt()
+        }
+        y += 2
     }
 
+    return res
 }
 
 /**
@@ -277,29 +269,26 @@ fun plusMinus(expression: String): Int {
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int {
-    val list = mutableListOf<String>()
     val newString = str.split(" ")
-    var repeatWord = ""
-    var partString = ""
-    var repeatIndex = 0
     if (newString.size == 1) return -1
+    var repeatWord = ""
+    var sumWords = 0//подсчет слов
+    var sumForSpaces = 0//подсчет пробелов
     for (i in 1 until newString.size) {
-        if ((newString[i - 1] == newString[i]) || (newString[i - 1].toUpperCase() == newString[i].toUpperCase())) {
+        sumWords += newString[i - 1].length
+        sumForSpaces++
+        if (newString[i - 1].toUpperCase() == newString[i].toUpperCase()) {
             repeatWord = newString[i]
-            repeatIndex = i
             break
         }
     }
-    for (i in 0 until repeatIndex) {
-        list.add(newString[i])
-    }
-    partString = list.joinToString(separator = " ")
-    return if (partString.isEmpty())
-        partString.lastIndex
-    else
-        partString.lastIndex - (repeatWord.length - 1)
+
+    if (repeatWord == "")
+        return -1
+    return sumWords + (sumForSpaces - 1) - repeatWord.length
 
 }
+
 
 /**
  * Сложная
@@ -312,8 +301,7 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String =TODO()
-
+fun mostExpensive(description: String): String = TODO()
 
 
 /**
@@ -328,18 +316,19 @@ fun mostExpensive(description: String): String =TODO()
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    var res = 0
-    val difElement = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
-    val simpleElement = Regex("""IX|XL|XC|CD|CM|IV""").split(roman).toString().toCharArray()
     val exception = Regex("""[^XCIVDLM]""").findAll(roman).toList()
-    val listOfDifElements = mutableListOf<String>()
     if (exception.isNotEmpty() || roman.isEmpty())
         return -1
-    for (i in difElement) {
-        listOfDifElements.add(i.value)
-    }
-    for (i in 0 until listOfDifElements.size) {
-        when (listOfDifElements[i]) {
+
+    var res = 0
+    val difElement = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
+    var a = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
+
+
+    val simpleElement = roman.split(Regex("""IX|XL|XC|CD|CM|IV""")).toString().toCharArray()//упростить строку
+
+    for (element in difElement) {
+        when (element.value) {
             "IV" -> res += 4
             "IX" -> res += 9
             "XL" -> res += 40
@@ -350,13 +339,13 @@ fun fromRoman(roman: String): Int {
     }
     for (element in simpleElement) {
         when (element) {
-            'I' -> res += 1
-            'V' -> res += 5
-            'X' -> res += 10
-            'L' -> res += 50
-            'C' -> res += 100
-            'D' -> res += 500
-            'M' -> res += 1000
+            "I" -> res += 1
+            "V" -> res += 5
+            "X" -> res += 10
+            "L" -> res += 50
+            "C" -> res += 100
+            "D" -> res += 500
+            "M" -> res += 1000
 
         }
     }
