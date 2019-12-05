@@ -152,7 +152,7 @@ fun centerFile(inputName: String, outputName: String) {
         }
         // Выравнивание
         for (line in File(inputName).readLines()) {
-            val newLength = line.trimStart()
+            val newLength = line.trim()
             val difference = maxLength - newLength.length
             length = newLine.padStart(difference / 2, ' ')
             it.write(length + newLength)
@@ -338,8 +338,61 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val open = mutableListOf<String>("<html>", "<body>", "<p>")
+    val close = mutableListOf<String>("</p>", "</body>", "</html>")
+    var line1 = ""
+    File(outputName).bufferedWriter().use {
+        for (i in open)
+            it.write(i)
+        for (line in File(inputName).readLines()) {
+            //написать регулярку формата которая учитывает только 1 звездочку,а не 2
+            //Прописать переходы между абзацами
+            var newLine = line
+
+            val match1 = Regex("""[*][a-z*\s]+[*]""").findAll(newLine)
+            for (v in match1) {
+                var a = v.value
+
+                line1 = v.value.trim().replace(Regex("""^."""), "<i>")
+                line1 = line1.trim().replace(Regex(""".$"""), "</i>")
+                line1
+                newLine = newLine.replace(v.value, line1)
+                line1 = ""
+            }
+
+            val match2 = Regex("""[*]{2}[*~A-Za-z<>/\s]+[*]{2}""").findAll(newLine)
+            for (v in match2) {
+                var a = v.value
+
+                line1 = v.value.replace(Regex("""^.."""), "<b>")
+                line1 = line1.replace(Regex("""..$"""), "</b>")
+                line1
+                newLine = newLine.replace(v.value, line1)
+                line1 = ""
+            }
+
+
+            val match = Regex("""[~]{2}[*~A-Za-z*<>/\s]+[~]{2}""").findAll(newLine)
+            for (v in match) {
+                var a = v.value
+
+                line1 = v.value.replace(Regex("""^.."""), "<s>")
+                line1 = line1.replace(Regex("""..$"""), "</s>")
+                line1
+                newLine = newLine.replace(v.value, line1)
+                line1 = ""
+            }
+
+            it.write(newLine)
+        }
+        for (i in close)
+            it.write(i)
+
+
+    }
+
 }
+
 
 /**
  * Сложная

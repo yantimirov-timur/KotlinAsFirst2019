@@ -134,6 +134,8 @@ fun dateDigitToStr(digital: String): String {
     )
     if (list.size != 3 || monthList.all { it.value != list[1] } || list[0].toInt() > 31)
         return ""
+    else if (daysInMonth(list[1].toInt(), list[2].toInt()) < list[0].toInt())
+        return ""
     for ((key, value) in monthList) {
         list[0].toInt()
         if (value == list[1]) {
@@ -144,8 +146,6 @@ fun dateDigitToStr(digital: String): String {
     if (list[0].toInt() < 10) {
         list[0] = list[0].toInt().toString()
     }
-    if (daysInMonth(list[1].toInt(), list[2].toInt()) < list[0].toInt())
-        return ""
     return list.joinToString(separator = " ")
 }
 
@@ -282,11 +282,9 @@ fun firstDuplicateIndex(str: String): Int {
             break
         }
     }
-
     if (repeatWord == "")
         return -1
-    return sumWords + (sumForSpaces - 1) - repeatWord.length
-
+    return sumWords + sumForSpaces - 1 - repeatWord.length
 }
 
 
@@ -322,8 +320,6 @@ fun fromRoman(roman: String): Int {
 
     var res = 0
     val difElement = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
-    var a = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
-
 
     val simpleElement = roman.split(Regex("""IX|XL|XC|CD|CM|IV""")).toString().toCharArray()//упростить строку
 
