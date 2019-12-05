@@ -161,6 +161,13 @@ class Tests {
     @Tag("Normal")
     fun mergePhoneBooks() {
         assertEquals(
+            mapOf("Emergency" to "112, 911", "Fire department" to "01", "Police" to "02"),
+            mergePhoneBooks(
+                mapOf("Emergency" to "112", "Fire department" to "01"),//A
+                mapOf("Emergency" to "911", "Police" to "02")//B
+            )
+        )
+        assertEquals(
             mapOf("Emergency" to "112"),
             mergePhoneBooks(
                 mapOf("Emergency" to "112"),
@@ -174,6 +181,7 @@ class Tests {
                 mapOf("Emergency" to "112", "Police" to "02")
             )
         )
+
         assertEquals(
             mapOf("Emergency" to "112, 911", "Police" to "02"),
             mergePhoneBooks(
@@ -194,17 +202,19 @@ class Tests {
     @Tag("Normal")
     fun averageStockPrice() {
         assertEquals(
+            mapOf("MSFT" to 140.0, "NFLX" to 40.0, "MT" to 1230.0),
+            averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 180.0, "NFLX" to 40.0, "MT" to 1230.0))
+        )
+        assertEquals(
             mapOf<String, Double>(),
             averageStockPrice(listOf())
         )
+
         assertEquals(
-            mapOf("MSFT" to 100.0, "NFLX" to 40.0),
-            averageStockPrice(listOf("MSFT" to 100.0, "NFLX" to 40.0))
+            mapOf("MSFT" to 150.0, "NFLX" to 45.0),
+            averageStockPrice(listOf("MSFT" to 100.0, "NFLX" to 40.0, "MSFT" to 200.0, "NFLX" to 50.0))
         )
-        assertEquals(
-            mapOf("MSFT" to 150.0, "NFLX" to 40.0),
-            averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
-        )
+
         assertEquals(
             mapOf("MSFT" to 150.0, "NFLX" to 45.0),
             averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0, "NFLX" to 50.0))
@@ -214,27 +224,65 @@ class Tests {
     @Test
     @Tag("Normal")
     fun findCheapestStuff() {
-        assertNull(
-            findCheapestStuff(
-                mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
-                "торт"
-            )
-        )
         assertEquals(
-            "Мария",
+            "Любятово",
             findCheapestStuff(
-                mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
+                mapOf(
+                    "Юбилейное" to ("печенье" to 100.0),
+                    "Любятово" to ("печенье" to 50.0),
+                    "Тук" to ("печенье" to 120.0),
+                    "Торт" to ("торт" to 20.0)
+                ),
                 "печенье"
             )
         )
+        assertEquals(
+            null,
+            findCheapestStuff(
+                mapOf("" to ("" to 0.0)),
+                "a"
+            )
+        )
+        assertEquals(
+            "a",
+            findCheapestStuff(
+                mapOf("" to ("a" to 0.0), "a" to ("" to 1.0)),
+                ""
+            )
+        )
+        assertEquals(
+            "Любятово",
+            findCheapestStuff(
+                mapOf(
+                    "Юбилейное" to ("печенье" to 100.0),
+                    "Любятово" to ("печенье" to 50.0),
+                    "Тук" to ("печенье" to 120.0),
+                    "Торт" to ("торт" to 1200.0)
+                ),
+                "печенье"
+            )
+        )
+
+        assertEquals(
+            "Любятово",
+            findCheapestStuff(
+                mapOf("Орео" to ("торт" to 100.0), "Любятово" to ("печенье" to 50.0)),
+                "печенье"
+            )
+        )
+
     }
 
     @Test
     @Tag("Normal")
     fun canBuildFrom() {
+        assertTrue(canBuildFrom(listOf('X', 'l', 'a', 'a'), "L"))
+        assertFalse(canBuildFrom(listOf('a', 'j', 'a', 'a', 'a', 'a', 'a'), "au"))
+        assertTrue(canBuildFrom(emptyList(), ""))
         assertFalse(canBuildFrom(emptyList(), "foo"))
         assertTrue(canBuildFrom(listOf('a', 'b', 'o'), "baobab"))
         assertFalse(canBuildFrom(listOf('a', 'm', 'r'), "Marat"))
+
     }
 
     @Test
@@ -245,8 +293,12 @@ class Tests {
             extractRepeats(emptyList())
         )
         assertEquals(
+            mapOf("" to 3),
+            extractRepeats(listOf("", "a", "", ""))
+        )
+        assertEquals(
             mapOf("a" to 2),
-            extractRepeats(listOf("a", "b", "a"))
+            extractRepeats(listOf("a", "", "w", "a"))
         )
         assertEquals(
             emptyMap<String, Int>(),
@@ -257,6 +309,14 @@ class Tests {
     @Test
     @Tag("Normal")
     fun hasAnagrams() {
+        //ssertTrue(hasAnagrams(listOf("a", "", "")))
+        assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
+        assertFalse(hasAnagrams(listOf("", "a", "b", "aa", "u")))
+        assertFalse(hasAnagrams(listOf("рот", "свет", "код", "дверь")))
+        assertTrue(hasAnagrams(listOf("a", "", "")))
+        assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
+        assertFalse(hasAnagrams(listOf("рот", "свет", "код", "дверь")))
+        assertTrue(hasAnagrams(listOf("a", "", "")))
         assertFalse(hasAnagrams(emptyList()))
         assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
         assertFalse(hasAnagrams(listOf("рот", "свет", "код", "дверь")))
@@ -299,15 +359,23 @@ class Tests {
     fun findSumOfTwo() {
         assertEquals(
             Pair(-1, -1),
-            findSumOfTwo(emptyList(), 1)
+            findSumOfTwo(listOf(0, 1, 0, 3, 5, 0), 9)
         )
         assertEquals(
-            Pair(0, 2),
-            findSumOfTwo(listOf(1, 2, 3), 4)
+            Pair(2, 7),
+            findSumOfTwo(listOf(2, 0, 70, 4, 2, 9, 7, 5, 0), 75)
         )
         assertEquals(
             Pair(-1, -1),
-            findSumOfTwo(listOf(1, 2, 3), 6)
+            findSumOfTwo(listOf(1, 0, 1), 0)
+        )
+        assertEquals(
+            Pair(5, 8),
+            findSumOfTwo(listOf(1, 2, 3, 4, 5, 6, 7, 8, 9), 15)
+        )
+        assertEquals(
+            Pair(-1, -1),
+            findSumOfTwo(emptyList(), 1)
         )
     }
 

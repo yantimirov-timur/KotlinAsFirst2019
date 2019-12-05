@@ -339,13 +339,13 @@ fun fromRoman(roman: String): Int {
     }
     for (element in simpleElement) {
         when (element) {
-            "I" -> res += 1
-            "V" -> res += 5
-            "X" -> res += 10
-            "L" -> res += 50
-            "C" -> res += 100
-            "D" -> res += 500
-            "M" -> res += 1000
+            'I' -> res += 1
+            'V' -> res += 5
+            'X' -> res += 10
+            'L' -> res += 50
+            'C' -> res += 100
+            'D' -> res += 500
+            'M' -> res += 1000
 
         }
     }

@@ -133,8 +133,8 @@ class Tests {
     @Test
     @Tag("Easy")
     fun isCoPrime() {
-        assertTrue(isCoPrime(25, 49))
-        assertFalse(isCoPrime(6, 8))
+        assertTrue(isCoPrime(7, 7))
+        assertFalse(isCoPrime(2, 2))
         assertTrue(isCoPrime(17, 97))
         assertFalse(isCoPrime(37, 111))
         assertTrue(isCoPrime(1234567890, 908765431))
@@ -217,32 +217,37 @@ class Tests {
     @Test
     @Tag("Normal")
     fun hasDifferentDigits() {
+        assertFalse(hasDifferentDigits(0))
+        assertTrue(hasDifferentDigits(191999))
+        assertTrue(hasDifferentDigits(854310099))
+        assertFalse(hasDifferentDigits(999))
         assertTrue(hasDifferentDigits(323))
         assertTrue(hasDifferentDigits(54))
         assertTrue(hasDifferentDigits(222266666))
         assertFalse(hasDifferentDigits(0))
-        assertFalse(hasDifferentDigits(777))
-        assertTrue(hasDifferentDigits(31122))
+
     }
 
     @Test
     @Tag("Hard")
     fun squareSequenceDigit() {
-        assertEquals(1, squareSequenceDigit(1))
-        assertEquals(4, squareSequenceDigit(2))
-        assertEquals(5, squareSequenceDigit(7))
+        assertEquals(9, squareSequenceDigit(8240))
         assertEquals(6, squareSequenceDigit(12))
         assertEquals(0, squareSequenceDigit(17))
+        assertEquals(4, squareSequenceDigit(2))
+        assertEquals(5, squareSequenceDigit(7))
+       // assertEquals(0, squareSequenceDigit(17))
         assertEquals(9, squareSequenceDigit(27))
     }
 
     @Test
     @Tag("Hard")
     fun fibSequenceDigit() {
+        //assertEquals(2, fibSequenceDigit(20))
+        assertEquals(2, fibSequenceDigit(71))
         assertEquals(1, fibSequenceDigit(1))
         assertEquals(1, fibSequenceDigit(2))
         assertEquals(3, fibSequenceDigit(4))
-        assertEquals(2, fibSequenceDigit(9))
         assertEquals(5, fibSequenceDigit(14))
         assertEquals(2, fibSequenceDigit(20))
     }

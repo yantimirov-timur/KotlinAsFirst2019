@@ -138,8 +138,8 @@ class Tests {
     fun polynom() {
         assertEquals(0, polynom(listOf(), 1000))
         assertEquals(42, polynom(listOf(42), -1000))
-        assertEquals(13, polynom(listOf(3, 2), 5))
         assertEquals(0, polynom(listOf(2, -3, 1), 1))
+        assertEquals(13, polynom(listOf(3, 2), 5))
         assertEquals(45, polynom(listOf(-7, 6, 4, -4, 1), -2))
     }
 
@@ -147,6 +147,15 @@ class Tests {
     @Tag("Normal")
     fun accumulate() {
         assertEquals(listOf<Double>(), accumulate(arrayListOf()))
+
+        assertArrayEquals(
+            listOf(1, 3, 6, 10).toIntArray(),
+            accumulate(arrayListOf(1, 2, 3, 4)).toIntArray()
+        )
+
+
+
+
         assertArrayEquals(
             listOf(3).toIntArray(),
             accumulate(arrayListOf(3)).toIntArray()
@@ -181,6 +190,7 @@ class Tests {
     @Test
     @Tag("Normal")
     fun convert() {
+        assertEquals(listOf(0), convert(0, 2))
         assertEquals(listOf(1), convert(1, 2))
         assertEquals(listOf(1, 2, 1, 0), convert(100, 4))
         assertEquals(listOf(1, 3, 12), convert(250, 14))
@@ -190,12 +200,15 @@ class Tests {
     @Test
     @Tag("Hard")
     fun convertToString() {
+        assertEquals("fgae", convertToString(108865, 19))
+        assertEquals("0", convertToString(0, 2))
+        assertEquals("13c", convertToString(250, 14))
         assertEquals("1", convertToString(1, 2))
         assertEquals("1210", convertToString(100, 4))
         assertEquals("13c", convertToString(250, 14))
         assertEquals("2ec", convertToString(1000, 19))
-        assertEquals("z", convertToString(35, 36))
         assertEquals("a02220281", convertToString(Int.MAX_VALUE, 11))
+        assertEquals("z", convertToString(35, 36))
     }
 
     @Test
@@ -231,9 +244,13 @@ class Tests {
     @Test
     @Tag("Impossible")
     fun russian() {
+        assertEquals("двадцать две тысячи девятьсот шестьдесят четыре", russian(22964))
+        assertEquals("восемьсот десять тысяч шестьсот семьдесят", russian(810670))
+        assertEquals("двести девятнадцать тысяч пятьсот восемь", russian(219508))
+        assertEquals("девятьсот шестьдесят четыре", russian(964))
+        assertEquals("двести девятнадцать", russian(219))
         assertEquals("триста семьдесят пять", russian(375))
         assertEquals("двадцать две тысячи девятьсот шестьдесят четыре", russian(22964))
-        assertEquals("сто девятнадцать тысяч пятьсот восемь", russian(119508))
         assertEquals("две тысячи три", russian(2003))
         assertEquals("двести тысяч два", russian(200002))
         assertEquals("девятьсот тысяч", russian(900000))

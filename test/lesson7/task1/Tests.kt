@@ -61,6 +61,10 @@ Basic, Ruby, Swift.
     @Tag("Normal")
     fun countSubstrings() {
         assertEquals(
+            mapOf("--" to 4, "ее" to 2, "животное" to 2, "." to 2),
+            countSubstrings("input/substrings_in2.txt", listOf("--", "ее", "животное", "."))
+        )
+        assertEquals(
             mapOf("РАЗНЫЕ" to 2, "ные" to 2, "Неряшливость" to 1, "е" to 49, "эволюция" to 0),
             countSubstrings("input/substrings_in1.txt", listOf("РАЗНЫЕ", "ные", "Неряшливость", "е", "эволюция"))
         )
@@ -69,8 +73,8 @@ Basic, Ruby, Swift.
             countSubstrings("input/substrings_in1.txt", listOf("Карминовый", "Некрасивый", "белоглазый"))
         )
         assertEquals(
-            mapOf("--" to 4, "ее" to 2, "животное" to 2, "." to 2),
-            countSubstrings("input/substrings_in2.txt", listOf("--", "ее", "животное", "."))
+            mapOf("вб" to 2, "вбва" to 1),
+            countSubstrings("input/substrings_in2.txt", listOf("вб", "вбва"))
         )
     }
 
@@ -80,20 +84,8 @@ Basic, Ruby, Swift.
         sibilants("input/sibilants_in1.txt", "temp.txt")
         assertFileContent(
             "temp.txt",
-            """/**
- * Простая
- *
- * В русском языке, как правило, после букв Ж, Ч, Ш, Щ пишется И, А, У, а не Ы, Я, Ю.
- * Во входном файле с именем inputName содержится некоторый текст.
- * Проверить текст во входном файле на соблюдение данного правила и вывести в выходной
- * файл outputName текст с исправленными ошибками.
- *
- * Регистр заменённых букв следует сохранять.
- *
- * Исключения (жУри, броШУра, параШут) в рамках данного задания обрабатывать не нужно
- *
- * жИ шИ ЖИ Ши ЖА шА Жа ша жу шу жу щу ча шу щу ща жа жи жи жу чу ча
- */"""
+            "зжжтжаазш -- ЖЯ: жя  ажяжюрщжа  ИЖЖИЗ -- ЗЖЖТЖааЗШ / жя / АзажЧж; АЖЯЖЮРЩЖА" +
+                    "ЗааЧ / жаИл  АЗАЖЧЖ"
         )
         File("temp.txt").delete()
     }
