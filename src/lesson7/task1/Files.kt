@@ -338,59 +338,49 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    val open = mutableListOf<String>("<html>", "<body>", "<p>")
-    val close = mutableListOf<String>("</p>", "</body>", "</html>")
-    var line1 = ""
+    val open = mutableListOf("<html>", "<body>", "<p>")
+    val close = mutableListOf("</p>", "</body>", "</html>")
+    var timeString = ""
     File(outputName).bufferedWriter().use {
         for (i in open)
             it.write(i)
         for (line in File(inputName).readLines()) {
-            //написать регулярку формата которая учитывает только 1 звездочку,а не 2
-            //Прописать переходы между абзацами
             var newLine = line
-
-            val match1 = Regex("""[*][a-z*\s]+[*]""").findAll(newLine)
-            for (v in match1) {
-                var a = v.value
-
-                line1 = v.value.trim().replace(Regex("""^."""), "<i>")
-                line1 = line1.trim().replace(Regex(""".$"""), "</i>")
-                line1
-                newLine = newLine.replace(v.value, line1)
-                line1 = ""
+            if (newLine == "") {
+                it.write("</p>")
+                it.write("<p>")
             }
-
-            val match2 = Regex("""[*]{2}[*~A-Za-z<>/\s]+[*]{2}""").findAll(newLine)
+            val match2 = Regex("""[*]{2}[*~A-Za-z<>\s]+[*]{2}""").findAll(newLine)
             for (v in match2) {
-                var a = v.value
-
-                line1 = v.value.replace(Regex("""^.."""), "<b>")
-                line1 = line1.replace(Regex("""..$"""), "</b>")
-                line1
-                newLine = newLine.replace(v.value, line1)
-                line1 = ""
+                timeString = v.value.replace(Regex("""^.."""), "<b>")
+                timeString = timeString.replace(Regex("""..$"""), "</b>")
+                newLine = newLine.replace(v.value, timeString)
+                timeString = ""
             }
 
+            val match1 = Regex("""[*]{1}[*~A-Za-z<>\s]+[*]{1}""").findAll(newLine)
 
-            val match = Regex("""[~]{2}[*~A-Za-z*<>/\s]+[~]{2}""").findAll(newLine)
+            for (v in match1) {
+                timeString = v.value.trim().replace(Regex("""^."""), "<i>")
+                timeString = timeString.trim().replace(Regex(""".$"""), "</i>")
+                newLine = newLine.replace(v.value, timeString)
+                timeString = ""
+            }
+            val match = Regex("""[~]{2}[</>~A-Za-z\s]+[~]{2}""").findAll(newLine)
             for (v in match) {
-                var a = v.value
-
-                line1 = v.value.replace(Regex("""^.."""), "<s>")
-                line1 = line1.replace(Regex("""..$"""), "</s>")
-                line1
-                newLine = newLine.replace(v.value, line1)
-                line1 = ""
+                timeString = v.value.replace(Regex("""^.."""), "<s>")
+                timeString = timeString.replace(Regex("""..$"""), "</s>")
+                newLine = newLine.replace(v.value, timeString)
+                timeString = ""
             }
 
+            if (newLine.contains("</i></b>"))
+                newLine = newLine.replace("</i></b>", "</b></i>")
             it.write(newLine)
         }
         for (i in close)
             it.write(i)
-
-
     }
-
 }
 
 
