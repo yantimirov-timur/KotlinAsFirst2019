@@ -350,24 +350,27 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 it.write("</p>")
                 it.write("<p>")
             }
-            val match2 = Regex("""[*]{2}[*~A-Za-z<>\s]+[*]{2}""").findAll(newLine)
+            val match2 = Regex("""[*]{2}[*\[\]\\/.(~=&`\-_;:№#!+\d?{}%@^$|A-Za-z<>)\s]+[*]{2}""").findAll(newLine)
             for (v in match2) {
+                var a = v.value
                 timeString = v.value.replace(Regex("""^.."""), "<b>")
                 timeString = timeString.replace(Regex("""..$"""), "</b>")
                 newLine = newLine.replace(v.value, timeString)
                 timeString = ""
             }
 
-            val match1 = Regex("""[*]{1}[*~A-Za-z<>\s]+[*]{1}""").findAll(newLine)
+            val match1 = Regex("""[*]{1}[\[\]\\/.(=\-`_;:№&#!+\d?{}%@^$|~A-Za-z<>)\s]+[*]{1}""").findAll(newLine)
 
             for (v in match1) {
+                var a = v.value
                 timeString = v.value.trim().replace(Regex("""^."""), "<i>")
                 timeString = timeString.trim().replace(Regex(""".$"""), "</i>")
                 newLine = newLine.replace(v.value, timeString)
                 timeString = ""
             }
-            val match = Regex("""[~]{2}[</>~A-Za-z\s]+[~]{2}""").findAll(newLine)
+            val match = Regex("""[~]{2}[\[\]\\/.(=&`\-_;:№#!+\d?{}%@^$|A-Za-z<>*)\s]+[~]{2}""").findAll(newLine)
             for (v in match) {
+                var a = v.value
                 timeString = v.value.replace(Regex("""^.."""), "<s>")
                 timeString = timeString.replace(Regex("""..$"""), "</s>")
                 newLine = newLine.replace(v.value, timeString)
@@ -382,7 +385,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             it.write(i)
     }
 }
-
 
 /**
  * Сложная
