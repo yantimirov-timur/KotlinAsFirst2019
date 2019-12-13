@@ -54,22 +54,6 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
-/**    val res = mutableMapOf<String, Int>()
-var count = 0
-File(inputName).bufferedReader().use {
-for (line in File(inputName).readLines()) {
-for (i in 0..substrings.size - 1) {
-for (word in line.split(" ")) {
-count += substrings[i].count { it in word }
-}
-res.put(substrings[i], count)
-count = 0
-}
-}
-
-}
-return res
-}*/
 
 
 /**
@@ -86,35 +70,21 @@ return res
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    File(outputName).bufferedWriter().use {
+    File(outputName).bufferedWriter().use { it ->
         for (line in File(inputName).readLines()) {
-            var newLine = line
-            for (word in line.split(" ")) {
-                if (Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").containsMatchIn(word)) {
-                    val matchRes = Regex("""([жщшЖШЩчЧ][ыяюЫЯЮ])""").findAll(word)
-                    var newWord = word
-                    var newMatch = ""
-                    var match = ""
-                    for (i in matchRes) {
-                        match = i.value
-                        when {
-                            match.contains('я') -> newMatch = match.replace("я", "а")
-                            match.contains('Я') -> newMatch = match.replace("Я", "А")
-                            match.contains('ю') -> newMatch = match.replace("ю", "у")
-                            match.contains('Ю') -> newMatch = match.replace("Ю", "У")
-                            match.contains('ы') -> newMatch = match.replace("ы", "и")
-                            match.contains('Ы') -> newMatch = match.replace("Ы", "И")
-                        }
-                        newWord = newWord.replace(match, newMatch)
-                    }
-                    newLine = newLine.replace(word, newWord)
-
+            val matchRes = Regex("""(?<=[жщшЖШЩчЧ])[ыяюЫЯЮ]""")
+            val newLine = line.replace(matchRes) {
+                when (it.value) {
+                    "я" -> "а"
+                    "Я" -> "А"
+                    "ю" -> "у"
+                    "Ю" -> "У"
+                    "ы" -> "и"
+                    "Ы" -> "И"
+                    else -> it.value
                 }
             }
-            if (newLine == line)
-                it.write(line)
-            else
-                it.write(newLine)
+            it.write(newLine)
             it.newLine()
         }
     }
@@ -142,20 +112,20 @@ fun sibilants(inputName: String, outputName: String) {
 
 fun centerFile(inputName: String, outputName: String) {
     var maxLength = 0
-    val newLine = ""
-    var length = ""
+    val newString = ""
+    var spaces = ""
     File(outputName).bufferedWriter().use {
-        //Самая длинная строка
         for (line in File(inputName).readLines()) {
-            if (line.trim().length > maxLength)
+            //Самая длинная строка
+            if (line.trim().length > maxLength) {
                 maxLength = line.trim().length
-        }
-        // Выравнивание
-        for (line in File(inputName).readLines()) {
-            val newLength = line.trim()
-            val difference = maxLength - newLength.length
-            length = newLine.padStart(difference / 2, ' ')
-            it.write(length + newLength)
+                continue
+            }
+            // Выравнивание
+            val trimmedLine = line.trim()
+            val difference = maxLength - trimmedLine.length
+            spaces = newString.padStart(difference / 2, ' ')
+            it.write(spaces + trimmedLine)
             it.newLine()
         }
     }
@@ -188,6 +158,8 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
+
+
 fun alignFileByWidth(inputName: String, outputName: String) {
     TODO()
 }
@@ -276,19 +248,33 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    var overallLine = ""
+    val list = mutableListOf<String>()
     var maxLine = 0
+    var uniqueLineLength = 0
+    val lines = File(inputName).readLines()
+
     File(outputName).bufferedWriter().use {
-        for (line in File(inputName).readLines()) {
-            if (line.toUpperCase().toSet().size > maxLine && line.toUpperCase().toSet().size == line.length)
-                maxLine = line.toUpperCase().toSet().size
+        //Максимальная длина
+        for (line in lines) {
+            uniqueLineLength = line.toUpperCase().toSet().size
+            if (uniqueLineLength > maxLine && uniqueLineLength == line.length)
+                maxLine = uniqueLineLength
         }
-        for (line in File(inputName).readLines()) {
-            if (line.toUpperCase().toSet().size == line.length && line.toUpperCase().toSet().size == maxLine)
-                overallLine += ("$line ")
+        //Находим слова с разными буквами
+        for (line in lines) {
+            if (line.toUpperCase().toSet().size == line.length) {
+                list.add(line)
+                continue
+            }
         }
-        overallLine = overallLine.split(", ").joinToString().trimEnd().replace(" ", ", ")
-        it.write(overallLine)
+        //Удаляем лишние слова из списка
+        for (word in list) {
+            if (word.length == maxLine)
+                continue
+            else
+                list.remove(word)
+        }
+        it.write(list.joinToString(separator = ", "))
     }
 }
 
@@ -338,52 +324,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    val open = mutableListOf("<html>", "<body>", "<p>")
-    val close = mutableListOf("</p>", "</body>", "</html>")
-    var timeString = ""
-    File(outputName).bufferedWriter().use {
-        for (i in open)
-            it.write(i)
-        for (line in File(inputName).readLines()) {
-            var newLine = line
-            if (newLine == "") {
-                it.write("</p>")
-                it.write("<p>")
-            }
-            val match2 = Regex("""[*]{2}[*\[\]\\/.(~=&`\-_;:№#!+\d?{}%@^$|A-Za-z<>)\s]+[*]{2}""").findAll(newLine)
-            for (v in match2) {
-                var a = v.value
-                timeString = v.value.replace(Regex("""^.."""), "<b>")
-                timeString = timeString.replace(Regex("""..$"""), "</b>")
-                newLine = newLine.replace(v.value, timeString)
-                timeString = ""
-            }
-
-            val match1 = Regex("""[*]{1}[\[\]\\/.(=\-`_;:№&#!+\d?{}%@^$|~A-Za-z<>)\s]+[*]{1}""").findAll(newLine)
-
-            for (v in match1) {
-                var a = v.value
-                timeString = v.value.trim().replace(Regex("""^."""), "<i>")
-                timeString = timeString.trim().replace(Regex(""".$"""), "</i>")
-                newLine = newLine.replace(v.value, timeString)
-                timeString = ""
-            }
-            val match = Regex("""[~]{2}[\[\]\\/.(=&`\-_;:№#!+\d?{}%@^$|A-Za-z<>*)\s]+[~]{2}""").findAll(newLine)
-            for (v in match) {
-                var a = v.value
-                timeString = v.value.replace(Regex("""^.."""), "<s>")
-                timeString = timeString.replace(Regex("""..$"""), "</s>")
-                newLine = newLine.replace(v.value, timeString)
-                timeString = ""
-            }
-
-            if (newLine.contains("</i></b>"))
-                newLine = newLine.replace("</i></b>", "</b></i>")
-            it.write(newLine)
-        }
-        for (i in close)
-            it.write(i)
-    }
+    TODO()
 }
 
 /**
