@@ -114,14 +114,15 @@ fun centerFile(inputName: String, outputName: String) {
     var maxLength = 0
     val newString = ""
     var spaces = ""
+    val lines = File(inputName).readLines()
     File(outputName).bufferedWriter().use {
-        for (line in File(inputName).readLines()) {
-            //Самая длинная строка
-            if (line.trim().length > maxLength) {
+        //Самая длинная строка
+        for (line in lines) {
+            if (line.trim().length > maxLength)
                 maxLength = line.trim().length
-                continue
-            }
-            // Выравнивание
+        }
+        // Выравнивание
+        for (line in lines) {
             val trimmedLine = line.trim()
             val difference = maxLength - trimmedLine.length
             spaces = newString.padStart(difference / 2, ' ')
@@ -253,7 +254,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var uniqueLineLength = 0
     val lines = File(inputName).readLines()
 
-    File(outputName).bufferedWriter().use {
+    File(outputName).bufferedWriter().use { it ->
         //Максимальная длина
         for (line in lines) {
             uniqueLineLength = line.toUpperCase().toSet().size
@@ -267,14 +268,8 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
                 continue
             }
         }
-        //Удаляем лишние слова из списка
-        for (word in list) {
-            if (word.length == maxLine)
-                continue
-            else
-                list.remove(word)
-        }
-        it.write(list.joinToString(separator = ", "))
+
+        it.write(list.filter { it.length == maxLine }.joinToString(", "))
     }
 }
 
