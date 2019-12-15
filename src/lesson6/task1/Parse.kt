@@ -93,6 +93,7 @@ fun dateStrToDigit(str: String): String {
     if (list.size != 3 || monthList.all { it.key != list[1] })
         return ""
 
+
     for ((key, value) in monthList) {
         if (key == list[1]) {
             list[1] = value
@@ -100,10 +101,12 @@ fun dateStrToDigit(str: String): String {
         }
     }
 
-    if (list[0].toInt() < 10 && list[0].first() != '0') {
+    val day = list[0].toInt()
+
+    if (day < 10 && list[0].first() != '0') {
         list[0] = "0" + list[0]
     }
-    if (daysInMonth(list[1].toInt(), list[2].toInt()) < list[0].toInt())
+    if (daysInMonth(list[1].toInt(), list[2].toInt()) < day)
         return ""
 
     return list.joinToString(separator = ".")
@@ -129,16 +132,16 @@ fun dateDigitToStr(digital: String): String {
         return ""
 
 
+    val day = list[0].toInt()
+
     for ((key, value) in monthList) {
-        list[0].toInt()
         if (value == list[1]) {
             list[1] = key
             break
         }
     }
-    if (list[0].toInt() < 10) {
-        list[0] = list[0].toInt().toString()
-    }
+    list[0] = day.toString()
+
     return list.joinToString(separator = " ")
 }
 
@@ -212,14 +215,12 @@ fun bestHighJump(jumps: String): Int {
     if (anySymbols != null)
         return res
 
-    var correctDigits = ""
-    for (result in matchedResults)
-        correctDigits += result.value
-
-    val digits = Regex("""[\d]+""").findAll(correctDigits)
-    for (result in digits) {
-        if (res < result.value.toInt())
-            res = result.value.toInt()
+    for (result in matchedResults) {
+        val digit = Regex("""\d+""").find(result.value)?.value
+        if (digit != null) {
+            if (digit.toInt() > res)
+                res = digit.toInt()
+        }
     }
     return res
 }

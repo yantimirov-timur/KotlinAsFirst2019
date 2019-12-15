@@ -71,8 +71,8 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  */
 fun sibilants(inputName: String, outputName: String) {
     File(outputName).bufferedWriter().use { it ->
+        val matchRes = Regex("""(?<=[жщшЖШЩчЧ])[ыяюЫЯЮ]""")
         for (line in File(inputName).readLines()) {
-            val matchRes = Regex("""(?<=[жщшЖШЩчЧ])[ыяюЫЯЮ]""")
             val newLine = line.replace(matchRes) {
                 when (it.value) {
                     "я" -> "а"
@@ -162,7 +162,39 @@ fun centerFile(inputName: String, outputName: String) {
 
 
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    var maxLength = 0
+    val lines = File(inputName).readLines()
+
+    for (line in lines) {
+        if (line.trim().length > maxLength)
+            maxLength = line.trim().length
+    }
+
+    File(outputName).bufferedWriter().use {
+        var list: MutableList<String>
+        for (line in lines) {
+            list = line.trim().split(" ").toMutableList()
+
+            if (line.trim().split(" ").size == 1) {
+                it.write(line.trim())
+                it.newLine()
+                continue
+            }
+            while (list.joinToString(" ").trim().length != maxLength) {
+                for (i in 0 until list.size) {
+                    val newWord = list[i] + " "
+                    if (list.joinToString(" ").trim().length == maxLength)
+                        break
+                    else
+                        list[i] = newWord
+                }
+                if (list.joinToString(" ").trim().length != maxLength)
+                    continue
+            }
+            it.write(list.joinToString(" ").trim())
+            it.newLine()
+        }
+    }
 }
 
 /**
@@ -255,20 +287,13 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val lines = File(inputName).readLines()
 
     File(outputName).bufferedWriter().use { it ->
-        //Максимальная длина
         for (line in lines) {
             uniqueLineLength = line.toUpperCase().toSet().size
-            if (uniqueLineLength > maxLine && uniqueLineLength == line.length)
+            if (uniqueLineLength >= maxLine && uniqueLineLength == line.length) {
                 maxLine = uniqueLineLength
-        }
-        //Находим слова с разными буквами
-        for (line in lines) {
-            if (line.toUpperCase().toSet().size == line.length) {
                 list.add(line)
-                continue
             }
         }
-
         it.write(list.filter { it.length == maxLine }.joinToString(", "))
     }
 }
