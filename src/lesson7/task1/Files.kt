@@ -164,25 +164,21 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     var maxLength = 0
     val lines = File(inputName).readLines()
-
     for (line in lines) {
         if (line.trim().length > maxLength)
             maxLength = line.trim().length
     }
-
     File(outputName).bufferedWriter().use {
         var list: MutableList<String>
         for (line in lines) {
             list = line.trim().split(" ").toMutableList()
             list.removeAll(listOf(""))//Удаляем все пробелы(Если во входной строке между словами более 1 пробела)
-
             if (line.trim().split(" ").size == 1) {
                 it.write(line.trim())
                 it.newLine()
                 continue
             }
             while (list.joinToString(" ").trim().length != maxLength) {
-
                 for (i in 0 until list.size) {
                     val newWord = list[i] + " "
                     if (list.joinToString(" ").trim().length == maxLength)
@@ -190,7 +186,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
                     else
                         list[i] = newWord
                 }
-
                 if (list.joinToString(" ").trim().length != maxLength)
                     continue
             }

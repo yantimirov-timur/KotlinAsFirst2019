@@ -130,8 +130,6 @@ fun dateDigitToStr(digital: String): String {
         return ""
     else if (daysInMonth(list[1].toInt(), list[2].toInt()) < list[0].toInt())
         return ""
-
-
     val day = list[0].toInt()
 
     for ((key, value) in monthList) {
@@ -302,39 +300,8 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int {
-    if (roman.contains(Regex("""[^XCIVDLM]""")) || roman.isEmpty())
-        return -1
+fun fromRoman(roman: String): Int = TODO()
 
-    var res = 0
-    val difElement = Regex("""IX|XL|XC|CD|CM|IV""").findAll(roman)
-
-    val simpleElement = roman.split(Regex("""IX|XL|XC|CD|CM|IV""")).toString().toCharArray()
-
-    for (element in difElement) {
-        when (element.value) {
-            "IV" -> res += 4
-            "IX" -> res += 9
-            "XL" -> res += 40
-            "XC" -> res += 90
-            "CD" -> res += 400
-            "CM" -> res += 900
-        }
-    }
-    for (element in simpleElement) {
-        when (element) {
-            'I' -> res += 1
-            'V' -> res += 5
-            'X' -> res += 10
-            'L' -> res += 50
-            'C' -> res += 100
-            'D' -> res += 500
-            'M' -> res += 1000
-
-        }
-    }
-    return res
-}
 
 /**
  * Очень сложная
