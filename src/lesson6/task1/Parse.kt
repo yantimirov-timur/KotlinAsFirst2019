@@ -125,12 +125,12 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val list = digital.split(".").toMutableList()
-
-    if (list.size != 3 || list[1] !in monthList.values || list[0].toInt() > 31)
-        return ""
-    else if (daysInMonth(list[1].toInt(), list[2].toInt()) < list[0].toInt())
-        return ""
     val day = list[0].toInt()
+
+    if (list.size != 3 || list[1] !in monthList.values || day > 31)
+        return ""
+    else if (daysInMonth(list[1].toInt(), list[2].toInt()) < day)
+        return ""
 
     for ((key, value) in monthList) {
         if (value == list[1]) {
@@ -340,3 +340,6 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+
+
