@@ -125,11 +125,11 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val list = digital.split(".").toMutableList()
-    val day = list[0].toInt()
 
-    if (list.size != 3 || list[1] !in monthList.values || day > 31)
+    if (list.size != 3 || list[1] !in monthList.values)
         return ""
-    else if (daysInMonth(list[1].toInt(), list[2].toInt()) < day)
+    val day = list[0].toInt()
+    if (daysInMonth(list[1].toInt(), list[2].toInt()) < day || day > 31)
         return ""
 
     for ((key, value) in monthList) {
